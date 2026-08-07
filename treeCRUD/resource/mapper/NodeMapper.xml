@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kristina.treecrud.mapper.NodeMapper">
+	<resultMap id="UserResultMap" type="com.kristina.treecrud.bean.TreeNode">
+	        <id property="id" column="id" />
+	        <result property="parentId" column="parent_id" />
+	        <result property="name" column="name" />
+	        <result property="ip" column="ip" />
+	        <result property="port" column="port" />
+	</resultMap>
+	
+	<select id="findAll" resultMap="UserResultMap">
+	    SELECT id,
+	           parent_id,
+	           name,
+	           ip,
+	           port
+	    FROM tree_node
+	</select> 
+	
+	<select id="findById" resultMap="UserResultMap" parameterType="Integer">
+	    SELECT id,
+	           parent_id,
+	           name,
+	           ip,
+	           port 
+	    FROM tree_node 
+	    WHERE id=#{id}
+	</select>
+	
+	<delete id="deleteById" parameterType="Integer">
+	DELETE FROM tree_node
+	WHERE id = #{id}
+	</delete>
+	
+	<update id="updateNode" parameterType="com.kristina.treecrud.bean.TreeNode">
+	UPDATE tree_node
+	SET name = #{name},
+	    ip = #{ip},
+	    port = #{port}
+	WHERE id = #{id}
+	</update>
+	
+	<insert id="insertNode" parameterType="com.kristina.treecrud.bean.TreeNode">
+	 <selectKey    keyProperty="id"    resultType="Integer"    order="BEFORE">
+	    SELECT NEXTVAL('tree_node_SEQ')
+	</selectKey>
+	INSERT INTO tree_node(id,parent_id,name,ip,port)
+	VALUES (#{id}, #{parentId}, #{name}, #{ip}, #{port})
+	</insert>
+</mapper>

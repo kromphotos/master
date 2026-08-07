@@ -1,0 +1,57 @@
+<?xml version = "1.0"?>
+<project name = "treeCRUD" default="run" basedir=".">
+    <target name="path">
+        <property name="srcDir" value="${basedir}/src"/>
+        <property name="buildDir" value="${basedir}/build"/>
+    	<property name="buildDir.classes" value="${basedir}/build/classes"/>
+    	<property name="resourceDir" value="${basedir}/resource"/>
+    	<property name="libDir" value="${basedir}/lib"/>
+    </target>
+	
+	<target name="clean" depends="path">
+		<echo>Cleaning build</echo>
+		<delete dir="${buildDir}"/>
+	</target>
+    
+    <target name="make.dir" depends="path">
+        <echo>Make a directory</echo>
+    	<mkdir dir="${buildDir.classes}" />
+    </target>
+    
+	<target name="copy" depends="make.dir">
+		<echo>Copy files</echo>
+		<copy todir="${buildDir}">
+		    <fileset dir="${libDir}"/>
+		</copy>
+		<copy todir="${buildDir.classes}">
+		     <fileset dir="${resourceDir}">
+		         <include name="**/*.xml"/>
+		     	 <include name="**/*.properties"/>
+		     </fileset>
+		</copy>
+	</target>
+	
+    <target name="compile" depends="copy" >
+        <echo>Compile files</echo>
+        <javac srcdir="${srcDir}" destdir="${buildDir.classes}" includeantruntime="false" source="1.8" target="1.8" encoding="UTF-8">
+        	<classpath>
+        	 	 <fileset dir="${libDir}">
+        	 	        <include name="*.jar"/>
+        	 	 </fileset>
+        	 </classpath>
+        </javac>
+    </target>
+    
+    <target name="run" depends="compile">
+        <echo>Run</echo>
+        <java classname="com.kristina.treecrud.Main" fork="true">
+        	<jvmarg value="-Dfile.encoding=UTF-8"/>
+            <classpath>
+                <pathelement location="${buildDir.classes}"/>
+            	 <fileset dir="${libDir}">
+            	        <include name="*.jar"/>
+            	 </fileset>
+            </classpath>    
+        </java>
+    </target>
+</project>
