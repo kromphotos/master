@@ -8,12 +8,12 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.kristina.gwttreecrud.server.GreetingServiceImpl</servlet-class>
+    <servlet-class>com.kristina.gwttreecrud.server.GwtServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/gwttreecrud/greet</url-pattern>
+    <url-pattern>/app/greet</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

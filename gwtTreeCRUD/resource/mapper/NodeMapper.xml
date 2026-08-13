@@ -1,11 +1,11 @@
- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kristina.treecrud.mapper.NodeMapper">
-	<resultMap id="UserResultMap" type="com.kristina.gwttreecrud.shared.Node">
+<mapper namespace="com.kristina.gwttreecrud.server.mapper.NodeMapper">
+	<resultMap id="UserResultMap" type="com.kristina.gwttreecrud.shared.TreeNode">
 	        <id property="id" column="id" />
 	        <result property="parentId" column="parent_id" />
 	        <result property="name" column="name" />
@@ -37,7 +37,7 @@
 	WHERE id = #{id}
 	</delete>
 	
-	<update id="updateNode" parameterType="com.kristina.treecrud.bean.TreeNode">
+	<update id="updateNode" parameterType="com.kristina.gwttreecrud.shared.TreeNode">
 	UPDATE tree_node
 	SET name = #{name},
 	    ip = #{ip},
@@ -45,7 +45,7 @@
 	WHERE id = #{id}
 	</update>
 	
-	<insert id="insertNode" parameterType="com.kristina.treecrud.bean.TreeNode">
+	<insert id="insertNode" parameterType="com.kristina.gwttreecrud.shared.TreeNode">
 	 <selectKey    keyProperty="id"    resultType="Integer"    order="BEFORE">
 	    SELECT NEXTVAL('tree_node_SEQ')
 	</selectKey>

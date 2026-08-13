@@ -105,13 +105,12 @@
 				<pathelement location="${srcDir}" />
 				<pathelement location="${classesDir}" />
 			</classpath>
-
+			<arg value="-logLevel" />
+            <arg value="TRACE" />
 			<arg value="-war" />
 			<arg value="${warDir}" />
-
 			<arg value="-startupUrl" />
 			<arg value="GwtTreeCRUD.html" />
-
 			<arg value="com.kristina.gwttreecrud.GwtTreeCRUD" />
 		</java>
 	</target>

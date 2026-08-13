@@ -1,20 +1,27 @@
 package com.kristina.gwttreecrud.shared;
 
-public class Node {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class TreeNode implements IsSerializable {
     private Integer id;
     private Integer parentId;
     private String name;
     private String ip;
     private Integer port;
-    
-    public Node(Integer id, Integer parentId, String name, String ip, Integer port) {
+
+    public TreeNode() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    public TreeNode(Integer id, Integer parentId, String name, String ip, Integer port) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
         this.ip = ip;
         this.port = port;
     }
-    
+
     public Integer getId() {
         return id;
     }
@@ -54,10 +61,9 @@ public class Node {
     public void setPort(Integer port) {
         this.port = port;
     }
-    
+
     @Override
     public String toString() {
-        return "id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + ";";
+        return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
     }
 }
-

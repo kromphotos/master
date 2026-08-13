@@ -1,7 +1,6 @@
 package com.kristina.gwttreecrud.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -19,7 +18,7 @@ public class GwtTreeCRUD implements EntryPoint {
     /**
      * Create a remote service proxy to talk to the server-side Greeting service.
      */
-    private final GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
+//    private final GwtServiceAsync greetingService = GWT.create(GwtService.class);
 
     /**
      * This is the entry point method.
