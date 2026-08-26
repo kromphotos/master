@@ -1,52 +1,48 @@
 package com.kristina.treecrud;
 
-import java.util.List;
-
-import com.kristina.treecrud.bean.TreeNode;
-import com.kristina.treecrud.service.TreeNodeServiceImp;
-
 public class Main {
+    public final static Main SMALL = new Main(150);
+
+    static class  Size {
+        public final static Size SMALL = new Size(150);
+        public final static Size MED = new Size(300);
+        public final static Size BIG = new Size(450);
+//        SMALL(150),
+//        MED(300),
+//        BIG(450);
+
+        private int ml;
+
+        Size(int ml) {
+            this.ml = ml;
+        }
+
+        public int getMl() {
+            return ml;
+        }
+
+        public void setMl(int ml) {
+            this.ml = ml;
+        }
+        
+        
+    };
+
+    int ml;
+
+    Main(int ml) {
+        this.ml = ml;
+    }
 
     public static void main(String[] args) {
+        int[] massiv;
+        int[] massivv = { 1, 2, 3 };
+        int[] massivvv = new int[3];
+        int[][] tr = { { 1 }, { 2 }, { 3 } };
+        int[][] massivvvv = new int[3][];
         
-        TreeNodeServiceImp service = new TreeNodeServiceImp();
         
-        System.out.println("Test findAll(): ");
-        List<TreeNode> nodes = service.findAll();
-        for (TreeNode node: nodes) {
-            System.out.println(node);
-        }
-        
-        System.out.println("Test findById(): ");
-        System.out.println(service.findById(100));
-        
-        System.out.println("Test insertNode(): ");
-        TreeNode node2 = new TreeNode();
-        node2.setParentId(2);
-        node2.setIp("2.22.22.2");
-        node2.setName("childNode7");
-        node2.setPort(2277);
-        service.insertNode(node2);
-        nodes = service.findAll();
-        for (TreeNode node: nodes) {
-            System.out.println(node);
-        }
-        
-        System.out.println("Test deleteById():");
-        service.deleteById(node2.getId());
-        nodes = service.findAll();
-        for (TreeNode node: nodes) {
-            System.out.println(node);
-        }
-        
-        System.out.println("Test updateNode():");
-        TreeNode node3 = new TreeNode();
-        node3.setId(25);
-        node3.setParentId(3);
-        node3.setIp("3.32.32.3");
-        node3.setName("childNode8");
-        node3.setPort(1234);
-        service.updateNode(node3);
+
     }
 
 }

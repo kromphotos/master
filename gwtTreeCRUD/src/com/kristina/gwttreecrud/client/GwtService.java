@@ -12,4 +12,8 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 @RemoteServiceRelativePath("greet")
 public interface GwtService extends RemoteService {
     List<TreeNode> getAllNodes() throws IllegalArgumentException;
+    TreeNode findById(Integer id) throws IllegalArgumentException;
+    void updateNode(TreeNode node) throws IllegalArgumentException;
+    void insertNode(TreeNode node) throws IllegalArgumentException;
+    void deleteById(Integer id) throws IllegalArgumentException;
 }
