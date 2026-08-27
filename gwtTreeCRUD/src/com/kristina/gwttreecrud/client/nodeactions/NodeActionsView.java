@@ -6,7 +6,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 
 public class NodeActionsView extends Composite{
     private NodeActionsPresenter presenter;
@@ -21,17 +20,14 @@ public class NodeActionsView extends Composite{
     private Button editButton;
     private Button deleteButton;
     
-    private Label selectedNodeLabel;
-    
-    public void showSelectedNodeId(Integer nodeId) {
-        if (nodeId == null) {
-            selectedNodeLabel.setText("Selected node id = ");
-        } else {
-            selectedNodeLabel.setText("Selected node id = " + nodeId);
-        }
-    }
     public void showMessage(String message) {
         Window.alert(message);
+    }
+    
+    public void setNodeSelected(boolean selected) {
+        addChildButton.setEnabled(selected);
+        editButton.setEnabled(selected);
+        deleteButton.setEnabled(selected);
     }
     
     public NodeActionsView() {
@@ -41,6 +37,10 @@ public class NodeActionsView extends Composite{
         addChildButton = new Button("Add child");
         editButton = new Button("Edit");
         deleteButton = new Button("Delete");
+        
+        addChildButton.setEnabled(false);
+        editButton.setEnabled(false);
+        deleteButton.setEnabled(false);
         
         editButton.addClickHandler(new ClickHandler() {
             @Override
@@ -65,15 +65,12 @@ public class NodeActionsView extends Composite{
         addChildButton.getElement().getStyle().setProperty("marginRight", "10px");
         editButton.getElement().getStyle().setProperty("marginRight", "10px");
         
-        selectedNodeLabel = new Label("Selected node id = ");
-        selectedNodeLabel.getElement().getStyle().setProperty("marginLeft", "10px");
-        
         
         panel.add(addRootButton);
         panel.add(addChildButton);
         panel.add(editButton);
         panel.add(deleteButton);
-        panel.add(selectedNodeLabel);
+
         
         initWidget(panel);
     }

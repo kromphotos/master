@@ -40,11 +40,11 @@ public class TreeView extends Composite {
         this.presenter = presenter;
     }
 
-    public void showTree(List<TreeNode> nodes, Set<Integer> expandedNodeIds) {
+    public void showTree(List<TreeNode> nodes, Set<Integer> expandedNodeIds, Integer selectedNodeId ) {
         treePanel.clear();
         TreeNode root = findRoot(nodes);//есь список узлов
         if (root != null) {
-            addNode(root, nodes, expandedNodeIds, 0);
+            addNode(root, nodes, expandedNodeIds, selectedNodeId, 0);
         }
     }
 
@@ -68,19 +68,19 @@ public class TreeView extends Composite {
     }
 
     private void addNode(TreeNode node, List<TreeNode> nodes,
-                        Set<Integer> expandedNodeIds, int level) {
+                        Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
         List<TreeNode> children = findChildren(node, nodes);
-        HorizontalPanel row = createNodeRow(node, children, expandedNodeIds, level);
+        HorizontalPanel row = createNodeRow(node, children, expandedNodeIds, selectedNodeId, level);
         treePanel.add(row);
         if (expandedNodeIds.contains(node.getId())) {
             for (TreeNode child : children) {
-                addNode(child, nodes, expandedNodeIds, level + 1);
+                addNode(child, nodes, expandedNodeIds, selectedNodeId, level + 1);
             }
         }
     }
 
     private HorizontalPanel createNodeRow(final TreeNode node, List<TreeNode> children,
-                                          final Set<Integer> expandedNodeIds, int level) {
+                                          final Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
 
         HorizontalPanel row = new HorizontalPanel();
         row.getElement().getStyle().setProperty("marginBottom", "4px");//отступ между строками
@@ -137,6 +137,24 @@ public class TreeView extends Composite {
                 "cursor",
                 "pointer"
         );
+        if (selectedNodeId != null
+                && selectedNodeId.equals(node.getId())) {
+
+            nameLabel.getElement().getStyle().setProperty(
+                    "backgroundColor",
+                    "#FCE4EC"
+            );
+
+            nameLabel.getElement().getStyle().setProperty(
+                    "padding",
+                    "3px 6px"
+            );
+
+            nameLabel.getElement().getStyle().setProperty(
+                    "borderRadius",
+                    "4px"
+            );
+        }
         nameLabel.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

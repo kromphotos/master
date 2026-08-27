@@ -12,9 +12,9 @@ import com.kristina.gwttreecrud.client.nodeactions.NodeActionsPresenter;
 import com.kristina.gwttreecrud.client.nodeactions.NodeActionsView;
 import com.kristina.gwttreecrud.client.nodeadd.NodeAddPresenter;
 import com.kristina.gwttreecrud.client.nodeadd.NodeAddView;
-import com.kristina.gwttreecrud.client.nodeedit.NodeEditPresenter;
-import com.kristina.gwttreecrud.client.nodeedit.NodeEditView;
-import com.kristina.gwttreecrud.client.tree.NodeInfoView;
+import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoPresenter;
+import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoView;
+import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoViewData;
 import com.kristina.gwttreecrud.client.tree.TreePresenter;
 import com.kristina.gwttreecrud.client.tree.TreeView;
 import com.kristina.gwttreecrud.client.tree.TreeViewData;
@@ -51,20 +51,23 @@ public class GwtTreeCRUD implements EntryPoint {
     public void onModuleLoad() {
         TreeView view = new TreeView();
         TreeViewData viewData = new TreeViewData();
-        NodeInfoView nodeInfoView = new NodeInfoView();
         
         NodeActionsView actionsView = new NodeActionsView();
-        NodeEditView editView = new NodeEditView();
+        
+        NodeInfoView nodeInfoView = new NodeInfoView();
+        NodeInfoViewData nodeInfoViewData = new NodeInfoViewData();
+        NodeInfoPresenter nodeInfoPresenter =
+                new NodeInfoPresenter(nodeInfoView, nodeInfoViewData);
+        nodeInfoView.setPresenter(nodeInfoPresenter);
+
         NodeAddView addView = new NodeAddView();
         NodeAddPresenter addPresenter = new NodeAddPresenter(addView);
         addView.setPresenter(addPresenter);
         
-        NodeActionsPresenter actionsPresenter = new NodeActionsPresenter(actionsView, viewData, editView, addView);
-        NodeEditPresenter editPresenter = new NodeEditPresenter(editView);
-        
-        editView.setPresenter(editPresenter);
+        NodeActionsPresenter actionsPresenter = new NodeActionsPresenter(actionsView, viewData, nodeInfoPresenter, addView);
+ 
         actionsView.setPresenter(actionsPresenter);
-        TreePresenter presenter = new TreePresenter(view, viewData, nodeInfoView, actionsPresenter);
+        TreePresenter presenter = new TreePresenter(view, viewData, nodeInfoPresenter, actionsPresenter);
         
         view.setPresenter(presenter);
         
@@ -73,10 +76,10 @@ public class GwtTreeCRUD implements EntryPoint {
         AllNodesViewData viewData2 = new AllNodesViewData();
         AllNodesPresenter presenter2 = new AllNodesPresenter(view2, viewData2);
         
-        TreeController controller = new TreeController(presenter, presenter2, actionsPresenter, editPresenter);
-        editPresenter.setController(controller);
+        TreeController controller = new TreeController(presenter, presenter2, actionsPresenter);
         addPresenter.setController(controller);
         actionsPresenter.setController(controller);
+        nodeInfoPresenter.setController(controller);
         controller.refresh();
         
         HorizontalPanel mainPanel = new HorizontalPanel();
@@ -94,9 +97,7 @@ public class GwtTreeCRUD implements EntryPoint {
         mainPanel.add(treePanel);
         mainPanel.add(space);
         mainPanel.add(selectedPanel);
-        mainPanel.add(editView);
-        //RootPanel.get().add(view);
-        //RootPanel.get().add(nodeInfoView);
+
         RootPanel.get().add(mainPanel);
         
         Label verticalSpace1 = new Label();

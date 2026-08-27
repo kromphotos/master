@@ -20,18 +20,11 @@ public class NodeAddView extends DialogBox{
     private Button saveButton;
     private Button cancelButton;
     private FlexTable formTable;
-
-    //private TreeNode currentNode;
     private NodeAddPresenter presenter;
 
     public void setPresenter(NodeAddPresenter presenter) {
         this.presenter = presenter;
     }
-    /*
-    public TreeNode getCurrentNode() {
-        return currentNode;
-    }
-    */
     public NodeAddView() {
         //Заголовок окна
         setText("Add node:");

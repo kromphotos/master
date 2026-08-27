@@ -13,17 +13,6 @@ public class TreeViewData {
     private Set<Integer> expandedNodeIds;
 
     private Integer selectedNodeId;
-    
-    
-    
-    //private Integer id;
-    //private Integer parentId;
-    //private String name;
-
-    
-    
-    
-    
 
     public TreeViewData() {
         expandedNodeIds = new HashSet<Integer>();

@@ -6,7 +6,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.allnodes.AllNodesPresenter;
 import com.kristina.gwttreecrud.client.nodeactions.NodeActionsPresenter;
-import com.kristina.gwttreecrud.client.nodeedit.NodeEditPresenter;
 import com.kristina.gwttreecrud.client.tree.TreePresenter;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
@@ -14,15 +13,13 @@ public class TreeController {
     private TreePresenter treePresenter;
     private AllNodesPresenter allNodesPresenter;
     private NodeActionsPresenter nodeActionsPresenter;
-    private NodeEditPresenter nodeEditPresenter;
-    
+
     private GwtServiceAsync service = GWT.create(GwtService.class);
     
-    public TreeController(TreePresenter treePresenter, AllNodesPresenter allNodesPresenter,NodeActionsPresenter nodeActionsPresenter,NodeEditPresenter nodeEditPresenter) {
+    public TreeController(TreePresenter treePresenter, AllNodesPresenter allNodesPresenter,NodeActionsPresenter nodeActionsPresenter) {
         this.treePresenter = treePresenter;
         this.allNodesPresenter = allNodesPresenter;
         this.nodeActionsPresenter = nodeActionsPresenter;
-        this.nodeEditPresenter = nodeEditPresenter;
     }
     
     public void refresh() {
