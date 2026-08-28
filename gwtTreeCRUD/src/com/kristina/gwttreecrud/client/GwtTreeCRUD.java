@@ -64,7 +64,7 @@ public class GwtTreeCRUD implements EntryPoint {
         NodeAddPresenter addPresenter = new NodeAddPresenter(addView);
         addView.setPresenter(addPresenter);
         
-        NodeActionsPresenter actionsPresenter = new NodeActionsPresenter(actionsView, viewData, nodeInfoPresenter, addView);
+        NodeActionsPresenter actionsPresenter = new NodeActionsPresenter(actionsView, viewData, nodeInfoPresenter, addPresenter);
  
         actionsView.setPresenter(actionsPresenter);
         TreePresenter presenter = new TreePresenter(view, viewData, nodeInfoPresenter, actionsPresenter);

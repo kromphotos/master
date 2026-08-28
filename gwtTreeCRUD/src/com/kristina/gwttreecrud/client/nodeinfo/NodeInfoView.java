@@ -21,6 +21,7 @@ public class NodeInfoView extends Composite {
     private VerticalPanel panel;
     private FlexTable table;
     private Label title;
+    private Label errorLabel;
     private TextBox nodeName;
     private TextBox nodeIp;
     private TextBox nodePort;
@@ -31,6 +32,9 @@ public class NodeInfoView extends Composite {
         nodeName = new TextBox();
         nodeIp = new TextBox();
         nodePort = new TextBox();
+        
+        errorLabel = new Label();
+        errorLabel.getElement().getStyle().setProperty("color","red");
 
         nodeIp.setMaxLength(15);
         nodePort.setMaxLength(5);
@@ -46,7 +50,9 @@ public class NodeInfoView extends Composite {
         cancelButton.setVisible(false);
 
         HorizontalPanel buttonsPanel = new HorizontalPanel();
-
+        
+        panel.add(errorLabel);
+        
         buttonsPanel.add(saveButton);
         buttonsPanel.add(cancelButton);
 
@@ -100,6 +106,8 @@ public class NodeInfoView extends Composite {
             return;
         }
         title.setText("Selected:");
+        errorLabel.setText("");
+
         nodeName.setVisible(false);
         nodeIp.setVisible(false);
         nodePort.setVisible(false);
@@ -194,6 +202,7 @@ public class NodeInfoView extends Composite {
     public void clear() {
         table.clear();
         title.setText("Selected:");
+        errorLabel.setText("");
 
         table.setText(0, 0, "ID");
         table.setText(0, 1, "");
@@ -219,5 +228,8 @@ public class NodeInfoView extends Composite {
 
         styleTable();
     }
-
+    
+    public void showError(String message) {
+        errorLabel.setText(message);
+    }
 }

@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
 import com.kristina.gwttreecrud.client.TreeController;
-import com.kristina.gwttreecrud.client.nodeadd.NodeAddView;
+import com.kristina.gwttreecrud.client.nodeadd.NodeAddPresenter;
 import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoPresenter;
 import com.kristina.gwttreecrud.client.tree.TreeViewData;
 import com.kristina.gwttreecrud.shared.TreeNode;
@@ -14,15 +14,16 @@ public class NodeActionsPresenter {
     private GwtServiceAsync service = GWT.create(GwtService.class);
     private NodeActionsView view;
     private TreeViewData viewData;
-    private NodeAddView addView;
+    //private NodeAddView addView;
+    private NodeAddPresenter addPresenter;
     private TreeController controller;
     private NodeInfoPresenter nodeInfoPresenter;
 
-    public NodeActionsPresenter(NodeActionsView view, TreeViewData viewData, NodeInfoPresenter nodeInfoPresenter, NodeAddView addView) {
+    public NodeActionsPresenter(NodeActionsView view, TreeViewData viewData, NodeInfoPresenter nodeInfoPresenter, NodeAddPresenter addPresenter) {
         this.view = view;
         this.viewData = viewData;
         this.nodeInfoPresenter = nodeInfoPresenter;
-        this.addView = addView;
+        this.addPresenter = addPresenter;
     }
 
     public void setController(TreeController controller) {
@@ -42,7 +43,11 @@ public class NodeActionsPresenter {
         if (selectedNodeId == null) {
             return;
         }
-        addView.showAddCard(selectedNodeId);
+        addPresenter.startAddChild(selectedNodeId);
+    }
+    
+    public void addRootNode() {
+        addPresenter.startAddingRoot();
     }
 
     public void selectNode(Integer nodeId) {
@@ -93,7 +98,6 @@ public class NodeActionsPresenter {
         });
     }
     public void clearSelection() {
-        viewData.clearSelectedNode();
         view.setNodeSelected(false);
     }
 

@@ -89,24 +89,57 @@ public class NodeAddView extends DialogBox{
         nodePort.setText("");
         errorLabel.setText("");
 
-        //currentNode = null;
         formTable.clear();
 
-        formTable.setWidget(0, 0, new Label("Parent's id:"));
-        formTable.setWidget(0, 1, parentId);
+        int row = 0;
 
-        formTable.setWidget(1, 0, new Label("Node name:"));
-        formTable.setWidget(1, 1, nodeName);
-        
-        formTable.setWidget(2, 0, new Label("Node's Ip:"));
-        formTable.setWidget(2, 1, nodeIp);
-        
-        formTable.setWidget(3, 0, new Label("Node's port:"));
-        formTable.setWidget(3, 1, nodePort);
+        if (parentIdValue != null) {
+            parentId.setText(String.valueOf(parentIdValue));
 
+            formTable.setWidget(row, 0, new Label("Parent's id:"));
+            formTable.setWidget(row, 1, parentId);
+
+            row++;
+        }
+
+        formTable.setWidget(row, 0, new Label("Node name:"));
+        formTable.setWidget(row, 1, nodeName);
+        row++;
+
+        formTable.setWidget(row, 0, new Label("Node's Ip:"));
+        formTable.setWidget(row, 1, nodeIp);
+        row++;
+
+        formTable.setWidget(row, 0, new Label("Node's port:"));
+        formTable.setWidget(row, 1, nodePort);
+        
         nodeIp.setMaxLength(15);
         nodePort.setMaxLength(4);
         
+        center();
+        show();
+    }
+    
+    public void showAddRootCard() {
+        nodeName.setText("");
+        nodeIp.setText("");
+        nodePort.setText("");
+
+        errorLabel.setText("");
+        formTable.clear();
+
+        formTable.setWidget(0, 0, new Label("Node name:"));
+        formTable.setWidget(0, 1, nodeName);
+
+        formTable.setWidget(1, 0, new Label("Node's Ip:"));
+        formTable.setWidget(1, 1, nodeIp);
+
+        formTable.setWidget(2, 0, new Label("Node's port:"));
+        formTable.setWidget(2, 1, nodePort);
+
+        nodeIp.setMaxLength(15);
+        nodePort.setMaxLength(4);
+
         center();
         show();
     }

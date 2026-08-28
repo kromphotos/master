@@ -64,6 +64,7 @@ public class NodeInfoPresenter {
         String port = view.getNodePort();
 
         if (name.trim().isEmpty() || ip.trim().isEmpty() || port.trim().isEmpty()) {
+            view.showError("Одно из полей было пустое!");
             return;
         }
 
@@ -72,6 +73,7 @@ public class NodeInfoPresenter {
         try {
             portInt = Integer.valueOf(port);
         } catch (NumberFormatException e) {
+            view.showError("Порт должен быть числом!");
             return;
         }
 

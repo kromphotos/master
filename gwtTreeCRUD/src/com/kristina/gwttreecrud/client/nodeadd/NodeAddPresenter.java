@@ -10,6 +10,7 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 public class NodeAddPresenter {
     private NodeAddView view;
     private TreeController controller;
+    private boolean addingRoot;
     private GwtServiceAsync service = GWT.create(GwtService.class);
     
     public NodeAddPresenter(NodeAddView view) {
@@ -20,27 +21,45 @@ public class NodeAddPresenter {
         this.controller = controller;
     }
     
+    public void startAddChild(Integer parentId) {
+        addingRoot = false;
+        view.showAddCard(parentId);
+    }
+    
+    public void startAddingRoot() {
+        addingRoot = true;
+        view.showAddRootCard();
+    }
+    
     public void saveNode() {
         String parentId = view.getParentId();
         String name = view.getNodeName();
         String ip = view.getNodeIp();
         String port = view.getNodePort();
         
-        if (parentId.trim().isEmpty()
-                || name.trim().isEmpty()
+        if (name.trim().isEmpty()
                 || ip.trim().isEmpty()
                 || port.trim().isEmpty()) {
             view.showError("Одно из полей было пустое!");
             return;
         }
         
-        Integer parentIdInt;
+        Integer parentIdInt = null;
         Integer portInt;
         
+        if (!addingRoot && !parentId.trim().isEmpty()) {
+            try {
+                parentIdInt = Integer.valueOf(parentId);
+            } catch (NumberFormatException e) {
+                view.showError("ID родителя должен быть числом!");
+                return;
+            }
+        }
+        
         try {
-            parentIdInt = Integer.valueOf(parentId);
             portInt = Integer.valueOf(port);
-        }   catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
+            view.showError("Порт должен быть числом!");
             return;
         }
         
