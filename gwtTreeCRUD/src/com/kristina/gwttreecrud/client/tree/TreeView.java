@@ -1,6 +1,8 @@
 package com.kristina.gwttreecrud.client.tree;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -23,16 +25,13 @@ public class TreeView extends Composite {
         treePanel = new VerticalPanel(); // общая панель на все дерево
         treePanel.getElement().getStyle().setProperty(
                 "border",
-                "1px solid #B8CFE0"
-        );
+                "1px solid #B8CFE0");
         treePanel.getElement().getStyle().setProperty(
                 "backgroundColor",
-                "#EAF6FF"
-        );
+                "#EAF6FF");
         treePanel.getElement().getStyle().setProperty(
                 "padding",
-                "10px"
-        );
+                "10px");
         initWidget(treePanel);
     }
 
@@ -40,14 +39,27 @@ public class TreeView extends Composite {
         this.presenter = presenter;
     }
 
-    public void showTree(List<TreeNode> nodes, Set<Integer> expandedNodeIds, Integer selectedNodeId ) {
+    public void showTree(List<TreeNode> nodes, Set<Integer> expandedNodeIds, Integer selectedNodeId) {
         treePanel.clear();
-        TreeNode root = findRoot(nodes);//есь список узлов
-        if (root != null) {
+        List<TreeNode> roots = new ArrayList<TreeNode>();
+        for (TreeNode node : nodes) {
+            if (node.getParentId() == null) {
+                roots.add(node);
+            }
+        }
+        Collections.sort(roots, new Comparator<TreeNode>() {
+            @Override
+            public int compare(TreeNode first, TreeNode second) {
+                return first.getName().compareToIgnoreCase(second.getName());
+            }
+        });
+        
+        for (TreeNode root : roots) {
             addNode(root, nodes, expandedNodeIds, selectedNodeId, 0);
         }
     }
-
+    
+    /*
     private TreeNode findRoot(List<TreeNode> nodes) {
         for (TreeNode node : nodes) {
             if (node.getParentId() == null) {
@@ -56,6 +68,7 @@ public class TreeView extends Composite {
         }
         return null;
     }
+    */
 
     private List<TreeNode> findChildren(TreeNode parent, List<TreeNode> nodes) {
         List<TreeNode> children = new ArrayList<TreeNode>();
@@ -68,7 +81,7 @@ public class TreeView extends Composite {
     }
 
     private void addNode(TreeNode node, List<TreeNode> nodes,
-                        Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
+            Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
         List<TreeNode> children = findChildren(node, nodes);
         HorizontalPanel row = createNodeRow(node, children, expandedNodeIds, selectedNodeId, level);
         treePanel.add(row);
@@ -80,7 +93,7 @@ public class TreeView extends Composite {
     }
 
     private HorizontalPanel createNodeRow(final TreeNode node, List<TreeNode> children,
-                                          final Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
+            final Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
 
         HorizontalPanel row = new HorizontalPanel();
         row.getElement().getStyle().setProperty("marginBottom", "4px");//отступ между строками
@@ -101,7 +114,7 @@ public class TreeView extends Composite {
             expandButton.setHeight("15px");
             expandButton.getElement().getStyle().setProperty(
                     "padding", "0px");//центрирование внутри кнопки
-            
+
             expandButton.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
@@ -135,32 +148,28 @@ public class TreeView extends Composite {
         Label nameLabel = new Label(node.getName());
         nameLabel.getElement().getStyle().setProperty(
                 "cursor",
-                "pointer"
-        );
+                "pointer");
         if (selectedNodeId != null
                 && selectedNodeId.equals(node.getId())) {
 
             nameLabel.getElement().getStyle().setProperty(
                     "backgroundColor",
-                    "#FCE4EC"
-            );
+                    "#FCE4EC");
 
             nameLabel.getElement().getStyle().setProperty(
                     "padding",
-                    "3px 6px"
-            );
+                    "3px 6px");
 
             nameLabel.getElement().getStyle().setProperty(
                     "borderRadius",
-                    "4px"
-            );
+                    "4px");
         }
         nameLabel.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 presenter.selectNode(node.getId());
             }
-            
+
         });
         row.add(nameLabel);
 

@@ -10,12 +10,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class NodeAddView extends DialogBox{
+public class NodeAddView extends DialogBox {
     private TextBox parentId;
     private TextBox nodeName;
     private TextBox nodeIp;
     private TextBox nodePort;
-    
+
     private Label errorLabel;
     private Button saveButton;
     private Button cancelButton;
@@ -25,21 +25,21 @@ public class NodeAddView extends DialogBox{
     public void setPresenter(NodeAddPresenter presenter) {
         this.presenter = presenter;
     }
+
     public NodeAddView() {
         //Заголовок окна
         setText("Add node:");
-        
+
         //Label titleLabel = new Label("Add information:");
         //titleLabel.setStyleName("card-title");
         //editPanel.add(titleLabel);
-        
+
         // Настройки самого DialogBox
         setAnimationEnabled(true);
         setGlassEnabled(true);
 
         VerticalPanel addPanel = new VerticalPanel();
         HorizontalPanel buttonsPanel = new HorizontalPanel();
-
 
         formTable = new FlexTable();
 
@@ -56,10 +56,10 @@ public class NodeAddView extends DialogBox{
                 presenter.saveNode();
             }
         });
-        
+
         errorLabel = new Label();
         errorLabel.getElement().getStyle().setProperty("color", "red");
-        
+
         cancelButton = new Button("Cancel");
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
@@ -67,7 +67,7 @@ public class NodeAddView extends DialogBox{
                 hideAddCard();
             }
         });
-        
+
         buttonsPanel.add(saveButton);
         buttonsPanel.add(cancelButton);
 
@@ -77,11 +77,11 @@ public class NodeAddView extends DialogBox{
         setWidget(addPanel);
         hide();
     }
-    
+
     public void showError(String message) {
         errorLabel.setText(message);
     }
-    
+
     public void showAddCard(Integer parentIdValue) {
         parentId.setText(String.valueOf(parentIdValue));
         nodeName.setText("");
@@ -93,14 +93,13 @@ public class NodeAddView extends DialogBox{
 
         int row = 0;
 
-        if (parentIdValue != null) {
-            parentId.setText(String.valueOf(parentIdValue));
+        parentId.setText(String.valueOf(parentIdValue));
+        parentId.setReadOnly(true);
 
-            formTable.setWidget(row, 0, new Label("Parent's id:"));
-            formTable.setWidget(row, 1, parentId);
+        formTable.setWidget(row, 0, new Label("Parent's id:"));
+        formTable.setWidget(row, 1, parentId);
 
-            row++;
-        }
+        row++;
 
         formTable.setWidget(row, 0, new Label("Node name:"));
         formTable.setWidget(row, 1, nodeName);
@@ -112,14 +111,14 @@ public class NodeAddView extends DialogBox{
 
         formTable.setWidget(row, 0, new Label("Node's port:"));
         formTable.setWidget(row, 1, nodePort);
-        
+
         nodeIp.setMaxLength(15);
         nodePort.setMaxLength(4);
-        
+
         center();
         show();
     }
-    
+
     public void showAddRootCard() {
         nodeName.setText("");
         nodeIp.setText("");
@@ -143,7 +142,7 @@ public class NodeAddView extends DialogBox{
         center();
         show();
     }
-    
+
     public String getParentId() {
         return parentId.getText();
     }
@@ -159,11 +158,10 @@ public class NodeAddView extends DialogBox{
     public String getNodePort() {
         return nodePort.getText();
     }
-    
+
     public void hideAddCard() {
         hide();
         //currentNode = null;
     }
-
 
 }

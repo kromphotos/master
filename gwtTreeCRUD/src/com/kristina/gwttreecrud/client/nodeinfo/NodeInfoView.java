@@ -37,7 +37,7 @@ public class NodeInfoView extends Composite {
         errorLabel.getElement().getStyle().setProperty("color","red");
 
         nodeIp.setMaxLength(15);
-        nodePort.setMaxLength(5);
+        nodePort.setMaxLength(4);
 
         nodeName.setVisible(false);
         nodeIp.setVisible(false);

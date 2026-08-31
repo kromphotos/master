@@ -20,6 +20,7 @@
 	           ip,
 	           port
 	    FROM tree_node
+	    ORDER BY name
 	</select> 
 	
 	<select id="findById" resultMap="UserResultMap" parameterType="Integer">
