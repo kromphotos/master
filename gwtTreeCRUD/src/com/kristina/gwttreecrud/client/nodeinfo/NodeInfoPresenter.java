@@ -12,6 +12,8 @@ public class NodeInfoPresenter {
     private NodeInfoView view;
     private NodeInfoViewData viewData;
     private TreeController controller;
+    
+    private TreeNode selectedNode;
 
     public NodeInfoPresenter(NodeInfoView view, NodeInfoViewData data) {
         this.view = view;
@@ -23,45 +25,54 @@ public class NodeInfoPresenter {
     }
 
     public void showNode(TreeNode node) {
-        viewData.setSelectedNode(node);
-        view.showNode(node);
+        selectedNode = node;
+        
+        if (node == null) {
+            clear();
+            return;
+        }
+        viewData.setData(
+                node.getId(),
+                node.getParentId(),
+                node.getName(),
+                node.getIp(),
+                node.getPort()
+        );
+        
+        view.showNode(viewData);// отображение передаем объект даты! не общий
     }
     
 
+    /**
+     * 
+     */
     public void clear() {
+        selectedNode = null;
         viewData.clear();
         view.clear();
     }
 
     public void startEdit() {
-        TreeNode node = viewData.getSelectedNode();
-
-        if (node == null) {
+        if (selectedNode == null) {
             return;
         }
 
-        view.showEditMode(node);
+        view.showEditMode(viewData);
     }
 
     public void cancelEdit() {
-        TreeNode node = viewData.getSelectedNode();
-
-        if (node == null) {
+        if (selectedNode == null) {
             return;
         }
 
-        view.showNode(node);
+        view.showNode(viewData);
     }
 
-    public void saveNode() {
-        final TreeNode node = viewData.getSelectedNode();
+    public void saveNode(String name, String ip, String port) {
+        final TreeNode node = selectedNode;
         if (node == null) {
             return;
         }
-        //значения из текст бокс(новые)
-        String name = view.getNodeName();
-        String ip = view.getNodeIp();
-        String port = view.getNodePort();
 
         if (name.trim().isEmpty() || ip.trim().isEmpty() || port.trim().isEmpty()) {
             view.showError("Одно из полей было пустое!");
@@ -85,7 +96,7 @@ public class NodeInfoPresenter {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Узел успешно обновлён");
-                view.showNode(node);
+                //view.showNode(node);
                 controller.refresh();
             }
 

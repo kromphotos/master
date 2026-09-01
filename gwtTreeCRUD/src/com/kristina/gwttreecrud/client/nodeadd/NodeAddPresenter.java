@@ -31,12 +31,7 @@ public class NodeAddPresenter {
         view.showAddRootCard();
     }
     
-    public void saveNode() {
-        String parentId = view.getParentId();
-        String name = view.getNodeName();
-        String ip = view.getNodeIp();
-        String port = view.getNodePort();
-        
+    public void saveNode(String parentId, String name, String ip, String port) {
         if (name.trim().isEmpty()
                 || ip.trim().isEmpty()
                 || port.trim().isEmpty()) {

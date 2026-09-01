@@ -7,7 +7,6 @@ import java.util.Set;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreeViewData {
-
     private List<TreeNode> nodes;
 
     private Set<Integer> expandedNodeIds;

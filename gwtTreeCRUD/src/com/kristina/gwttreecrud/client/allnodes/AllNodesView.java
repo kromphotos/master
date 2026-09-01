@@ -5,57 +5,57 @@ import java.util.List;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
-import com.kristina.gwttreecrud.shared.TreeNode;
+//import com.kristina.gwttreecrud.shared.TreeNode;
 
-public class AllNodesView extends Composite {
-    private CellTable<TreeNode> table;
+public class AllNodesView extends Composite implements AllNodesInterface {
+    private CellTable<AllNodesViewData> table;
 
     public AllNodesView() {
         init();
     }
 
     private void init() {
-        table = new CellTable<TreeNode>();
+        table = new CellTable<AllNodesViewData>();
         createColumns();
         initWidget(table);
     }
 
     private void createColumns() {
-        TextColumn<TreeNode> idColumn = new TextColumn<TreeNode>() {
+        TextColumn<AllNodesViewData> idColumn = new TextColumn<AllNodesViewData>() {
             @Override
-            public String getValue(TreeNode node) {
+            public String getValue(AllNodesViewData node) {
                 return String.valueOf(node.getId());
             }
         };
         table.addColumn(idColumn, "ID");
 
-        TextColumn<TreeNode> parentIdColumn = new TextColumn<TreeNode>() {
+        TextColumn<AllNodesViewData> parentIdColumn = new TextColumn<AllNodesViewData>() {
             @Override
-            public String getValue(TreeNode node) {
+            public String getValue(AllNodesViewData node) {
                 return String.valueOf(node.getParentId());
             }
         };
         table.addColumn(parentIdColumn, "Parent ID");
 
-        TextColumn<TreeNode> nameColumn = new TextColumn<TreeNode>() {
+        TextColumn<AllNodesViewData> nameColumn = new TextColumn<AllNodesViewData>() {
             @Override
-            public String getValue(TreeNode node) {
+            public String getValue(AllNodesViewData node) {
                 return node.getName();
             }
         };
         table.addColumn(nameColumn, "Name");
 
-        TextColumn<TreeNode> ipColumn = new TextColumn<TreeNode>() {
+        TextColumn<AllNodesViewData> ipColumn = new TextColumn<AllNodesViewData>() {
             @Override
-            public String getValue(TreeNode node) {
+            public String getValue(AllNodesViewData node) {
                 return node.getIp();
             }
         };
         table.addColumn(ipColumn, "IP");
 
-        TextColumn<TreeNode> portColumn = new TextColumn<TreeNode>() {
+        TextColumn<AllNodesViewData> portColumn = new TextColumn<AllNodesViewData>() {
             @Override
-            public String getValue(TreeNode node) {
+            public String getValue(AllNodesViewData node) {
                 return String.valueOf(node.getPort());
             }
         };
@@ -63,7 +63,8 @@ public class AllNodesView extends Composite {
     }
     
     //это делает уже презентер
-    public void showNodes(List<TreeNode> nodes) {
+    @Override
+    public void showNodes(List<AllNodesViewData> nodes) {
         table.setRowData(nodes);
     }
 

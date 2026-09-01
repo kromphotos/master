@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.kristina.gwttreecrud.client.allnodes.AllNodesPresenter;
 import com.kristina.gwttreecrud.client.allnodes.AllNodesView;
-import com.kristina.gwttreecrud.client.allnodes.AllNodesViewData;
 import com.kristina.gwttreecrud.client.nodeactions.NodeActionsPresenter;
 import com.kristina.gwttreecrud.client.nodeactions.NodeActionsView;
 import com.kristina.gwttreecrud.client.nodeadd.NodeAddPresenter;
@@ -73,8 +72,8 @@ public class GwtTreeCRUD implements EntryPoint {
         
         //presenter.loadNodes();
         AllNodesView view2 = new AllNodesView();
-        AllNodesViewData viewData2 = new AllNodesViewData();
-        AllNodesPresenter presenter2 = new AllNodesPresenter(view2, viewData2);
+        //AllNodesViewData viewData2 = new AllNodesViewData();
+        AllNodesPresenter presenter2 = new AllNodesPresenter(view2);
         
         TreeController controller = new TreeController(presenter, presenter2, actionsPresenter);
         addPresenter.setController(controller);

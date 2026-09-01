@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.kristina.gwttreecrud.shared.TreeNode;
+//import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoView extends Composite {
     private NodeInfoPresenter presenter;
@@ -61,7 +61,7 @@ public class NodeInfoView extends Composite {
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.saveNode();
+                presenter.saveNode(nodeName.getText(), nodeIp.getText(), nodePort.getText());
             }
         });
 
@@ -100,8 +100,8 @@ public class NodeInfoView extends Composite {
         clear();
     }
 
-    public void showNode(TreeNode node) {
-        if (node == null) {
+    public void showNode(NodeInfoViewData data) {
+        if (data == null) {
             clear();
             return;
         }
@@ -117,19 +117,19 @@ public class NodeInfoView extends Composite {
         setVisible(true);
 
         table.setText(0, 0, "ID");
-        table.setText(0, 1, String.valueOf(node.getId()));
+        table.setText(0, 1, String.valueOf(data.getId()));
 
         table.setText(1, 0, "Parent ID");
-        table.setText(1, 1, String.valueOf(node.getParentId()));
+        table.setText(1, 1, String.valueOf(data.getParentId()));
 
         table.setText(2, 0, "Name");
-        table.setText(2, 1, node.getName());
+        table.setText(2, 1, data.getName());
 
         table.setText(3, 0, "IP");
-        table.setText(3, 1, node.getIp());
+        table.setText(3, 1, data.getIp());
 
         table.setText(4, 0, "Port");
-        table.setText(4, 1, String.valueOf(node.getPort()));
+        table.setText(4, 1, String.valueOf(data.getPort()));
 
         styleTable();
     }
@@ -166,15 +166,15 @@ public class NodeInfoView extends Composite {
         }
     }
 
-    public void showEditMode(TreeNode node) {
-        if (node == null) {
+    public void showEditMode(NodeInfoViewData data) {
+        if (data == null) {
             return;
         }
 
         title.setText("Edit:");
-        nodeName.setText(node.getName());
-        nodeIp.setText(node.getIp());
-        nodePort.setText(String.valueOf(node.getPort()));
+        nodeName.setText(data.getName());
+        nodeIp.setText(data.getIp());
+        nodePort.setText(String.valueOf(data.getPort()));
 
         table.setWidget(2, 1, nodeName);
         table.setWidget(3, 1, nodeIp);
@@ -185,18 +185,6 @@ public class NodeInfoView extends Composite {
         nodeName.setVisible(true);
         nodeIp.setVisible(true);
         nodePort.setVisible(true);
-    }
-
-    public String getNodeName() {
-        return nodeName.getText();
-    }
-
-    public String getNodeIp() {
-        return nodeIp.getText();
-    }
-
-    public String getNodePort() {
-        return nodePort.getText();
     }
 
     public void clear() {

@@ -1,21 +1,29 @@
 package com.kristina.gwttreecrud.client.allnodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesPresenter {
     private AllNodesView view;
-    private AllNodesViewData viewData;
- 
-    public AllNodesPresenter(AllNodesView view,
-            AllNodesViewData viewData) {
+    
+    public AllNodesPresenter(AllNodesView view) {
         this.view = view;
-        this.viewData = viewData;
     }
+ 
+    public List<AllNodesViewData> convertToData(List<TreeNode> nodes){
+        List<AllNodesViewData> newNodes = new ArrayList<>();
+        if (nodes != null ) {
+            for (TreeNode node : nodes) {
+                newNodes.add(new AllNodesViewData(node.getId(),node.getParentId(),node.getName(),node.getIp(),node.getPort()));
+            }
+        }
+        return newNodes;
+    }
+    
     public void refreshNodes(List<TreeNode> nodes) {
-        viewData.setNodes(nodes);
-        view.showNodes(viewData.getNodes());
+        view.showNodes(convertToData(nodes));
     }
 
 }

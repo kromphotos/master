@@ -20,6 +20,7 @@ public class NodeAddView extends DialogBox {
     private Button saveButton;
     private Button cancelButton;
     private FlexTable formTable;
+    
     private NodeAddPresenter presenter;
 
     public void setPresenter(NodeAddPresenter presenter) {
@@ -53,7 +54,7 @@ public class NodeAddView extends DialogBox {
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.saveNode();
+                presenter.saveNode(getParentId(), getNodeName(), getNodeIp(), getNodePort());
             }
         });
 
