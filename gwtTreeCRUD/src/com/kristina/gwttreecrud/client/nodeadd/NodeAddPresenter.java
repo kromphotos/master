@@ -59,7 +59,7 @@ public class NodeAddPresenter {
         }
         
         TreeNode node = new TreeNode(null, parentIdInt, name, ip, portInt);
-        
+        //AsyncCallback<Void> не воид!
         service.insertNode(node, new AsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
@@ -73,6 +73,10 @@ public class NodeAddPresenter {
             }
         });
 
+    }
+    
+    public void cancel() {
+        view.hideAddCard();
     }
 
 }

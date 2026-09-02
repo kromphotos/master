@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 //import com.kristina.gwttreecrud.shared.TreeNode;
 
-public class NodeInfoView extends Composite {
+public class NodeInfoView extends Composite implements NodeInfoInterface{
     private NodeInfoPresenter presenter;
 
     public void setPresenter(NodeInfoPresenter presenter) {
@@ -99,7 +99,8 @@ public class NodeInfoView extends Composite {
         initWidget(panel);
         clear();
     }
-
+    
+    @Override
     public void showNode(NodeInfoViewData data) {
         if (data == null) {
             clear();
@@ -166,6 +167,7 @@ public class NodeInfoView extends Composite {
         }
     }
 
+    @Override
     public void showEditMode(NodeInfoViewData data) {
         if (data == null) {
             return;
@@ -187,6 +189,7 @@ public class NodeInfoView extends Composite {
         nodePort.setVisible(true);
     }
 
+    @Override
     public void clear() {
         table.clear();
         title.setText("Selected:");

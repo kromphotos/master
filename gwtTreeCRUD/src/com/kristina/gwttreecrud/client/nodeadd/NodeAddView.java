@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class NodeAddView extends DialogBox {
+public class NodeAddView extends DialogBox implements NodeAddInterface {
     private TextBox parentId;
     private TextBox nodeName;
     private TextBox nodeIp;
@@ -65,7 +65,7 @@ public class NodeAddView extends DialogBox {
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                hideAddCard();
+                presenter.cancel();
             }
         });
 
@@ -78,11 +78,13 @@ public class NodeAddView extends DialogBox {
         setWidget(addPanel);
         hide();
     }
-
+    
+    @Override
     public void showError(String message) {
         errorLabel.setText(message);
     }
-
+    
+    @Override
     public void showAddCard(Integer parentIdValue) {
         parentId.setText(String.valueOf(parentIdValue));
         nodeName.setText("");
@@ -119,7 +121,8 @@ public class NodeAddView extends DialogBox {
         center();
         show();
     }
-
+    
+    @Override
     public void showAddRootCard() {
         nodeName.setText("");
         nodeIp.setText("");
@@ -160,9 +163,9 @@ public class NodeAddView extends DialogBox {
         return nodePort.getText();
     }
 
+    @Override
     public void hideAddCard() {
         hide();
-        //currentNode = null;
     }
 
 }

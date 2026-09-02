@@ -12,21 +12,22 @@ public class NodeInfoPresenter {
     private NodeInfoView view;
     private NodeInfoViewData viewData;
     private TreeController controller;
-    
+
     private TreeNode selectedNode;
 
     public NodeInfoPresenter(NodeInfoView view, NodeInfoViewData data) {
         this.view = view;
         this.viewData = data;
     }
-    
+
     public void setController(TreeController controller) {
         this.controller = controller;
     }
 
-    public void showNode(TreeNode node) {
+    //было: showNode
+    public void selectNode(TreeNode node) {
         selectedNode = node;
-        
+
         if (node == null) {
             clear();
             return;
@@ -36,12 +37,10 @@ public class NodeInfoPresenter {
                 node.getParentId(),
                 node.getName(),
                 node.getIp(),
-                node.getPort()
-        );
-        
+                node.getPort());
+
         view.showNode(viewData);// отображение передаем объект даты! не общий
     }
-    
 
     /**
      * 
@@ -106,4 +105,6 @@ public class NodeInfoPresenter {
             }
         });
     }
+
+
 }

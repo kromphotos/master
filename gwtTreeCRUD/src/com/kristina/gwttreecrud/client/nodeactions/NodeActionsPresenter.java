@@ -1,29 +1,32 @@
 package com.kristina.gwttreecrud.client.nodeactions;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.kristina.gwttreecrud.client.GwtService;
-import com.kristina.gwttreecrud.client.GwtServiceAsync;
+//import com.google.gwt.core.client.GWT;
+//import com.google.gwt.user.client.rpc.AsyncCallback;
+//import com.kristina.gwttreecrud.client.GwtService;
+//import com.kristina.gwttreecrud.client.GwtServiceAsync;
 import com.kristina.gwttreecrud.client.TreeController;
-import com.kristina.gwttreecrud.client.nodeadd.NodeAddPresenter;
-import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoPresenter;
-import com.kristina.gwttreecrud.client.tree.TreeViewData;
+//import com.kristina.gwttreecrud.client.nodeadd.NodeAddPresenter;
+//import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoPresenter;
+//import com.kristina.gwttreecrud.client.tree.TreeViewData;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter {
-    private GwtServiceAsync service = GWT.create(GwtService.class);
+    //private GwtServiceAsync service = GWT.create(GwtService.class);
     private NodeActionsView view;
-    private TreeViewData viewData;
-    //private NodeAddView addView;
-    private NodeAddPresenter addPresenter;
     private TreeController controller;
-    private NodeInfoPresenter nodeInfoPresenter;
+    
+    private TreeNode selectedNode;
+    
+    //private TreeViewData viewData;
+    //private NodeAddView addView;
+    //private NodeAddPresenter addPresenter;
+    //private NodeInfoPresenter nodeInfoPresenter;
 
-    public NodeActionsPresenter(NodeActionsView view, TreeViewData viewData, NodeInfoPresenter nodeInfoPresenter, NodeAddPresenter addPresenter) {
+    public NodeActionsPresenter(NodeActionsView view) {
         this.view = view;
-        this.viewData = viewData;
-        this.nodeInfoPresenter = nodeInfoPresenter;
-        this.addPresenter = addPresenter;
+        //this.viewData = viewData;
+        //this.nodeInfoPresenter = nodeInfoPresenter;
+        //this.addPresenter = addPresenter;
     }
 
     public void setController(TreeController controller) {
@@ -31,35 +34,30 @@ public class NodeActionsPresenter {
     }
 
     public void editNode() {
-        if (viewData.getSelectedNodeId() == null) {
+        if (selectedNode == null) {
             return;
         }
-        nodeInfoPresenter.startEdit();
-        ;
+        controller.editNode();
     }
 
     public void addChildNode() {
-        Integer selectedNodeId = viewData.getSelectedNodeId();
-        if (selectedNodeId == null) {
+        if (selectedNode == null) {
             return;
         }
-        addPresenter.startAddChild(selectedNodeId);
+        controller.addChildNode();
     }
     
     public void addRootNode() {
-        addPresenter.startAddingRoot();
+        controller.addRootNode();
     }
 
-    public void selectNode(Integer nodeId) {
-        viewData.setSelectedNodeId(nodeId);
-        if (nodeId != null) {
-            view.setNodeSelected(true);
-        } else {
-            view.setNodeSelected(false);
-        }
+    public void selectNode(TreeNode node) {
+        selectedNode = node;
+        view.setNodeSelected(node != null);
     }
 
     public void deleteNode() {
+        /*
         final Integer selectedNodeId = viewData.getSelectedNodeId();
         if (selectedNodeId == null) {
             return;
@@ -96,8 +94,20 @@ public class NodeActionsPresenter {
                 GWT.log("Ошибка загрузки узла перед удалением", caught);
             }
         });
+        */
+        if (selectedNode == null) {
+            return;
+        }
+
+        if (selectedNode.getParentId() == null) {
+            view.showMessage("Корневую ноду удалять запрещено!");
+            return;
+        }
+
+        controller.deleteNode();
     }
     public void clearSelection() {
+        selectedNode = null;
         view.setNodeSelected(false);
     }
 
