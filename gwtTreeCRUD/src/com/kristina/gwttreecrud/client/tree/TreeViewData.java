@@ -1,12 +1,29 @@
 package com.kristina.gwttreecrud.client.tree;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.kristina.gwttreecrud.shared.TreeNode;
-
 public class TreeViewData {
+    private Integer id;
+    private Integer parentId;
+    private String name;
+    
+    public TreeViewData(Integer id, Integer parentId, String name) {
+        this.id = id;
+        this.parentId = parentId;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    /*
     private List<TreeNode> nodes;
 
     private Set<Integer> expandedNodeIds;
@@ -52,4 +69,5 @@ public class TreeViewData {
     public void clearSelectedNode() {
         selectedNodeId = null;
     }
+    */
 }

@@ -1,5 +1,6 @@
 package com.kristina.gwttreecrud.client.nodeactions;
 
+import com.google.gwt.user.client.Window;
 //import com.google.gwt.core.client.GWT;
 //import com.google.gwt.user.client.rpc.AsyncCallback;
 //import com.kristina.gwttreecrud.client.GwtService;
@@ -101,6 +102,13 @@ public class NodeActionsPresenter {
 
         if (selectedNode.getParentId() == null) {
             view.showMessage("Корневую ноду удалять запрещено!");
+            return;
+        }
+        
+        boolean confirmed = Window.confirm(
+                "Вы действительно хотите выполнить удаление?");
+
+        if (!confirmed) {
             return;
         }
 

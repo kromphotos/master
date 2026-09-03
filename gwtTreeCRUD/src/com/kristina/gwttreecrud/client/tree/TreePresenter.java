@@ -1,64 +1,79 @@
 package com.kristina.gwttreecrud.client.tree;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.kristina.gwttreecrud.client.nodeactions.NodeActionsPresenter;
-import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoPresenter;
+import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter {
-    private NodeActionsPresenter nodeActionsPresenter;
     private TreeView view;
-    private TreeViewData viewData;
-    private NodeInfoPresenter nodeInfoPresenter;
+    private TreeController controller;
 
-    public TreePresenter(TreeView view, TreeViewData viewData, NodeInfoPresenter nodeInfoPresenter, NodeActionsPresenter nodeActionsPresenter) {
+    private List<TreeNode> nodes;
+    private List<TreeViewData> viewNodes;
+    private Set<Integer> expandedNodeIds;//раскрытые ноды
+    private TreeViewData selectedNode;
+
+    public TreePresenter(TreeView view) {
         this.view = view;
-        this.viewData = viewData;
-        this.nodeInfoPresenter = nodeInfoPresenter;
-        this.nodeActionsPresenter = nodeActionsPresenter;
+        this.nodes = new ArrayList<TreeNode>();
+        this.viewNodes = new ArrayList<TreeViewData>();
+        this.expandedNodeIds = new HashSet<Integer>();
+    }
+
+    public void setController(TreeController controller) {
+        this.controller = controller;
     }
 
     public void refreshNodes(List<TreeNode> nodes) {
-        viewData.setNodes(nodes);
-        view.showTree(viewData.getNodes(), viewData.getExpandedNodeIds(), viewData.getSelectedNodeId());
-
-        Integer selectedNodeId = viewData.getSelectedNodeId();
-        if (selectedNodeId != null) {
-            TreeNode selectedNode = findNodeById(selectedNodeId);
-            if (selectedNode != null) {
-                nodeInfoPresenter.showNode(selectedNode);
-            } else {
-                nodeInfoPresenter.clear();
-            }
+        this.nodes = nodes;
+        
+        Integer selectedNodeId = null;
+        if (selectedNode != null) {
+            selectedNodeId = selectedNode.getId();
         }
+        
+        viewNodes.clear();
+        for (TreeNode node : nodes) {
+            TreeViewData viewNode = new TreeViewData(
+                    node.getId(),
+                    node.getParentId(),
+                    node.getName());
+
+            viewNodes.add(viewNode);
+        }
+        
+        if (selectedNodeId != null) {
+            selectedNode = findViewNodeById(selectedNodeId);
+        }
+        
+        refreshTree();
     }
 
     public void expandNode(Integer nodeId) {
-        viewData.expandId(nodeId);
+        expandedNodeIds.add(nodeId);
         refreshTree();
     }
 
     //сворачивание ноды(nodeId - кого свернули)
     public void collapseNode(Integer nodeId) {
-        viewData.removeId(nodeId);
+        expandedNodeIds.remove(nodeId);
         removeExpandedDescendants(nodeId);
-        Integer selectedNodeId = viewData.getSelectedNodeId();//айди выбранной ноды
-        if (selectedNodeId != null && isDescendant(selectedNodeId, nodeId)) {
-            //потом в контроллер лучше запихнуть(как рефереш сделать)
-            viewData.clearSelectedNode();
-            nodeInfoPresenter.clear();
-            nodeActionsPresenter.clearSelection();
+        if (selectedNode != null && isDescendant(selectedNode.getId(), nodeId)) {
+            controller.clearSelection();
         }
         refreshTree();
     }
 
     //поиск потомков для удаления
     private void removeExpandedDescendants(Integer nodeId) {
-        for (TreeNode node : viewData.getNodes()) {
+        for (TreeViewData node : viewNodes) {
             if (nodeId.equals(node.getParentId())) {
-                if (viewData.isExpanded(node.getId())) {
-                    viewData.removeId(node.getId());
+                if (expandedNodeIds.contains(node.getId())) {
+                    expandedNodeIds.remove(node.getId());
                     removeExpandedDescendants(node.getId());
                 }
             }
@@ -67,19 +82,19 @@ public class TreePresenter {
     }
 
     private boolean isDescendant(Integer selectedNodeId, Integer collapsedNodeId) {
-        TreeNode selectedNode = findNodeById(selectedNodeId);
+        TreeViewData selectedViewNode = findViewNodeById(selectedNodeId);
 
-        if (selectedNode == null) {
+        if (selectedViewNode == null) {
             return false;
         }
-        Integer parentId = selectedNode.getParentId();
+        Integer parentId = selectedViewNode.getParentId();
 
         while (parentId != null) {
             if (parentId.equals(collapsedNodeId)) {
                 return true;
             }
 
-            TreeNode parentNode = findNodeById(parentId);
+            TreeViewData parentNode = findViewNodeById(parentId);
 
             if (parentNode == null) {
                 return false;
@@ -92,23 +107,12 @@ public class TreePresenter {
     }
 
     private void refreshTree() {
-        view.showTree(viewData.getNodes(), viewData.getExpandedNodeIds(), viewData.getSelectedNodeId());
+        view.showTree(viewNodes, expandedNodeIds, selectedNode);
     }
 
-    public void selectNode(Integer nodeId) {
-        viewData.setSelectedNodeId(nodeId);
-        nodeActionsPresenter.selectNode(nodeId);
-        TreeNode selectedNode = findNodeById(nodeId);
-        if (selectedNode != null) {
-            nodeInfoPresenter.showNode(selectedNode);
-        } else {
-            nodeInfoPresenter.clear();
-        }
-        refreshTree();
-    }
-
-    private TreeNode findNodeById(Integer nodeId) {
-        for (TreeNode node : viewData.getNodes()) {
+    //поиск отображаемой ноды
+    private TreeViewData findViewNodeById(Integer nodeId) {
+        for (TreeViewData node : viewNodes) {
             if (node.getId().equals(nodeId)) {
                 return node;
             }
@@ -116,9 +120,34 @@ public class TreePresenter {
         return null;
     }
 
-    public void clearSelection() {
-        viewData.clearSelectedNode();
-        nodeInfoPresenter.clear();
+    public void selectNode(Integer nodeId) {
+        TreeViewData viewNode = findViewNodeById(nodeId);
+        if (viewNode == null) {
+            return;
+        }
+
+        TreeNode node = findNodeById(nodeId);
+        if (node == null) {
+            return;
+        }
+        selectedNode = viewNode;
+        controller.selectNode(node);
         refreshTree();
+    }
+
+    private TreeNode findNodeById(Integer nodeId) {
+        for (TreeNode node : nodes) {
+            if (node.getId().equals(nodeId)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 
+     */
+    public void clearSelection() {
+        selectedNode = null;
     }
 }

@@ -95,7 +95,7 @@ public class NodeInfoPresenter {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Узел успешно обновлён");
-                //view.showNode(node);
+                view.showNode(viewData);
                 controller.refresh();
             }
 

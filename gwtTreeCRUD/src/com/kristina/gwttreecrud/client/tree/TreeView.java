@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.kristina.gwttreecrud.shared.TreeNode;
+//import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreeView extends Composite {
 
@@ -39,23 +39,25 @@ public class TreeView extends Composite {
         this.presenter = presenter;
     }
 
-    public void showTree(List<TreeNode> nodes, Set<Integer> expandedNodeIds, Integer selectedNodeId) {
+    public void showTree(List<TreeViewData> nodes,
+            Set<Integer> expandedNodeIds,
+            TreeViewData selectedNode) {
         treePanel.clear();
-        List<TreeNode> roots = new ArrayList<TreeNode>();
-        for (TreeNode node : nodes) {
+        List<TreeViewData> roots = new ArrayList<TreeViewData>();
+        for (TreeViewData node : nodes) {
             if (node.getParentId() == null) {
                 roots.add(node);
             }
         }
-        Collections.sort(roots, new Comparator<TreeNode>() {
+        Collections.sort(roots, new Comparator<TreeViewData>() {
             @Override
-            public int compare(TreeNode first, TreeNode second) {
+            public int compare(TreeViewData first, TreeViewData second) {
                 return first.getName().compareToIgnoreCase(second.getName());
             }
         });
         
-        for (TreeNode root : roots) {
-            addNode(root, nodes, expandedNodeIds, selectedNodeId, 0);
+        for (TreeViewData root : roots) {
+            addNode(root, nodes, expandedNodeIds, selectedNode, 0);
         }
     }
     
@@ -70,9 +72,9 @@ public class TreeView extends Composite {
     }
     */
 
-    private List<TreeNode> findChildren(TreeNode parent, List<TreeNode> nodes) {
-        List<TreeNode> children = new ArrayList<TreeNode>();
-        for (TreeNode node : nodes) {
+    private List<TreeViewData> findChildren(TreeViewData parent, List<TreeViewData> nodes) {
+        List<TreeViewData> children = new ArrayList<TreeViewData>();
+        for (TreeViewData node : nodes) {
             if (parent.getId().equals(node.getParentId())) {
                 children.add(node);
             }
@@ -80,20 +82,23 @@ public class TreeView extends Composite {
         return children;
     }
 
-    private void addNode(TreeNode node, List<TreeNode> nodes,
-            Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
-        List<TreeNode> children = findChildren(node, nodes);
-        HorizontalPanel row = createNodeRow(node, children, expandedNodeIds, selectedNodeId, level);
+    private void addNode(TreeViewData node,
+            List<TreeViewData> nodes,
+            Set<Integer> expandedNodeIds,
+            TreeViewData selectedNode,
+            int level) {
+        List<TreeViewData> children = findChildren(node, nodes);
+        HorizontalPanel row = createNodeRow(node, children, expandedNodeIds, selectedNode, level);
         treePanel.add(row);
         if (expandedNodeIds.contains(node.getId())) {
-            for (TreeNode child : children) {
-                addNode(child, nodes, expandedNodeIds, selectedNodeId, level + 1);
+            for (TreeViewData child : children) {
+                addNode(child, nodes, expandedNodeIds, selectedNode, level + 1);
             }
         }
     }
 
-    private HorizontalPanel createNodeRow(final TreeNode node, List<TreeNode> children,
-            final Set<Integer> expandedNodeIds, Integer selectedNodeId, int level) {
+    private HorizontalPanel createNodeRow(final TreeViewData node, List<TreeViewData> children,
+            final Set<Integer> expandedNodeIds, TreeViewData selectedNode, int level) {
 
         HorizontalPanel row = new HorizontalPanel();
         row.getElement().getStyle().setProperty("marginBottom", "4px");//отступ между строками
@@ -149,8 +154,8 @@ public class TreeView extends Composite {
         nameLabel.getElement().getStyle().setProperty(
                 "cursor",
                 "pointer");
-        if (selectedNodeId != null
-                && selectedNodeId.equals(node.getId())) {
+        if (selectedNode != null
+                && selectedNode.getId().equals(node.getId())) {
 
             nameLabel.getElement().getStyle().setProperty(
                     "backgroundColor",
