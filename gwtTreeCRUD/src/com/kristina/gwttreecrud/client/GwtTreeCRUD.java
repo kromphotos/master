@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.kristina.gwttreecrud.client.allnodes.AllNodesPresenter;
 import com.kristina.gwttreecrud.client.allnodes.AllNodesView;
 import com.kristina.gwttreecrud.client.nodeactions.NodeActionsPresenter;
@@ -47,9 +49,10 @@ public class GwtTreeCRUD implements EntryPoint {
     */
     @Override
     public void onModuleLoad() {
+        EventBus eventBus = new SimpleEventBus();
         // ---------- Tree ----------
         TreeView treeView = new TreeView();
-        TreePresenter treePresenter = new TreePresenter(treeView);
+        TreePresenter treePresenter = new TreePresenter(treeView, eventBus);
         treeView.setPresenter(treePresenter);
         
         

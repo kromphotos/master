@@ -31,10 +31,6 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         //Заголовок окна
         setText("Add node:");
 
-        //Label titleLabel = new Label("Add information:");
-        //titleLabel.setStyleName("card-title");
-        //editPanel.add(titleLabel);
-
         // Настройки самого DialogBox
         setAnimationEnabled(true);
         setGlassEnabled(true);

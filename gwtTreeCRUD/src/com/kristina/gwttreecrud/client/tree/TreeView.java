@@ -60,17 +60,6 @@ public class TreeView extends Composite {
             addNode(root, nodes, expandedNodeIds, selectedNode, 0);
         }
     }
-    
-    /*
-    private TreeNode findRoot(List<TreeNode> nodes) {
-        for (TreeNode node : nodes) {
-            if (node.getParentId() == null) {
-                return node;//нет родителя
-            }
-        }
-        return null;
-    }
-    */
 
     private List<TreeViewData> findChildren(TreeViewData parent, List<TreeViewData> nodes) {
         List<TreeViewData> children = new ArrayList<TreeViewData>();
