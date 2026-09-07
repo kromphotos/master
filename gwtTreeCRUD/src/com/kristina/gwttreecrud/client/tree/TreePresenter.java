@@ -5,24 +5,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.web.bindery.event.shared.EventBus;
 import com.kristina.gwttreecrud.client.TreeController;
+import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter {
     private TreeView view;
     private TreeController controller;
-    private EventBus eventBus;
     
     private List<TreeNode> nodes;
     private List<TreeViewData> viewNodes;
     private Set<Integer> expandedNodeIds;//раскрытые ноды
     private TreeViewData selectedNode;
 
-    public TreePresenter(TreeView view, EventBus eventBus) {
+    public TreePresenter(TreeView view) {
         this.view = view;
-        this.eventBus = eventBus;
         this.nodes = new ArrayList<TreeNode>();
         this.viewNodes = new ArrayList<TreeViewData>();
         this.expandedNodeIds = new HashSet<Integer>();
@@ -138,7 +136,7 @@ public class TreePresenter {
         //controller.selectNode(node);
         //ообщем все кто подписан на событие нодселектедивент
         //что пользователь выбрал эту ноду
-        eventBus.fireEvent(new NodeSelectedEvent(node));
+        AppEventBus.get().fireEvent(new NodeSelectedEvent(node));
         refreshTree();
     }
 

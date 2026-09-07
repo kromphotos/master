@@ -5,9 +5,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
 import com.kristina.gwttreecrud.client.TreeController;
+import com.kristina.gwttreecrud.client.events.AppEventBus;
+import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
+import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-public class NodeInfoPresenter {
+
+public class NodeInfoPresenter implements NodeSelectedEventHandler {
     private GwtServiceAsync service = GWT.create(GwtService.class);
     private NodeInfoView view;
     private NodeInfoViewData viewData;
@@ -18,6 +22,9 @@ public class NodeInfoPresenter {
     public NodeInfoPresenter(NodeInfoView view, NodeInfoViewData data) {
         this.view = view;
         this.viewData = data;
+        
+        AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);//подписка на события типа NodeSelectedEvent
+
     }
 
     public void setController(TreeController controller) {
@@ -104,6 +111,12 @@ public class NodeInfoPresenter {
                 GWT.log("Ошибка обновления узла", caught);
             }
         });
+    }
+    
+    @Override
+    public void onNodeSelected(NodeSelectedEvent event) {
+        TreeNode node = event.getNode();
+        selectNode(node);
     }
 
 
