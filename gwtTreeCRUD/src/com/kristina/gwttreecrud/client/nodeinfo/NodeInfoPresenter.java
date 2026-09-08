@@ -8,8 +8,8 @@ import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
+import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.shared.TreeNode;
-
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler {
     private GwtServiceAsync service = GWT.create(GwtService.class);
@@ -22,9 +22,8 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler {
     public NodeInfoPresenter(NodeInfoView view, NodeInfoViewData data) {
         this.view = view;
         this.viewData = data;
-        
-        AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);//подписка на события типа NodeSelectedEvent
 
+        AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);//подписка на события типа NodeSelectedEvent
     }
 
     public void setController(TreeController controller) {
@@ -49,9 +48,19 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler {
         view.showNode(viewData);// отображение передаем объект даты! не общий
     }
 
-    /**
-     * 
-     */
+    private void updateNodeInfo(TreeNode node) {
+        selectedNode = node;
+
+        viewData.setData(
+                node.getId(),
+                node.getParentId(),
+                node.getName(),
+                node.getIp(),
+                node.getPort());
+
+        view.showNode(viewData);
+    }
+
     public void clear() {
         selectedNode = null;
         viewData.clear();
@@ -102,8 +111,8 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Узел успешно обновлён");
-                view.showNode(viewData);
-                controller.refresh();
+                updateNodeInfo(node);
+                AppEventBus.get().fireEvent(new NodeUpdatedEvent(node));//рассылка обновления
             }
 
             @Override
@@ -112,12 +121,11 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler {
             }
         });
     }
-    
+
     @Override
     public void onNodeSelected(NodeSelectedEvent event) {
         TreeNode node = event.getNode();
         selectNode(node);
     }
-
 
 }

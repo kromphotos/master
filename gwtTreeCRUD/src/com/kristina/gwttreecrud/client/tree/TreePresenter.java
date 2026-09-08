@@ -8,12 +8,16 @@ import java.util.Set;
 import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
+import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
+import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
+import com.kristina.gwttreecrud.client.events.NodesLoadedEvent;
+import com.kristina.gwttreecrud.client.events.NodesLoadedEventHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-public class TreePresenter {
+public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventHandler {
     private TreeView view;
     private TreeController controller;
-    
+
     private List<TreeNode> nodes;
     private List<TreeViewData> viewNodes;
     private Set<Integer> expandedNodeIds;//раскрытые ноды
@@ -24,6 +28,10 @@ public class TreePresenter {
         this.nodes = new ArrayList<TreeNode>();
         this.viewNodes = new ArrayList<TreeViewData>();
         this.expandedNodeIds = new HashSet<Integer>();
+
+        AppEventBus.get().addHandler(NodesLoadedEvent.TYPE, this);//подписываемся на событие
+        AppEventBus.get().addHandler(NodeUpdatedEvent.TYPE, this);
+
     }
 
     public void setController(TreeController controller) {
@@ -32,12 +40,12 @@ public class TreePresenter {
 
     public void refreshNodes(List<TreeNode> nodes) {
         this.nodes = nodes;
-        
+
         Integer selectedNodeId = null;
         if (selectedNode != null) {
             selectedNodeId = selectedNode.getId();
         }
-        
+
         viewNodes.clear();
         for (TreeNode node : nodes) {
             TreeViewData viewNode = new TreeViewData(
@@ -47,11 +55,11 @@ public class TreePresenter {
 
             viewNodes.add(viewNode);
         }
-        
+
         if (selectedNodeId != null) {
             selectedNode = findViewNodeById(selectedNodeId);
         }
-        
+
         refreshTree();
     }
 
@@ -149,10 +157,31 @@ public class TreePresenter {
         return null;
     }
 
-    /**
-     * 
-     */
     public void clearSelection() {
         selectedNode = null;
     }
+
+    public void updateNodeName(Integer nodeId, String name) {
+        TreeNode node = findNodeById(nodeId);
+        if (node != null) {
+            node.setName(name);
+        }
+        TreeViewData viewNode = findViewNodeById(nodeId);
+        if (viewNode != null) {
+            viewNode.setName(name);
+        }
+        refreshTree();
+    }
+
+    @Override
+    public void onNodesLoaded(NodesLoadedEvent event) {
+        refreshNodes(event.getNodes());
+    }
+    
+    @Override
+    public void onNodeUpdated(NodeUpdatedEvent event) {
+        TreeNode node = event.getNode();
+        updateNodeName(node.getId(), node.getName());
+    }
+
 }
