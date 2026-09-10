@@ -4,18 +4,22 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
-import com.kristina.gwttreecrud.client.TreeController;
+//import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
+import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
+import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
+import com.kristina.gwttreecrud.client.events.EditNodeEvent;
+import com.kristina.gwttreecrud.client.events.EditNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-public class NodeInfoPresenter implements NodeSelectedEventHandler {
+public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
     private GwtServiceAsync service = GWT.create(GwtService.class);
     private NodeInfoView view;
     private NodeInfoViewData viewData;
-    private TreeController controller;
+    //private TreeController controller;
 
     private TreeNode selectedNode;
 
@@ -24,11 +28,13 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler {
         this.viewData = data;
 
         AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);//подписка на события типа NodeSelectedEvent
+        AppEventBus.get().addHandler(EditNodeEvent.TYPE, this);
+        AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
     }
 
-    public void setController(TreeController controller) {
-        this.controller = controller;
-    }
+    //public void setController(TreeController controller) {
+        //this.controller = controller;
+    //}
 
     //было: showNode
     public void selectNode(TreeNode node) {
@@ -127,5 +133,16 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler {
         TreeNode node = event.getNode();
         selectNode(node);
     }
+    
+    @Override
+    public void editNode(EditNodeEvent event) {
+        startEdit();
+    }
+    
+    @Override
+    public void clearSelection(ClearSelectionEvent event) {
+        clear();
+    }
+
 
 }

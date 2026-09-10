@@ -75,15 +75,8 @@ public class GwtTreeCRUD implements EntryPoint {
         AllNodesView allNodesView = new AllNodesView();
         AllNodesPresenter allNodesPresenter = new AllNodesPresenter(allNodesView);
         
-        // ---------- Controller ----------
-        TreeController controller = new TreeController(treePresenter, allNodesPresenter, nodeActionsPresenter, nodeInfoPresenter, nodeAddPresenter);
-        treePresenter.setController(controller);
-        nodeInfoPresenter.setController(controller);
-        nodeActionsPresenter.setController(controller);
-        nodeAddPresenter.setController(controller);
-        
-        controller.refresh();
-        
+        allNodesPresenter.loadNodes();
+
         HorizontalPanel mainPanel = new HorizontalPanel();
         
         Label treeTitle = new Label("Tree:");

@@ -92,7 +92,7 @@ public class TreeController {
     public void clearSelection() {
         selectedNode = null;
 
-        treePresenter.clearSelection();
+        //treePresenter.clearSelection();
         nodeActionsPresenter.clearSelection();
         nodeInfoPresenter.clear();
     }

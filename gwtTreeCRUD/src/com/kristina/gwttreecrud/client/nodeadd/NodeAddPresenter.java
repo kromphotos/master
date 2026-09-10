@@ -4,22 +4,31 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
-import com.kristina.gwttreecrud.client.TreeController;
+//import com.kristina.gwttreecrud.client.TreeController;
+import com.kristina.gwttreecrud.client.events.AddChildNodeEvent;
+import com.kristina.gwttreecrud.client.events.AddChildNodeEventHandler;
+import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
+import com.kristina.gwttreecrud.client.events.AddRootNodeEventHandler;
+import com.kristina.gwttreecrud.client.events.AppEventBus;
+import com.kristina.gwttreecrud.client.events.NodeAddedEvent;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-public class NodeAddPresenter {
+public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
     private NodeAddView view;
-    private TreeController controller;
+    //private TreeController controller;
     private boolean addingRoot;
     private GwtServiceAsync service = GWT.create(GwtService.class);
     
     public NodeAddPresenter(NodeAddView view) {
         this.view = view;
+        
+        AppEventBus.get().addHandler(AddChildNodeEvent.TYPE, this);
+        AppEventBus.get().addHandler(AddRootNodeEvent.TYPE, this);
     }
     
-    public void setController(TreeController controller) {
-        this.controller = controller;
-    }
+    //public void setController(TreeController controller) {
+        //this.controller = controller;
+    //}
     
     public void startAddChild(Integer parentId) {
         addingRoot = false;
@@ -58,14 +67,14 @@ public class NodeAddPresenter {
             return;
         }
         
-        TreeNode node = new TreeNode(null, parentIdInt, name, ip, portInt);
+        final TreeNode node = new TreeNode(null, parentIdInt, name, ip, portInt);
         //AsyncCallback<Void> не воид!
         service.insertNode(node, new AsyncCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Узел добавлен!");
                 view.hideAddCard();
-                controller.refresh();
+                AppEventBus.get().fireEvent(new NodeAddedEvent(node));
             }
             @Override
             public void onFailure(Throwable caught) {
@@ -78,5 +87,19 @@ public class NodeAddPresenter {
     public void cancel() {
         view.hideAddCard();
     }
+    
+    @Override
+    public void addChildNode(AddChildNodeEvent event) {
+        if (event.getParentId() == null) {
+            return;
+        }
+        startAddChild(event.getParentId());
+    }
+    
+    @Override
+    public void addRootNode(AddRootNodeEvent event) {
+        startAddingRoot();
+    }
+    
 
 }
