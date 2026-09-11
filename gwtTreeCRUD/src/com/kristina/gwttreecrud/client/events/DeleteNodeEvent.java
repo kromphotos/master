@@ -14,11 +14,11 @@ public class DeleteNodeEvent extends GwtEvent<DeleteNodeEventHandler> {
         return nodeId;
     }
     
+    @Override
     public Type<DeleteNodeEventHandler> getAssociatedType() {
         return TYPE;
     }
     
-    //Что сделать, когда найден Handler?
     @Override
     protected void dispatch(DeleteNodeEventHandler handler) {
         handler.deleteNode(this);

@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
-//import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEvent;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
@@ -15,7 +14,6 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
     private NodeAddView view;
-    //private TreeController controller;
     private boolean addingRoot;
     private GwtServiceAsync service = GWT.create(GwtService.class);
     
@@ -25,10 +23,6 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         AppEventBus.get().addHandler(AddChildNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(AddRootNodeEvent.TYPE, this);
     }
-    
-    //public void setController(TreeController controller) {
-        //this.controller = controller;
-    //}
     
     public void startAddChild(Integer parentId) {
         addingRoot = false;
@@ -68,13 +62,12 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         }
         
         final TreeNode node = new TreeNode(null, parentIdInt, name, ip, portInt);
-        //AsyncCallback<Void> не воид!
-        service.insertNode(node, new AsyncCallback<Void>() {
+        service.insertNode(node, new AsyncCallback<TreeNode>() {
             @Override
-            public void onSuccess(Void result) {
+            public void onSuccess(TreeNode savedNode) {
                 GWT.log("Узел добавлен!");
                 view.hideAddCard();
-                AppEventBus.get().fireEvent(new NodeAddedEvent(node));
+                AppEventBus.get().fireEvent(new NodeAddedEvent(savedNode));
             }
             @Override
             public void onFailure(Throwable caught) {

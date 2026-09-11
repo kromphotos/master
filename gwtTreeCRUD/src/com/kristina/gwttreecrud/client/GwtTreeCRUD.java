@@ -33,18 +33,7 @@ public class GwtTreeCRUD implements EntryPoint {
      */
     //    private final GwtServiceAsync greetingService = GWT.create(GwtService.class);
 
-    /**
-     * This is the entry point method.
-     */
-    /*
-    public void onModuleLoad() {
-        TestWidget widget = new TestWidget();
-        RootPanel.get().add(widget);
-        
-        AllNodesTable table = new AllNodesTable();
-        RootPanel.get().add(table);
-    }
-    */
+  
     @Override
     public void onModuleLoad() {
         // ---------- Tree ----------

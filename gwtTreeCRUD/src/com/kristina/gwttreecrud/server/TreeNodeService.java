@@ -9,5 +9,5 @@ public interface TreeNodeService {
     TreeNode findById(Integer id) throws Exception;
     void deleteById(Integer id);
     void updateNode(TreeNode node);
-    void insertNode(TreeNode node);
+    TreeNode insertNode(TreeNode node);
 }

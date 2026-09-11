@@ -69,13 +69,15 @@ public class TreeNodeServiceImp implements TreeNodeService {
     }
 
     @Override
-    public void insertNode(TreeNode node) {
+    public TreeNode insertNode(TreeNode node) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
             mapper.insertNode(node);
             session.commit();
+            return node;
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
+            return null;
         }
     }
 }

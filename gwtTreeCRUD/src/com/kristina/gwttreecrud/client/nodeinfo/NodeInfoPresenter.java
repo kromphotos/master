@@ -4,7 +4,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
-//import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -19,24 +18,17 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
     private GwtServiceAsync service = GWT.create(GwtService.class);
     private NodeInfoView view;
     private NodeInfoViewData viewData;
-    //private TreeController controller;
-
     private TreeNode selectedNode;
 
     public NodeInfoPresenter(NodeInfoView view, NodeInfoViewData data) {
         this.view = view;
         this.viewData = data;
 
-        AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);//подписка на события типа NodeSelectedEvent
+        AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);
         AppEventBus.get().addHandler(EditNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
     }
 
-    //public void setController(TreeController controller) {
-        //this.controller = controller;
-    //}
-
-    //было: showNode
     public void selectNode(TreeNode node) {
         selectedNode = node;
 
@@ -51,7 +43,7 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
                 node.getIp(),
                 node.getPort());
 
-        view.showNode(viewData);// отображение передаем объект даты! не общий
+        view.showNode(viewData);
     }
 
     private void updateNodeInfo(TreeNode node) {
@@ -143,6 +135,4 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
     public void clearSelection(ClearSelectionEvent event) {
         clear();
     }
-
-
 }

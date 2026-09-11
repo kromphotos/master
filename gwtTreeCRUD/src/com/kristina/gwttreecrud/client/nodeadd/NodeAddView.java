@@ -28,25 +28,24 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     }
 
     public NodeAddView() {
-        //Заголовок окна
         setText("Add node:");
-
-        // Настройки самого DialogBox
+        
         setAnimationEnabled(true);
         setGlassEnabled(true);
 
         VerticalPanel addPanel = new VerticalPanel();
         HorizontalPanel buttonsPanel = new HorizontalPanel();
-
         formTable = new FlexTable();
-
-        //поля ввода
         parentId = new TextBox();
         nodeName = new TextBox();
         nodeIp = new TextBox();
         nodePort = new TextBox();
-
+        errorLabel = new Label();
         saveButton = new Button("Save");
+        cancelButton = new Button("Cancel");
+        
+        errorLabel.getElement().getStyle().setProperty("color", "red");
+        
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -54,10 +53,6 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
             }
         });
 
-        errorLabel = new Label();
-        errorLabel.getElement().getStyle().setProperty("color", "red");
-
-        cancelButton = new Button("Cancel");
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -67,10 +62,10 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
 
         buttonsPanel.add(saveButton);
         buttonsPanel.add(cancelButton);
-
         addPanel.add(formTable);
         addPanel.add(errorLabel);
         addPanel.add(buttonsPanel);
+        
         setWidget(addPanel);
         hide();
     }

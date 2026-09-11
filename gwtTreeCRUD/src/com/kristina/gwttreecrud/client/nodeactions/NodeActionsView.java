@@ -9,31 +9,14 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class NodeActionsView extends Composite {
     private NodeActionsPresenter presenter;
-
-    public void setPresenter(NodeActionsPresenter presenter) {
-        this.presenter = presenter;
-    }
-
     private HorizontalPanel panel;
-
     private Button addRootButton;
     private Button addChildButton;
     private Button editButton;
     private Button deleteButton;
 
-    public void showMessage(String message) {
-        Window.alert(message);
-    }
-
-    public void setNodeSelected(boolean selected) {
-        addChildButton.setEnabled(selected);
-        editButton.setEnabled(selected);
-        deleteButton.setEnabled(selected);
-    }
-
     public NodeActionsView() {
         panel = new HorizontalPanel();
-
         addRootButton = new Button("Add root node");
         addChildButton = new Button("Add child");
         editButton = new Button("Edit");
@@ -78,6 +61,20 @@ public class NodeActionsView extends Composite {
         panel.add(deleteButton);
 
         initWidget(panel);
+    }
+    
+    public void setPresenter(NodeActionsPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    public void showMessage(String message) {
+        Window.alert(message);
+    }
+
+    public void setNodeSelected(boolean selected) {
+        addChildButton.setEnabled(selected);
+        editButton.setEnabled(selected);
+        deleteButton.setEnabled(selected);
     }
 
 }

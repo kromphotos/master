@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -22,11 +21,9 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
     private TreeView view;
-    //private TreeController controller;
-
     private List<TreeNode> nodes;
     private List<TreeViewData> viewNodes;
-    private Set<Integer> expandedNodeIds;//раскрытые ноды
+    private Set<Integer> expandedNodeIds;
     private TreeViewData selectedNode;
 
     public TreePresenter(TreeView view) {
@@ -35,17 +32,13 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
         this.viewNodes = new ArrayList<TreeViewData>();
         this.expandedNodeIds = new HashSet<Integer>();
 
-        AppEventBus.get().addHandler(NodesLoadedEvent.TYPE, this);//подписываемся на событие
+        AppEventBus.get().addHandler(NodesLoadedEvent.TYPE, this);
         AppEventBus.get().addHandler(NodeUpdatedEvent.TYPE, this);
         AppEventBus.get().addHandler(NodeAddedEvent.TYPE, this);
         AppEventBus.get().addHandler(DeleteNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
 
     }
-
-    //public void setController(TreeController controller) {
-        //this.controller = controller;
-    //}
 
     public void refreshNodes(List<TreeNode> nodes) {
         this.nodes = nodes;
@@ -112,13 +105,10 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
             if (parentId.equals(collapsedNodeId)) {
                 return true;
             }
-
             TreeViewData parentNode = findViewNodeById(parentId);
-
             if (parentNode == null) {
                 return false;
             }
-
             parentId = parentNode.getParentId();
         }
 
@@ -150,9 +140,6 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
             return;
         }
         selectedNode = viewNode;
-        //controller.selectNode(node);
-        //ообщем все кто подписан на событие нодселектедивент
-        //что пользователь выбрал эту ноду
         AppEventBus.get().fireEvent(new NodeSelectedEvent(node));
         refreshTree();
     }
@@ -236,12 +223,6 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
 
         viewNodes = viewNodesToKeep;
         expandedNodeIds.removeAll(idsToRemove);
-        /*
-        if (selectedNode != null && idsToRemove.contains(selectedNode.getId())) {
-            selectedNode = null;
-            controller.clearSelection();
-        }
-        */
 
         refreshTree();
     }

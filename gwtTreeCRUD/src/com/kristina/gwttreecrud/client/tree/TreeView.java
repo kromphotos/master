@@ -13,16 +13,13 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-//import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreeView extends Composite {
-
-    private VerticalPanel treePanel;//все дерево
-
+    private VerticalPanel treePanel;
     private TreePresenter presenter;
 
     public TreeView() {
-        treePanel = new VerticalPanel(); // общая панель на все дерево
+        treePanel = new VerticalPanel(); 
         treePanel.getElement().getStyle().setProperty(
                 "border",
                 "1px solid #B8CFE0");
@@ -90,32 +87,32 @@ public class TreeView extends Composite {
             final Set<Integer> expandedNodeIds, TreeViewData selectedNode, int level) {
 
         HorizontalPanel row = new HorizontalPanel();
-        row.getElement().getStyle().setProperty("marginBottom", "4px");//отступ между строками
+        row.getElement().getStyle().setProperty("marginBottom", "4px");
 
         Label indent = new Label();
-        indent.setWidth((level * 20) + "px");//отступ для уровней
+        indent.setWidth((level * 20) + "px");
         row.add(indent);
 
-        if (!children.isEmpty()) {//если детей нет
+        if (!children.isEmpty()) {
             final Button expandButton;
             if (expandedNodeIds.contains(node.getId())) {
                 expandButton = new Button("-");
             } else {
                 expandButton = new Button("+");
             }
-            //кнопка размер
+          
             expandButton.setWidth("15px");
             expandButton.setHeight("15px");
             expandButton.getElement().getStyle().setProperty(
-                    "padding", "0px");//центрирование внутри кнопки
+                    "padding", "0px");
 
             expandButton.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
                     if (expandedNodeIds.contains(node.getId())) {
-                        presenter.collapseNode(node.getId());//закрываем узел
+                        presenter.collapseNode(node.getId());
                     } else {
-                        presenter.expandNode(node.getId());//раскрываем узел
+                        presenter.expandNode(node.getId());
                     }
                 }
             });
@@ -131,7 +128,7 @@ public class TreeView extends Composite {
             leafButton.setHeight("15px");
             leafButton.getElement().getStyle().setProperty(
                     "padding", "0px");
-            leafButton.setEnabled(false);//нельзя на нее нажать
+            leafButton.setEnabled(false);
 
             row.add(leafButton);
             Label space = new Label();

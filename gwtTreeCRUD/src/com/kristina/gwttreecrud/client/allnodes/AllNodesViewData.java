@@ -1,6 +1,4 @@
 package com.kristina.gwttreecrud.client.allnodes;
-//import java.util.List;
-//import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesViewData {
     private Integer id;

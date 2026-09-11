@@ -9,15 +9,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-//import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoView extends Composite implements NodeInfoInterface{
     private NodeInfoPresenter presenter;
-
-    public void setPresenter(NodeInfoPresenter presenter) {
-        this.presenter = presenter;
-    }
-
     private VerticalPanel panel;
     private FlexTable table;
     private Label title;
@@ -27,54 +21,7 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
     private TextBox nodePort;
     private Button saveButton;
     private Button cancelButton;
-
-    private void createEditElements() {
-        nodeName = new TextBox();
-        nodeIp = new TextBox();
-        nodePort = new TextBox();
-        
-        errorLabel = new Label();
-        errorLabel.getElement().getStyle().setProperty("color","red");
-
-        nodeIp.setMaxLength(15);
-        nodePort.setMaxLength(4);
-
-        nodeName.setVisible(false);
-        nodeIp.setVisible(false);
-        nodePort.setVisible(false);
-
-        saveButton = new Button("Save");
-        cancelButton = new Button("Cancel");
-
-        saveButton.setVisible(false);
-        cancelButton.setVisible(false);
-
-        HorizontalPanel buttonsPanel = new HorizontalPanel();
-        
-        panel.add(errorLabel);
-        
-        buttonsPanel.add(saveButton);
-        buttonsPanel.add(cancelButton);
-
-        panel.add(buttonsPanel);
-
-        saveButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                presenter.saveNode(nodeName.getText(), nodeIp.getText(), nodePort.getText());
-            }
-        });
-
-        cancelButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                presenter.cancelEdit();
-            }
-        });
-        saveButton.setVisible(false);
-        cancelButton.setVisible(false);
-    }
-
+    
     public NodeInfoView() {
         panel = new VerticalPanel();
         title = new Label("Selected:");
@@ -98,6 +45,51 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
         createEditElements();
         initWidget(panel);
         clear();
+    }
+
+    public void setPresenter(NodeInfoPresenter presenter) {
+        this.presenter = presenter;
+    }
+
+    private void createEditElements() {
+        nodeName = new TextBox();
+        nodeIp = new TextBox();
+        nodePort = new TextBox();
+        errorLabel = new Label();
+        saveButton = new Button("Save");
+        cancelButton = new Button("Cancel");
+        HorizontalPanel buttonsPanel = new HorizontalPanel();
+        errorLabel.getElement().getStyle().setProperty("color","red");
+
+        nodeIp.setMaxLength(15);
+        nodePort.setMaxLength(4);
+
+        nodeName.setVisible(false);
+        nodeIp.setVisible(false);
+        nodePort.setVisible(false);
+        saveButton.setVisible(false);
+        cancelButton.setVisible(false);
+        
+        panel.add(errorLabel);
+        
+        buttonsPanel.add(saveButton);
+        buttonsPanel.add(cancelButton);
+
+        panel.add(buttonsPanel);
+
+        saveButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                presenter.saveNode(nodeName.getText(), nodeIp.getText(), nodePort.getText());
+            }
+        });
+
+        cancelButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                presenter.cancelEdit();
+            }
+        });
     }
     
     @Override
@@ -136,18 +128,14 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
     }
 
     private void styleTable() {
-
         for (int row = 0; row < 5; row++) {
-
             for (int column = 0; column < 2; column++) {
-
                 table.getCellFormatter()
                         .getElement(row, column)
                         .getStyle()
                         .setProperty(
                                 "border",
                                 "1px solid #E0D0D8");
-
                 table.getCellFormatter()
                         .getElement(row, column)
                         .getStyle()
@@ -159,7 +147,6 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
                     .getElement(row, 0)
                     .getStyle()
                     .setProperty("width", "80px");
-
             table.getCellFormatter()
                     .getElement(row, 1)
                     .getStyle()

@@ -19,22 +19,15 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {
     private GwtServiceAsync service = GWT.create(GwtService.class);
-
     private NodeActionsView view;
-    //private TreeController controller;
-
     private TreeNode selectedNode;
 
     public NodeActionsPresenter(NodeActionsView view) {
         this.view = view;
 
-        AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this); //подписка на события типа NodeSelectedEvent
+        AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this); 
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
     }
-
-    //public void setController(TreeController controller) {
-        //this.controller = controller;
-   // }
 
     public void editNode() {
         if (selectedNode == null) {

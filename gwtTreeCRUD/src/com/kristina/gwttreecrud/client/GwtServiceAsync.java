@@ -15,7 +15,7 @@ public interface GwtServiceAsync {
             throws IllegalArgumentException;
     void updateNode(TreeNode node, AsyncCallback<Void> callback)
             throws IllegalArgumentException;
-    void insertNode(TreeNode node, AsyncCallback<Void> callback)
+    void insertNode(TreeNode node, AsyncCallback<TreeNode> callback)
             throws IllegalArgumentException;
     void deleteById(Integer id, AsyncCallback<Void> callback)
             throws IllegalArgumentException; 

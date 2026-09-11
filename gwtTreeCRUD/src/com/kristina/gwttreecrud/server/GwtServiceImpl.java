@@ -50,9 +50,9 @@ public class GwtServiceImpl extends RemoteServiceServlet implements
     }
     
     @Override
-    public void insertNode(TreeNode node) throws IllegalArgumentException {
+    public TreeNode insertNode(TreeNode node) throws IllegalArgumentException {
         TreeNodeServiceImp service = new TreeNodeServiceImp();
-        service.insertNode(node);
+        return service.insertNode(node);
     }
     
     @Override

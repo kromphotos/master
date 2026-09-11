@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
-//import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesView extends Composite implements AllNodesInterface {
     private CellTable<AllNodesViewData> table;
@@ -62,7 +61,6 @@ public class AllNodesView extends Composite implements AllNodesInterface {
         table.addColumn(portColumn, "Порт");
     }
     
-    //это делает уже презентер
     @Override
     public void showNodes(List<AllNodesViewData> nodes) {
         table.setRowData(nodes);

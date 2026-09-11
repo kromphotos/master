@@ -19,7 +19,6 @@ public class AddChildNodeEvent extends GwtEvent<AddChildNodeEventHandler> {
         return TYPE;
     }
     
-    //Что сделать, когда найден Handler?
     @Override
     protected void dispatch(AddChildNodeEventHandler handler) {
         handler.addChildNode(this);
