@@ -5,7 +5,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
-//import com.kristina.gwttreecrud.client.TreeController;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEvent;
 import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
@@ -15,6 +14,7 @@ import com.kristina.gwttreecrud.client.events.DeleteNodeEvent;
 import com.kristina.gwttreecrud.client.events.EditNodeEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
+import com.kristina.gwttreecrud.client.nodeactions.NodeActionsView.NodeActionsViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {
@@ -24,6 +24,30 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
 
     public NodeActionsPresenter(NodeActionsView view) {
         this.view = view;
+
+        //view.setPresenter(this);
+        view.setHandler(new NodeActionsViewHandler() {
+            @Override
+            public void onEdit() {
+                editNode();
+                
+            }
+            @Override
+            public void onDelete() {
+                deleteNode();
+                
+            }
+            @Override
+            public void onChild() {
+                addChildNode();
+                
+            }
+            @Override
+            public void onAddRoot() {
+                addRootNode();
+                
+            }
+        });
 
         AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this); 
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);

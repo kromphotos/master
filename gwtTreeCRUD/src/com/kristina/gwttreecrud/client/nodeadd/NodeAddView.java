@@ -11,6 +11,16 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeAddView extends DialogBox implements NodeAddInterface {
+    interface NodeAddViewHandler {
+        void onSaveNode();
+        void onCancel();
+    }
+    
+    private NodeAddViewHandler handler;
+    public void setHandler(NodeAddViewHandler handler) {
+        this.handler = handler;
+    }
+    
     private TextBox parentId;
     private TextBox nodeName;
     private TextBox nodeIp;
@@ -21,12 +31,13 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     private Button cancelButton;
     private FlexTable formTable;
     
-    private NodeAddPresenter presenter;
-
+    //private NodeAddPresenter presenter;
+    
+    /*
     public void setPresenter(NodeAddPresenter presenter) {
         this.presenter = presenter;
     }
-
+    */
     public NodeAddView() {
         setText("Add node:");
         
@@ -49,14 +60,20 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.saveNode(getParentId(), getNodeName(), getNodeIp(), getNodePort());
+                if (handler!=null)
+                {
+                    handler.onSaveNode();
+                }
             }
         });
 
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.cancel();
+                if (handler!=null)
+                {
+                    handler.onCancel();
+                }
             }
         });
 

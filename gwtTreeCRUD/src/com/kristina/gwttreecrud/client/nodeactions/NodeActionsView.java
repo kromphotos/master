@@ -8,7 +8,20 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class NodeActionsView extends Composite {
-    private NodeActionsPresenter presenter;
+    
+    interface NodeActionsViewHandler {
+        void onEdit();
+        void onChild();
+        void onDelete();
+        void onAddRoot();
+    }
+    
+    private NodeActionsViewHandler handler;
+    public void setHandler(NodeActionsViewHandler handler) {
+        this.handler = handler;
+    }
+    
+    //private NodeActionsPresenter presenter;
     private HorizontalPanel panel;
     private Button addRootButton;
     private Button addChildButton;
@@ -29,25 +42,37 @@ public class NodeActionsView extends Composite {
         editButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.editNode();
+                if (handler!=null)
+                {
+                    handler.onEdit();
+                }
             }
         });
         addChildButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.addChildNode();
+                if (handler!=null)
+                {
+                    handler.onChild();
+                }
             }
         });
         deleteButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.deleteNode();
+                if (handler!=null)
+                {
+                    handler.onDelete();
+                }
             }
         });
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.addRootNode();
+                if (handler!=null)
+                {
+                    handler.onAddRoot();
+                }
             }
         });
 
@@ -62,10 +87,11 @@ public class NodeActionsView extends Composite {
 
         initWidget(panel);
     }
-    
+    /*
     public void setPresenter(NodeActionsPresenter presenter) {
         this.presenter = presenter;
     }
+    */
 
     public void showMessage(String message) {
         Window.alert(message);

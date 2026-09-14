@@ -12,6 +12,7 @@ import com.kristina.gwttreecrud.client.events.EditNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
+import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoView.NodeInfoViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
@@ -23,6 +24,17 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
     public NodeInfoPresenter(NodeInfoView view, NodeInfoViewData data) {
         this.view = view;
         this.viewData = data;
+        
+        view.setHandler(new NodeInfoViewHandler() {
+            @Override
+            public void onSaveNode(String name, String ip, String port) {
+                saveNode(name,ip,port);
+            }
+            @Override
+            public void onCancel() {
+                cancelEdit();
+            }
+        });
 
         AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);
         AppEventBus.get().addHandler(EditNodeEvent.TYPE, this);

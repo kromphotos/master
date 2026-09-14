@@ -39,7 +39,7 @@ public class GwtTreeCRUD implements EntryPoint {
         // ---------- Tree ----------
         TreeView treeView = new TreeView();
         TreePresenter treePresenter = new TreePresenter(treeView);
-        treeView.setPresenter(treePresenter);
+        //treeView.setPresenter(treePresenter);//убрать
         
         
         // ---------- Node Info ----------
@@ -47,18 +47,17 @@ public class GwtTreeCRUD implements EntryPoint {
         NodeInfoViewData nodeInfoViewData = new NodeInfoViewData();
         NodeInfoPresenter nodeInfoPresenter =
                 new NodeInfoPresenter(nodeInfoView, nodeInfoViewData);
-        nodeInfoView.setPresenter(nodeInfoPresenter);
+        //nodeInfoView.setPresenter(nodeInfoPresenter);
 
         // ---------- Node Add ----------
         NodeAddView nodeAddView = new NodeAddView();
         NodeAddPresenter nodeAddPresenter = new NodeAddPresenter(nodeAddView);
-        nodeAddView.setPresenter(nodeAddPresenter);
+        //nodeAddView.setPresenter(nodeAddPresenter);
         
 
         // ---------- Node Actions ----------
         NodeActionsView nodeActionsView = new NodeActionsView();
         NodeActionsPresenter nodeActionsPresenter = new NodeActionsPresenter(nodeActionsView);
-        nodeActionsView.setPresenter(nodeActionsPresenter);
         
         // ---------- All Nodes ----------
         AllNodesView allNodesView = new AllNodesView();

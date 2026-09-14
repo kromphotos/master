@@ -17,6 +17,7 @@ import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodesLoadedEvent;
 import com.kristina.gwttreecrud.client.events.NodesLoadedEventHandler;
+import com.kristina.gwttreecrud.client.tree.TreeView.NodeTreeViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
@@ -31,6 +32,21 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
         this.nodes = new ArrayList<TreeNode>();
         this.viewNodes = new ArrayList<TreeViewData>();
         this.expandedNodeIds = new HashSet<Integer>();
+        
+        view.setHandler(new NodeTreeViewHandler() {
+            @Override
+            public void onCollapseNode(Integer id) {
+                collapseNode(id);
+            }
+            @Override
+            public void onExpandNode(Integer id) {
+                expandNode(id);
+            }
+            @Override
+            public void onSelectNode(Integer id) {
+                selectNode(id);
+            }
+        });
 
         AppEventBus.get().addHandler(NodesLoadedEvent.TYPE, this);
         AppEventBus.get().addHandler(NodeUpdatedEvent.TYPE, this);

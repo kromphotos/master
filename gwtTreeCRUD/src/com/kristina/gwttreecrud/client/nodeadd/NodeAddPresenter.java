@@ -10,6 +10,7 @@ import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
 import com.kristina.gwttreecrud.client.events.AddRootNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.NodeAddedEvent;
+import com.kristina.gwttreecrud.client.nodeadd.NodeAddView.NodeAddViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
@@ -19,6 +20,20 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
     
     public NodeAddPresenter(NodeAddView view) {
         this.view = view;
+        
+        view.setHandler(new NodeAddViewHandler() {
+            @Override
+            public void onSaveNode() {
+                saveNode(NodeAddPresenter.this.view.getParentId(),
+                        NodeAddPresenter.this.view.getNodeName(),
+                        NodeAddPresenter.this.view.getNodeIp(),
+                        NodeAddPresenter.this.view.getNodePort());
+            }
+            @Override
+            public void onCancel() {
+                cancel();
+            }
+        });
         
         AppEventBus.get().addHandler(AddChildNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(AddRootNodeEvent.TYPE, this);

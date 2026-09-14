@@ -15,8 +15,18 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TreeView extends Composite {
+    interface NodeTreeViewHandler {
+        void onCollapseNode(Integer id);
+        void onExpandNode(Integer id);
+        void onSelectNode(Integer id);
+    }
+    
+    private NodeTreeViewHandler handler;
+    public void setHandler(NodeTreeViewHandler handler) {
+        this.handler = handler;
+    }
+    
     private VerticalPanel treePanel;
-    private TreePresenter presenter;
 
     public TreeView() {
         treePanel = new VerticalPanel(); 
@@ -30,10 +40,6 @@ public class TreeView extends Composite {
                 "padding",
                 "10px");
         initWidget(treePanel);
-    }
-
-    public void setPresenter(TreePresenter presenter) {
-        this.presenter = presenter;
     }
 
     public void showTree(List<TreeViewData> nodes,
@@ -110,9 +116,9 @@ public class TreeView extends Composite {
                 @Override
                 public void onClick(ClickEvent event) {
                     if (expandedNodeIds.contains(node.getId())) {
-                        presenter.collapseNode(node.getId());
+                        handler.onCollapseNode(node.getId());
                     } else {
-                        presenter.expandNode(node.getId());
+                        handler.onExpandNode(node.getId());
                     }
                 }
             });
@@ -158,7 +164,7 @@ public class TreeView extends Composite {
         nameLabel.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.selectNode(node.getId());
+                handler.onSelectNode(node.getId());
             }
 
         });

@@ -11,7 +11,18 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeInfoView extends Composite implements NodeInfoInterface{
-    private NodeInfoPresenter presenter;
+    interface NodeInfoViewHandler {
+        void onSaveNode(String name, String ip, String port);
+        void onCancel();
+    }
+    
+    private NodeInfoViewHandler handler;
+    public void setHandler(NodeInfoViewHandler handler) {
+        this.handler = handler;
+    }
+    
+    //private NodeInfoPresenter presenter;
+    
     private VerticalPanel panel;
     private FlexTable table;
     private Label title;
@@ -46,10 +57,12 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
         initWidget(panel);
         clear();
     }
-
+    
+    /*
     public void setPresenter(NodeInfoPresenter presenter) {
         this.presenter = presenter;
     }
+    */
 
     private void createEditElements() {
         nodeName = new TextBox();
@@ -80,14 +93,14 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.saveNode(nodeName.getText(), nodeIp.getText(), nodePort.getText());
+                handler.onSaveNode(nodeName.getText(), nodeIp.getText(), nodePort.getText());
             }
         });
 
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                presenter.cancelEdit();
+                handler.onCancel();
             }
         });
     }
