@@ -14,7 +14,6 @@ import com.kristina.gwttreecrud.client.events.NodeAddedEvent;
 import com.kristina.gwttreecrud.client.events.NodeAddedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
-import com.kristina.gwttreecrud.client.events.NodesLoadedEvent;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler {
@@ -43,7 +42,7 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
             @Override
             public void onSuccess(List<TreeNode> nodes) {
                 refreshNodes(nodes);
-                AppEventBus.get().fireEvent(new NodesLoadedEvent(nodes));
+                //AppEventBus.get().fireEvent(new NodesLoadedEvent(nodes));
             }
             @Override
             public void onFailure(Throwable caught) {

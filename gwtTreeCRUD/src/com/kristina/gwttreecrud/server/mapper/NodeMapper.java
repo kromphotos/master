@@ -9,4 +9,6 @@ public interface NodeMapper {
     void deleteById(Integer id);
     void updateNode(TreeNode node);
     void insertNode(TreeNode node);
+    List<TreeNode> getAllChildById(Integer parentId);
+    List<TreeNode> getAllRoots();
 }

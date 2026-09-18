@@ -32,32 +32,45 @@ public class GwtServiceImpl extends RemoteServiceServlet implements
         TreeNodeServiceImp service = new TreeNodeServiceImp();
         return service.findAll();
     }
-    
+
     @Override
     public TreeNode findById(Integer id) throws IllegalArgumentException {
         TreeNodeServiceImp service = new TreeNodeServiceImp();
         try {
             return service.findById(id);
-        }   catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Ошибка поиска TreeNode", e);
         }
     }
-    
+
     @Override
     public void updateNode(TreeNode node) throws IllegalArgumentException {
         TreeNodeServiceImp service = new TreeNodeServiceImp();
         service.updateNode(node);
     }
-    
+
     @Override
     public TreeNode insertNode(TreeNode node) throws IllegalArgumentException {
         TreeNodeServiceImp service = new TreeNodeServiceImp();
         return service.insertNode(node);
     }
-    
+
     @Override
     public void deleteById(Integer id) throws IllegalArgumentException {
         TreeNodeServiceImp service = new TreeNodeServiceImp();
         service.deleteById(id);
     }
+
+    @Override
+    public List<TreeNode> getAllChildById(Integer parentId) throws IllegalArgumentException {
+        TreeNodeServiceImp service = new TreeNodeServiceImp();
+        return service.getAllChildById(parentId);
+    }
+    
+    @Override
+    public List<TreeNode> getAllRoots() throws IllegalArgumentException {
+        TreeNodeServiceImp service = new TreeNodeServiceImp();
+        return service.getAllRoots();
+    }
+
 }

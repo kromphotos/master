@@ -5,10 +5,13 @@ public class TreeViewData {
     private Integer parentId;
     private String name;
     
-    public TreeViewData(Integer id, Integer parentId, String name) {
+    private boolean hasChildren;
+    
+    public TreeViewData(Integer id, Integer parentId, String name, boolean hasChildren) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
+        this.hasChildren = hasChildren;
     }
 
     public Integer getId() {
@@ -26,5 +29,8 @@ public class TreeViewData {
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
 }

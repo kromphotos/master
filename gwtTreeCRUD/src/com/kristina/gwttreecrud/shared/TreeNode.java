@@ -1,5 +1,7 @@
 package com.kristina.gwttreecrud.shared;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TreeNode implements IsSerializable {
@@ -8,7 +10,10 @@ public class TreeNode implements IsSerializable {
     private String name;
     private String ip;
     private Integer port;
+    private boolean hasChildren;
 
+    List<TreeNode> children;
+    
     public TreeNode() {
         super();
         // TODO Auto-generated constructor stub
@@ -60,6 +65,22 @@ public class TreeNode implements IsSerializable {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+    
+    public List<TreeNode> getChildren(){
+        return children;
+    }
+    
+    public void setChildren(List<TreeNode> children){
+        this.children = children;
+    }
+    
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
     }
 
     @Override

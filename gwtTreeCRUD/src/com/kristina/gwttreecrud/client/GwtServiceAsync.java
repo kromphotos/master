@@ -19,4 +19,8 @@ public interface GwtServiceAsync {
             throws IllegalArgumentException;
     void deleteById(Integer id, AsyncCallback<Void> callback)
             throws IllegalArgumentException; 
+    void getAllChildById(Integer parentId, AsyncCallback<List<TreeNode>> callback)
+            throws IllegalArgumentException;
+    void getAllRoots(AsyncCallback<List<TreeNode>> callback)
+            throws IllegalArgumentException;
 }

@@ -39,7 +39,7 @@ public class GwtTreeCRUD implements EntryPoint {
         // ---------- Tree ----------
         TreeView treeView = new TreeView();
         TreePresenter treePresenter = new TreePresenter(treeView);
-        //treeView.setPresenter(treePresenter);//убрать
+        treePresenter.loadRoots();
         
         
         // ---------- Node Info ----------

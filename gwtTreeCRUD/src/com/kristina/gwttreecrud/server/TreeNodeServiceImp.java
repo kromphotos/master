@@ -80,4 +80,27 @@ public class TreeNodeServiceImp implements TreeNodeService {
             return null;
         }
     }
+
+    @Override
+    public List<TreeNode> getAllChildById(Integer parentId) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            NodeMapper mapper = session.getMapper(NodeMapper.class);
+            return mapper.getAllChildById(parentId);
+        } catch (PersistenceException e) {
+            System.err.println("Ошибка: " + e.getMessage());
+            return null;
+        }
+    }
+    
+    @Override
+    public List<TreeNode> getAllRoots() {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            NodeMapper mapper = session.getMapper(NodeMapper.class);
+            return mapper.getAllRoots();
+        } catch (PersistenceException e) {
+            System.err.println("Ошибка: " + e.getMessage());
+            return null;
+        }
+    }
+
 }

@@ -16,4 +16,6 @@ public interface GwtService extends RemoteService {
     void updateNode(TreeNode node) throws IllegalArgumentException;
     TreeNode insertNode(TreeNode node) throws IllegalArgumentException;
     void deleteById(Integer id) throws IllegalArgumentException;
+    List<TreeNode> getAllChildById(Integer parentId) throws IllegalArgumentException;
+    List<TreeNode> getAllRoots() throws IllegalArgumentException;
 }

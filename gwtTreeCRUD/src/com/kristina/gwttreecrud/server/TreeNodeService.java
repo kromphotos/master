@@ -10,4 +10,6 @@ public interface TreeNodeService {
     void deleteById(Integer id);
     void updateNode(TreeNode node);
     TreeNode insertNode(TreeNode node);
+    List<TreeNode> getAllChildById(Integer parentId);
+    List<TreeNode> getAllRoots();
 }

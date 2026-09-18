@@ -11,6 +11,7 @@
 	        <result property="name" column="name" />
 	        <result property="ip" column="ip" />
 	        <result property="port" column="port" />
+	        <result property="hasChildren" column="has_children"/>
 	</resultMap>
 	
 	<select id="findAll" resultMap="UserResultMap">
@@ -53,4 +54,29 @@
 	INSERT INTO tree_node(id,parent_id,name,ip,port)
 	VALUES (#{id}, #{parentId}, #{name}, #{ip}, #{port})
 	</insert>
+	
+	<select id="getAllChildById" resultMap="UserResultMap" parameterType="Integer">
+    SELECT n.id, n.parent_id, n.name, n.ip, n.port,
+    EXISTS (
+               SELECT 1
+               FROM tree_node child
+               WHERE child.parent_id = n.id
+           ) AS has_children
+    FROM tree_node n
+    WHERE n.parent_id = #{parentId}
+    ORDER BY n.name
+   </select>
+   
+   <select id="getAllRoots" resultMap="UserResultMap">
+    SELECT n.id, n.parent_id, n.name, n.ip, n.port,
+    EXISTS (
+            SELECT 1
+            FROM tree_node child
+            WHERE child.parent_id = n.id
+        ) AS has_children
+    FROM tree_node n
+    WHERE n.parent_id IS NULL
+    ORDER BY n.name
+   </select>
+	
 </mapper>

@@ -1,10 +1,16 @@
 package com.kristina.gwttreecrud.client.tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.kristina.gwttreecrud.client.GwtService;
+import com.kristina.gwttreecrud.client.GwtServiceAsync;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -15,24 +21,24 @@ import com.kristina.gwttreecrud.client.events.NodeAddedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
-import com.kristina.gwttreecrud.client.events.NodesLoadedEvent;
-import com.kristina.gwttreecrud.client.events.NodesLoadedEventHandler;
 import com.kristina.gwttreecrud.client.tree.TreeView.NodeTreeViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
+public class TreePresenter
+        implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
+    private GwtServiceAsync service = GWT.create(GwtService.class);
     private TreeView view;
-    private List<TreeNode> nodes;
+    private Map<Integer, TreeNode> loadedNodes;//ключ айди и значение нода
     private List<TreeViewData> viewNodes;
-    private Set<Integer> expandedNodeIds;
-    private TreeViewData selectedNode;
+    private Set<Integer> expandedNodeIds;//то что прям щас раскрыто на экране!
+    private TreeNode selectedNode;
 
     public TreePresenter(TreeView view) {
         this.view = view;
-        this.nodes = new ArrayList<TreeNode>();
         this.viewNodes = new ArrayList<TreeViewData>();
         this.expandedNodeIds = new HashSet<Integer>();
-        
+        this.loadedNodes = new HashMap<Integer, TreeNode>();
+
         view.setHandler(new NodeTreeViewHandler() {
             @Override
             public void onCollapseNode(Integer id) {
@@ -48,7 +54,6 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
             }
         });
 
-        AppEventBus.get().addHandler(NodesLoadedEvent.TYPE, this);
         AppEventBus.get().addHandler(NodeUpdatedEvent.TYPE, this);
         AppEventBus.get().addHandler(NodeAddedEvent.TYPE, this);
         AppEventBus.get().addHandler(DeleteNodeEvent.TYPE, this);
@@ -56,34 +61,62 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
 
     }
 
-    public void refreshNodes(List<TreeNode> nodes) {
-        this.nodes = nodes;
+    public void loadRoots() {
+        service.getAllRoots(new AsyncCallback<List<TreeNode>>() {
+            @Override
+            public void onSuccess(List<TreeNode> roots) {
+                for (TreeNode node : roots) {
+                    loadedNodes.put(node.getId(), node);
+                }
+                rebuildViewNodes();
+            }
 
-        Integer selectedNodeId = null;
-        if (selectedNode != null) {
-            selectedNodeId = selectedNode.getId();
-        }
+            @Override
+            public void onFailure(Throwable caught) {
+                GWT.log("Ошибка загрузки корневых нод", caught);
+            }
+        });
+    }
 
+    private void rebuildViewNodes() {
         viewNodes.clear();
-        for (TreeNode node : nodes) {
+        for (TreeNode node : loadedNodes.values()) {
             TreeViewData viewNode = new TreeViewData(
                     node.getId(),
                     node.getParentId(),
-                    node.getName());
-
+                    node.getName(),
+                    node.isHasChildren());
             viewNodes.add(viewNode);
         }
-
-        if (selectedNodeId != null) {
-            selectedNode = findViewNodeById(selectedNodeId);
-        }
-
         refreshTree();
     }
-
-    public void expandNode(Integer nodeId) {
-        expandedNodeIds.add(nodeId);
-        refreshTree();
+    //при нажатии на + пользователем срабатывает
+    public void expandNode(final Integer nodeId) {
+        TreeNode node = loadedNodes.get(nodeId);
+        if (node == null) {
+            return;
+        }
+        if (node.getChildren() != null) {
+            expandedNodeIds.add(nodeId);
+            rebuildViewNodes();
+            return;
+        }
+        service.getAllChildById(nodeId, new AsyncCallback<List<TreeNode>>() {
+            @Override
+            public void onSuccess(List<TreeNode> children) {
+                TreeNode node = loadedNodes.get(nodeId);
+                node.setChildren(children);
+                for (TreeNode child : children) {
+                    loadedNodes.put(child.getId(), child);
+                }
+                expandedNodeIds.add(nodeId);
+                rebuildViewNodes();
+            }
+            @Override
+            public void onFailure(Throwable caught) {
+                GWT.log("Ошибка загрузки дочерних нод", caught);
+            }
+        });
     }
 
     //сворачивание ноды(nodeId - кого свернули)
@@ -96,94 +129,91 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
         refreshTree();
     }
 
-    //поиск потомков для удаления
     private void removeExpandedDescendants(Integer nodeId) {
-        for (TreeViewData node : viewNodes) {
-            if (nodeId.equals(node.getParentId())) {
-                if (expandedNodeIds.contains(node.getId())) {
-                    expandedNodeIds.remove(node.getId());
-                    removeExpandedDescendants(node.getId());
-                }
-            }
+        TreeNode node = findNodeById(nodeId);
+        
+        if (node == null || node.getChildren() == null) {
+            return;
         }
-
+        
+        for (TreeNode child : node.getChildren()) {
+            if (expandedNodeIds.contains(child.getId())) {
+                expandedNodeIds.remove(child.getId());
+            }
+            removeExpandedDescendants(child.getId());
+        }
     }
-
+    
+    //Является ли выбранная нода потомком той ноды, которую сейчас свернули?
     private boolean isDescendant(Integer selectedNodeId, Integer collapsedNodeId) {
-        TreeViewData selectedViewNode = findViewNodeById(selectedNodeId);
+        TreeNode node = findNodeById(selectedNodeId);
 
-        if (selectedViewNode == null) {
+        if (node == null) {
             return false;
         }
-        Integer parentId = selectedViewNode.getParentId();
-
+        
+        Integer parentId = node.getParentId();
         while (parentId != null) {
             if (parentId.equals(collapsedNodeId)) {
                 return true;
             }
-            TreeViewData parentNode = findViewNodeById(parentId);
-            if (parentNode == null) {
+            node = findNodeById(parentId);
+            if (node == null) {
                 return false;
             }
-            parentId = parentNode.getParentId();
+            parentId = node.getParentId();
         }
 
         return false;
     }
 
     private void refreshTree() {
-        view.showTree(viewNodes, expandedNodeIds, selectedNode);
-    }
-
-    //поиск отображаемой ноды
-    private TreeViewData findViewNodeById(Integer nodeId) {
-        for (TreeViewData node : viewNodes) {
-            if (node.getId().equals(nodeId)) {
-                return node;
-            }
+        TreeViewData selectedViewNode = null;
+        if (selectedNode != null) {
+            selectedViewNode = new TreeViewData(
+                    selectedNode.getId(),
+                    selectedNode.getParentId(),
+                    selectedNode.getName(),
+                    selectedNode.isHasChildren());
         }
-        return null;
+        view.showTree(viewNodes, expandedNodeIds, selectedViewNode);
     }
 
     public void selectNode(Integer nodeId) {
-        TreeViewData viewNode = findViewNodeById(nodeId);
-        if (viewNode == null) {
-            return;
-        }
-
         TreeNode node = findNodeById(nodeId);
         if (node == null) {
             return;
         }
-        selectedNode = viewNode;
+        selectedNode = node;
         AppEventBus.get().fireEvent(new NodeSelectedEvent(node));
         refreshTree();
     }
 
     private TreeNode findNodeById(Integer nodeId) {
-        for (TreeNode node : nodes) {
-            if (node.getId().equals(nodeId)) {
-                return node;
-            }
-        }
-        return null;
+        return loadedNodes.get(nodeId);
     }
 
     public void updateNodeName(Integer nodeId, String name) {
         TreeNode node = findNodeById(nodeId);
-        if (node != null) {
-            node.setName(name);
+        if (node == null) {
+            return;
         }
-        TreeViewData viewNode = findViewNodeById(nodeId);
-        if (viewNode != null) {
-            viewNode.setName(name);
-        }
-        refreshTree();
+        node.setName(name);
+        rebuildViewNodes();
     }
-
-    @Override
-    public void onNodesLoaded(NodesLoadedEvent event) {
-        refreshNodes(event.getNodes());
+    
+    private Set<Integer> findDescendantIds(Integer nodeId) {
+        TreeNode node = loadedNodes.get(nodeId);
+        Set<Integer> descendantIds = new HashSet<Integer>();
+        
+        if (node == null || node.getChildren() == null) {
+            return descendantIds;
+        }
+        for (TreeNode child : node.getChildren()) {
+            descendantIds.add(child.getId());
+            descendantIds.addAll(findDescendantIds(child.getId()));
+        }
+        return descendantIds;
     }
 
     @Override
@@ -195,59 +225,74 @@ public class TreePresenter implements NodesLoadedEventHandler, NodeUpdatedEventH
     @Override
     public void nodeAdded(NodeAddedEvent event) {
         TreeNode node = event.getNode();
-        nodes.add(node);
-
-        TreeViewData viewNode = new TreeViewData(node.getId(), node.getParentId(), node.getName());
-        viewNodes.add(viewNode);
-
-        refreshTree();
-    }
-
-    private Set<Integer> findDescendantIds(Integer nodeId) {
-        Set<Integer> descendantIds = new HashSet<Integer>();
-
-        for (TreeViewData node : viewNodes) {
-            if (nodeId.equals(node.getParentId())) {
-                descendantIds.add(node.getId());
-                descendantIds.addAll(findDescendantIds(node.getId()));
-            }
+        
+        //если новая нода - корень
+        if (node.getParentId() == null) {
+            loadedNodes.put(node.getId(), node);
+            rebuildViewNodes();
+            return;
         }
-
-        return descendantIds;
+        TreeNode parent = findNodeById(node.getParentId());
+        //если родителя до этого не раскрывали
+        if (parent == null) {
+            return;
+        }
+        parent.setHasChildren(true);
+        //если родителя до этого уже раскрывали
+        if (parent.getChildren() != null) {
+            parent.getChildren().add(node);
+            loadedNodes.put(node.getId(), node);
+        }
+        rebuildViewNodes();
     }
 
     @Override
     public void deleteNode(DeleteNodeEvent event) {
         Integer nodeId = event.getNodeId();//айди удаленной ноды
-
+        TreeNode node = findNodeById(nodeId);//сама удаляемая нода
+        
+        if (node == null){
+            return;
+        }
+        
         Set<Integer> idsToRemove = findDescendantIds(nodeId);
         idsToRemove.add(nodeId);
-        List<TreeNode> nodesToKeep = new ArrayList<TreeNode>();
-        for (TreeNode node : nodes) {
-            if (!idsToRemove.contains(node.getId())) {
-                nodesToKeep.add(node);
+        
+        for (Integer id : idsToRemove) {
+            loadedNodes.remove(id);
+        }
+        //удаление ноды из children его родителя
+        Integer parentId = node.getParentId();
+        if (parentId != null) {
+            TreeNode parent = findNodeById(parentId);
+            if (parent != null && parent.getChildren() != null) {
+                List<TreeNode> children = parent.getChildren();
+                for (int i=0; i < children.size(); i++) {
+                    if (nodeId.equals(children.get(i).getId())) {
+                        children.remove(i);
+                        break;
+                    }
+                }
+                if (children.isEmpty()) {
+                    parent.setHasChildren(false);
+                }
             }
         }
-
-        nodes = nodesToKeep;
-        List<TreeViewData> viewNodesToKeep = new ArrayList<TreeViewData>();
-        for (TreeViewData node : viewNodes) {
-            if (!idsToRemove.contains(node.getId())) {
-                viewNodesToKeep.add(node);
-            }
-        }
-
-        viewNodes = viewNodesToKeep;
+        
         expandedNodeIds.removeAll(idsToRemove);
+        
+        //Была ли сейчас выбрана нода, которую мы только что удалили?
+        if (selectedNode != null && idsToRemove.contains(selectedNode.getId())) {
+            AppEventBus.get().fireEvent(new ClearSelectionEvent());
+        }
+        rebuildViewNodes();
 
-        refreshTree();
     }
-    
+
     @Override
     public void clearSelection(ClearSelectionEvent event) {
         selectedNode = null;
         refreshTree();
     }
-
 
 }

@@ -99,7 +99,7 @@ public class TreeView extends Composite {
         indent.setWidth((level * 20) + "px");
         row.add(indent);
 
-        if (!children.isEmpty()) {
+        if (node.isHasChildren()) {
             final Button expandButton;
             if (expandedNodeIds.contains(node.getId())) {
                 expandButton = new Button("-");

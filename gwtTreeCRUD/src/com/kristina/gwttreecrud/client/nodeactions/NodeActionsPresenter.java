@@ -99,6 +99,7 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
             @Override
             public void onSuccess(Void result) {
                 AppEventBus.get().fireEvent(new DeleteNodeEvent(nodeId));
+                AppEventBus.get().fireEvent(new ClearSelectionEvent());
                 clearSelection();
             }
 
