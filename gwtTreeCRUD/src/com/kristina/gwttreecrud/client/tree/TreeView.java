@@ -15,13 +15,9 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TreeView extends Composite implements TreeInterface {
-    interface NodeTreeViewHandler {
-        void onCollapseNode(Integer id);
-        void onExpandNode(Integer id);
-        void onSelectNode(Integer id);
-    }
-    
     private NodeTreeViewHandler handler;
+  
+    @Override
     public void setHandler(NodeTreeViewHandler handler) {
         this.handler = handler;
     }

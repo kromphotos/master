@@ -14,7 +14,7 @@ import com.kristina.gwttreecrud.client.events.DeleteNodeEvent;
 import com.kristina.gwttreecrud.client.events.EditNodeEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
-import com.kristina.gwttreecrud.client.nodeactions.NodeActionsView.NodeActionsViewHandler;
+import com.kristina.gwttreecrud.client.nodeactions.NodeActionsInterface.NodeActionsViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {

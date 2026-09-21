@@ -21,19 +21,19 @@ import com.kristina.gwttreecrud.client.events.NodeAddedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
-import com.kristina.gwttreecrud.client.tree.TreeView.NodeTreeViewHandler;
+import com.kristina.gwttreecrud.client.tree.TreeInterface.NodeTreeViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter
         implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
     private GwtServiceAsync service = GwtServiceCreator.get();
-    private TreeView view;
+    private TreeInterface view;
     private Map<Integer, TreeNode> loadedNodes;//ключ айди и значение нода
     private List<TreeViewData> viewNodes;
     private Set<Integer> expandedNodeIds;//то что прям щас раскрыто на экране!
     private TreeNode selectedNode;
 
-    public TreePresenter(TreeView view) {
+    public TreePresenter(TreeInterface view) {
         this.view = view;
         this.viewNodes = new ArrayList<TreeViewData>();
         this.expandedNodeIds = new HashSet<Integer>();

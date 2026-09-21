@@ -10,7 +10,7 @@ import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
 import com.kristina.gwttreecrud.client.events.AddRootNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.NodeAddedEvent;
-import com.kristina.gwttreecrud.client.nodeadd.NodeAddView.NodeAddViewHandler;
+import com.kristina.gwttreecrud.client.nodeadd.NodeAddInterface.NodeAddViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {

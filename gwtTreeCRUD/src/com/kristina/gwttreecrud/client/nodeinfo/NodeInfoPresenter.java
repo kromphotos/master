@@ -12,16 +12,16 @@ import com.kristina.gwttreecrud.client.events.EditNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
-import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoView.NodeInfoViewHandler;
+import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoInterface.NodeInfoViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
     private GwtServiceAsync service = GwtServiceCreator.get();
-    private NodeInfoView view;
+    private NodeInfoInterface view;
     private NodeInfoViewData viewData;
     private TreeNode selectedNode;
 
-    public NodeInfoPresenter(NodeInfoView view, NodeInfoViewData data) {
+    public NodeInfoPresenter(NodeInfoInterface view, NodeInfoViewData data) {
         this.view = view;
         this.viewData = data;
         

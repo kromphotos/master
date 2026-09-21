@@ -17,10 +17,10 @@ import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler {
-    private AllNodesView view;
+    private AllNodesInterface view;
     private GwtServiceAsync service = GwtServiceCreator.get();
 
-    public AllNodesPresenter(AllNodesView view) {
+    public AllNodesPresenter(AllNodesInterface view) {
         this.view = view;
         AppEventBus.get().addHandler(NodeUpdatedEvent.TYPE, this);
         AppEventBus.get().addHandler(NodeAddedEvent.TYPE, this);
@@ -42,7 +42,6 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
             @Override
             public void onSuccess(List<TreeNode> nodes) {
                 refreshNodes(nodes);
-                //AppEventBus.get().fireEvent(new NodesLoadedEvent(nodes));
             }
 
             @Override

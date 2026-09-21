@@ -11,12 +11,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeInfoView extends Composite implements NodeInfoInterface{
-    interface NodeInfoViewHandler {
-        void onSaveNode(String name, String ip, String port);
-        void onCancel();
-    }
-    
     private NodeInfoViewHandler handler;
+    @Override
     public void setHandler(NodeInfoViewHandler handler) {
         this.handler = handler;
     }

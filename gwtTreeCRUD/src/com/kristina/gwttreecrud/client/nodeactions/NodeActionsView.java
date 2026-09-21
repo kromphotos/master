@@ -7,16 +7,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
-public class NodeActionsView extends Composite implements NodeActionsInterface {
-    
-    interface NodeActionsViewHandler {
-        void onEdit();
-        void onChild();
-        void onDelete();
-        void onAddRoot();
-    }
-    
+public class NodeActionsView extends Composite implements NodeActionsInterface {   
     private NodeActionsViewHandler handler;
+    @Override
     public void setHandler(NodeActionsViewHandler handler) {
         this.handler = handler;
     }

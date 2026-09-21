@@ -5,4 +5,9 @@ public interface NodeAddInterface {
     void showAddRootCard();
     void showError(String message);
     void hideAddCard();
+    interface NodeAddViewHandler {
+        void onSaveNode();
+        void onCancel();
+    };
+    void setHandler(NodeAddViewHandler handler);
 }

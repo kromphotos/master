@@ -11,12 +11,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeAddView extends DialogBox implements NodeAddInterface {
-    interface NodeAddViewHandler {
-        void onSaveNode();
-        void onCancel();
-    }
-    
     private NodeAddViewHandler handler;
+    @Override
     public void setHandler(NodeAddViewHandler handler) {
         this.handler = handler;
     }
