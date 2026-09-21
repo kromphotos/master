@@ -5,5 +5,4 @@ public interface NodeAddInterface {
     void showAddRootCard();
     void showError(String message);
     void hideAddCard();
-
 }

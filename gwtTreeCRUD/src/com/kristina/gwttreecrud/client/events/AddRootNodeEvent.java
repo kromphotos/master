@@ -14,5 +14,4 @@ public class AddRootNodeEvent extends GwtEvent<AddRootNodeEventHandler> {
     protected void dispatch(AddRootNodeEventHandler handler) {
         handler.addRootNode(this);
     }
-
 }

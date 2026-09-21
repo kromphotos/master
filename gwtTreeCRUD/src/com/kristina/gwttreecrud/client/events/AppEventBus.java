@@ -7,6 +7,7 @@ public class AppEventBus {
     public static SimpleEventBus get() {
         return INSTANCE;
     }
-    
-
+    private AppEventBus() {
+        
+    }
 }

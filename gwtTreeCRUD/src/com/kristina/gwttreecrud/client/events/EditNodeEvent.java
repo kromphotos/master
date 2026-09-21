@@ -14,6 +14,4 @@ public static final Type<EditNodeEventHandler> TYPE = new Type<EditNodeEventHand
     protected void dispatch(EditNodeEventHandler handler) {
         handler.editNode(this);
     }
-
-
 }

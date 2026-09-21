@@ -23,5 +23,4 @@ public class AddChildNodeEvent extends GwtEvent<AddChildNodeEventHandler> {
     protected void dispatch(AddChildNodeEventHandler handler) {
         handler.addChildNode(this);
     }
-
 }

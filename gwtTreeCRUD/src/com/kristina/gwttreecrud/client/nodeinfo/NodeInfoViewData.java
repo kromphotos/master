@@ -24,7 +24,7 @@ public class NodeInfoViewData {
         this.name = name;
         this.ip = ip;
         this.port = port;
-    }
+    }  
     
     public Integer getId() {
         return id;

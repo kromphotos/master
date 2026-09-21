@@ -3,8 +3,8 @@ package com.kristina.gwttreecrud.client.nodeactions;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
+import com.kristina.gwttreecrud.client.GwtServiceCreator;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEvent;
 import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
@@ -18,7 +18,7 @@ import com.kristina.gwttreecrud.client.nodeactions.NodeActionsView.NodeActionsVi
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {
-    private GwtServiceAsync service = GWT.create(GwtService.class);
+    private GwtServiceAsync service = GwtServiceCreator.get();
     private NodeActionsView view;
     private TreeNode selectedNode;
 
@@ -125,6 +125,4 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
     public void clearSelection(ClearSelectionEvent event) {
         clearSelection();
     }
-
-
 }

@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
-public class NodeActionsView extends Composite {
+public class NodeActionsView extends Composite implements NodeActionsInterface {
     
     interface NodeActionsViewHandler {
         void onEdit();
@@ -92,15 +92,15 @@ public class NodeActionsView extends Composite {
         this.presenter = presenter;
     }
     */
-
+    @Override
     public void showMessage(String message) {
         Window.alert(message);
     }
-
+    
+    @Override
     public void setNodeSelected(boolean selected) {
         addChildButton.setEnabled(selected);
         editButton.setEnabled(selected);
         deleteButton.setEnabled(selected);
     }
-
 }

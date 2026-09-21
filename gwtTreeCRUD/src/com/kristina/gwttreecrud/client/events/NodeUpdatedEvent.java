@@ -25,5 +25,4 @@ public class NodeUpdatedEvent extends GwtEvent<NodeUpdatedEventHandler>{
     protected void dispatch(NodeUpdatedEventHandler handler) {
         handler.onNodeUpdated(this);
     }
-
 }

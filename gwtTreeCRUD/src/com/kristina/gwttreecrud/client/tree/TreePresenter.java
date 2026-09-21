@@ -9,8 +9,8 @@ import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
+import com.kristina.gwttreecrud.client.GwtServiceCreator;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -26,7 +26,7 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter
         implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
-    private GwtServiceAsync service = GWT.create(GwtService.class);
+    private GwtServiceAsync service = GwtServiceCreator.get();
     private TreeView view;
     private Map<Integer, TreeNode> loadedNodes;//ключ айди и значение нода
     private List<TreeViewData> viewNodes;
@@ -294,5 +294,4 @@ public class TreePresenter
         selectedNode = null;
         refreshTree();
     }
-
 }

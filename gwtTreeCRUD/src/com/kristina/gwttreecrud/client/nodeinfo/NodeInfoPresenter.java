@@ -2,8 +2,8 @@ package com.kristina.gwttreecrud.client.nodeinfo;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
+import com.kristina.gwttreecrud.client.GwtServiceCreator;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -16,7 +16,7 @@ import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoView.NodeInfoViewHandler
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
-    private GwtServiceAsync service = GWT.create(GwtService.class);
+    private GwtServiceAsync service = GwtServiceCreator.get();
     private NodeInfoView view;
     private NodeInfoViewData viewData;
     private TreeNode selectedNode;

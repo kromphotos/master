@@ -2,8 +2,8 @@ package com.kristina.gwttreecrud.client.nodeadd;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.kristina.gwttreecrud.client.GwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
+import com.kristina.gwttreecrud.client.GwtServiceCreator;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEvent;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
@@ -16,7 +16,7 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
     private NodeAddView view;
     private boolean addingRoot;
-    private GwtServiceAsync service = GWT.create(GwtService.class);
+    private GwtServiceAsync service = GwtServiceCreator.get();
     
     public NodeAddPresenter(NodeAddView view) {
         this.view = view;
@@ -108,6 +108,4 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
     public void addRootNode(AddRootNodeEvent event) {
         startAddingRoot();
     }
-    
-
 }

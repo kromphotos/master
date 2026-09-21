@@ -175,5 +175,4 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     public void hideAddCard() {
         hide();
     }
-
 }

@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class TreeView extends Composite {
+public class TreeView extends Composite implements TreeInterface {
     interface NodeTreeViewHandler {
         void onCollapseNode(Integer id);
         void onExpandNode(Integer id);
@@ -41,7 +41,8 @@ public class TreeView extends Composite {
                 "10px");
         initWidget(treePanel);
     }
-
+    
+    @Override
     public void showTree(List<TreeViewData> nodes,
             Set<Integer> expandedNodeIds,
             TreeViewData selectedNode) {
@@ -172,5 +173,4 @@ public class TreeView extends Composite {
 
         return row;
     }
-
 }

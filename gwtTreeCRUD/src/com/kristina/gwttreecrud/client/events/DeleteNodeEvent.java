@@ -23,5 +23,4 @@ public class DeleteNodeEvent extends GwtEvent<DeleteNodeEventHandler> {
     protected void dispatch(DeleteNodeEventHandler handler) {
         handler.deleteNode(this);
     }
-
 }

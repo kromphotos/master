@@ -32,5 +32,4 @@ public class NodeSelectedEvent extends GwtEvent<NodeSelectedEventHandler>{
         handler.onNodeSelected(this);
     }
     //Вызвать у Handler метод onNodeSelected() и передать ему это событие
-
 }
