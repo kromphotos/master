@@ -24,6 +24,12 @@ import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
 import com.kristina.gwttreecrud.client.tree.TreeInterface.NodeTreeViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
+
+
+//TODO(by Tutor)
+// проверить все методы на публичность!
+
+
 public class TreePresenter
         implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
     private GwtServiceAsync service = GwtServiceCreator.get();
@@ -192,6 +198,8 @@ public class TreePresenter
     private TreeNode findNodeById(Integer nodeId) {
         return loadedNodes.get(nodeId);
     }
+    
+    //
 
     public void updateNodeName(Integer nodeId, String name) {
         TreeNode node = findNodeById(nodeId);

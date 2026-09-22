@@ -9,6 +9,9 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class NodeActionsView extends Composite implements NodeActionsInterface {   
     private NodeActionsViewHandler handler;
+    
+    //TODO(by Tutor)
+    // нельзя тут оставлять, это блок перменных, а не методов
     @Override
     public void setHandler(NodeActionsViewHandler handler) {
         this.handler = handler;
@@ -35,6 +38,8 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
         editButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                //TODO(by Tutor)
+                // что за новые строки для открывающейся скобки ифа?
                 if (handler!=null)
                 {
                     handler.onEdit();
@@ -78,13 +83,17 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
         panel.add(editButton);
         panel.add(deleteButton);
 
-        initWidget(panel);
+        initWidget(panel);       
     }
     /*
     public void setPresenter(NodeActionsPresenter presenter) {
         this.presenter = presenter;
     }
     */
+    
+    //TODO(by Tutor)
+    // А это зачем тут? прямой нужды в отображении сообщения конкретной въюхой нет. 
+    // Доступ к Window.alert есть и у презентора
     @Override
     public void showMessage(String message) {
         Window.alert(message);

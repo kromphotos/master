@@ -12,6 +12,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeAddView extends DialogBox implements NodeAddInterface {
     private NodeAddViewHandler handler;
+    
+    //TODO(by Tutor)
+    // нельзя тут оставлять, это блок перменных, а не методов
     @Override
     public void setHandler(NodeAddViewHandler handler) {
         this.handler = handler;
@@ -56,6 +59,8 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                //TODO(by Tutor)
+                // опять скобки с новой строки
                 if (handler!=null)
                 {
                     handler.onSaveNode();
@@ -98,6 +103,8 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
 
         formTable.clear();
 
+        //TODO(by Tutor)
+        // не надо так делать. пиши конкретный номер строки в самом методе setWidget
         int row = 0;
 
         parentId.setText(String.valueOf(parentIdValue));
@@ -120,6 +127,8 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         formTable.setWidget(row, 1, nodePort);
 
         nodeIp.setMaxLength(15);
+        //TODO(by Tutor)
+        // порт может быть 5-ти значным
         nodePort.setMaxLength(4);
 
         center();
@@ -151,6 +160,9 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         show();
     }
 
+
+    //TODO(by Tutor)
+    // ликвидировать! всех четверых под трибунал!
     public String getParentId() {
         return parentId.getText();
     }

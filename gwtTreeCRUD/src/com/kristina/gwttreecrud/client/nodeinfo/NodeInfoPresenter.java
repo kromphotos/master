@@ -16,7 +16,10 @@ import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoInterface.NodeInfoViewHa
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
+    //TODO(by Tutor)
+    //все там же все теже люди
     private GwtServiceAsync service = GwtServiceCreator.get();
+    
     private NodeInfoInterface view;
     private NodeInfoViewData viewData;
     private TreeNode selectedNode;
@@ -40,6 +43,9 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         AppEventBus.get().addHandler(EditNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
     }
+    
+    //TODO(by Tutor)
+    // опять публичный
 
     public void selectNode(TreeNode node) {
         selectedNode = node;
@@ -70,6 +76,9 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
 
         view.showNode(viewData);
     }
+    
+    //TODO(by Tutor)
+    // что ж они вообще все публичные то
 
     public void clear() {
         selectedNode = null;
@@ -84,7 +93,9 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
 
         view.showEditMode(viewData);
     }
-
+    
+    //TODO(by Tutor)
+    // использутеся один раз зачем ему свой метод
     public void cancelEdit() {
         if (selectedNode == null) {
             return;
@@ -93,7 +104,9 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         view.showNode(viewData);
     }
 
-    public void saveNode(String name, String ip, String port) {
+    public void saveNode(String name, String ip, String port) {        
+        //TODO(by Tutor)
+        // что т происходит? зачем мы сохраняем указатель?
         final TreeNode node = selectedNode;
         if (node == null) {
             return;
@@ -121,6 +134,9 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
             @Override
             public void onSuccess(Void result) {
                 GWT.log("Узел успешно обновлён");
+                //TODO(by Tutor)
+                // зачем мы второй раз обновляем данные одного и того же объекта?
+                // зачем нам вообще нужен этот метод?
                 updateNodeInfo(node);
                 AppEventBus.get().fireEvent(new NodeUpdatedEvent(node));//рассылка обновления
             }
@@ -140,6 +156,8 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
     
     @Override
     public void editNode(EditNodeEvent event) {
+      //TODO(by Tutor)
+      // этот метод вновь используетс я один раз и только тут, зачем он отдельно вынесен?
         startEdit();
     }
     

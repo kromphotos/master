@@ -12,6 +12,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeInfoView extends Composite implements NodeInfoInterface{
     private NodeInfoViewHandler handler;
+
+    //TODO(by Tutor)
+    // нельзя тут оставлять, это блок перменных, а не методов
     @Override
     public void setHandler(NodeInfoViewHandler handler) {
         this.handler = handler;

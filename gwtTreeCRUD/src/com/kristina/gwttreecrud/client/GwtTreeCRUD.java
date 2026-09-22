@@ -39,11 +39,16 @@ public class GwtTreeCRUD implements EntryPoint {
         // ---------- Tree ----------
         TreeView treeView = new TreeView();
         TreePresenter treePresenter = new TreePresenter(treeView);
+        
+      //TODO(by Tutor)
+     // зачем? это можно вызывать в конструкторе презентора
         treePresenter.loadRoots();
         
         
         // ---------- Node Info ----------
         NodeInfoView nodeInfoView = new NodeInfoView();
+        //TODO(by Tutor)
+        // а вью дата то тут чего делает и как вдруг она тут оказалась?
         NodeInfoViewData nodeInfoViewData = new NodeInfoViewData();
         NodeInfoPresenter nodeInfoPresenter =
                 new NodeInfoPresenter(nodeInfoView, nodeInfoViewData);
@@ -62,7 +67,8 @@ public class GwtTreeCRUD implements EntryPoint {
         // ---------- All Nodes ----------
         AllNodesView allNodesView = new AllNodesView();
         AllNodesPresenter allNodesPresenter = new AllNodesPresenter(allNodesView);
-        
+        //TODO(by Tutor)
+        // зачем? это можно вызывать в конструкторе презентора
         allNodesPresenter.loadNodes();
 
         HorizontalPanel mainPanel = new HorizontalPanel();

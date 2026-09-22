@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gwt.event.shared.GwtEvent;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
+//TODO(by Tutor)
+//не используется
 public class NodesLoadedEvent extends GwtEvent<NodesLoadedEventHandler> {
     private final List<TreeNode> nodes;
     public static final Type<NodesLoadedEventHandler> TYPE = new Type<NodesLoadedEventHandler>();

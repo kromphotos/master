@@ -16,16 +16,18 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TreeView extends Composite implements TreeInterface {
     private NodeTreeViewHandler handler;
-  
+
+    //TODO(by Tutor)
+    // нельзя тут оставлять, это блок перменных, а не методов
     @Override
     public void setHandler(NodeTreeViewHandler handler) {
         this.handler = handler;
     }
-    
+
     private VerticalPanel treePanel;
 
     public TreeView() {
-        treePanel = new VerticalPanel(); 
+        treePanel = new VerticalPanel();
         treePanel.getElement().getStyle().setProperty(
                 "border",
                 "1px solid #B8CFE0");
@@ -37,25 +39,27 @@ public class TreeView extends Composite implements TreeInterface {
                 "10px");
         initWidget(treePanel);
     }
-    
+
     @Override
-    public void showTree(List<TreeViewData> nodes,
-            Set<Integer> expandedNodeIds,
-            TreeViewData selectedNode) {
+    public void showTree(List<TreeViewData> nodes, Set<Integer> expandedNodeIds, TreeViewData selectedNode) {
         treePanel.clear();
+
         List<TreeViewData> roots = new ArrayList<TreeViewData>();
         for (TreeViewData node : nodes) {
             if (node.getParentId() == null) {
                 roots.add(node);
             }
         }
+
+        //TODO(by Tutor)
+        // отсортирован будет только рут?
         Collections.sort(roots, new Comparator<TreeViewData>() {
             @Override
             public int compare(TreeViewData first, TreeViewData second) {
                 return first.getName().compareToIgnoreCase(second.getName());
             }
         });
-        
+
         for (TreeViewData root : roots) {
             addNode(root, nodes, expandedNodeIds, selectedNode, 0);
         }
@@ -103,7 +107,7 @@ public class TreeView extends Composite implements TreeInterface {
             } else {
                 expandButton = new Button("+");
             }
-          
+
             expandButton.setWidth("15px");
             expandButton.setHeight("15px");
             expandButton.getElement().getStyle().setProperty(
