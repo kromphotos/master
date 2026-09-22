@@ -27,13 +27,6 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     private Button cancelButton;
     private FlexTable formTable;
     
-    //private NodeAddPresenter presenter;
-    
-    /*
-    public void setPresenter(NodeAddPresenter presenter) {
-        this.presenter = presenter;
-    }
-    */
     public NodeAddView() {
         setText("Add node:");
         
@@ -51,7 +44,7 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         saveButton = new Button("Save");
         cancelButton = new Button("Cancel");
         
-        errorLabel.getElement().getStyle().setProperty("color", "red");
+        errorLabel.setStyleName("node-add-error");
         
         saveButton.addClickHandler(new ClickHandler() {
             @Override

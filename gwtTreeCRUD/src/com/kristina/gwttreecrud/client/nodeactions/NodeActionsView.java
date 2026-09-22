@@ -14,7 +14,6 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
         this.handler = handler;
     }
     
-    //private NodeActionsPresenter presenter;
     private HorizontalPanel panel;
     private Button addRootButton;
     private Button addChildButton;
@@ -23,6 +22,7 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
 
     public NodeActionsView() {
         panel = new HorizontalPanel();
+        panel.setSpacing(10);
         addRootButton = new Button("Add root node");
         addChildButton = new Button("Add child");
         editButton = new Button("Edit");
@@ -69,9 +69,10 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
             }
         });
 
-        addRootButton.getElement().getStyle().setProperty("marginRight", "10px");
-        addChildButton.getElement().getStyle().setProperty("marginRight", "10px");
-        editButton.getElement().getStyle().setProperty("marginRight", "10px");
+        //addRootButton.addStyleName("node-actions-button");
+        //addChildButton.addStyleName("node-actions-button");
+        //editButton.addStyleName("node-actions-button");
+        //deleteButton.addStyleName("node-actions-button");
 
         panel.add(addRootButton);
         panel.add(addChildButton);

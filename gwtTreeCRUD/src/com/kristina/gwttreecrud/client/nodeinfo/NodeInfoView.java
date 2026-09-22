@@ -17,8 +17,6 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
         this.handler = handler;
     }
     
-    //private NodeInfoPresenter presenter;
-    
     private VerticalPanel panel;
     private FlexTable table;
     private Label title;
@@ -32,33 +30,15 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
     public NodeInfoView() {
         panel = new VerticalPanel();
         title = new Label("Selected:");
-
-        title.getElement().getStyle().setProperty("fontWeight", "bold");
+        title.setStyleName("node-info-title");
         panel.add(title);
-        panel.getElement().getStyle().setProperty(
-                "border",
-                "1px solid #D8BFD8");
-        panel.getElement().getStyle().setProperty(
-                "borderRadius",
-                "6px");
-        panel.getElement().getStyle().setProperty(
-                "backgroundColor",
-                "#FFF9FC");
-        panel.getElement().getStyle().setProperty(
-                "padding",
-                "15px");
+        panel.setStyleName("node-info-panel");
         table = new FlexTable();
         panel.add(table);
         createEditElements();
         initWidget(panel);
         clear();
     }
-    
-    /*
-    public void setPresenter(NodeInfoPresenter presenter) {
-        this.presenter = presenter;
-    }
-    */
 
     private void createEditElements() {
         nodeName = new TextBox();
@@ -68,7 +48,7 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
         saveButton = new Button("Save");
         cancelButton = new Button("Cancel");
         HorizontalPanel buttonsPanel = new HorizontalPanel();
-        errorLabel.getElement().getStyle().setProperty("color","red");
+        errorLabel.setStyleName("node-info-error");
 
         nodeIp.setMaxLength(15);
         nodePort.setMaxLength(4);
@@ -139,27 +119,20 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
     private void styleTable() {
         for (int row = 0; row < 5; row++) {
             for (int column = 0; column < 2; column++) {
-                table.getCellFormatter()
-                        .getElement(row, column)
-                        .getStyle()
-                        .setProperty(
-                                "border",
-                                "1px solid #E0D0D8");
-                table.getCellFormatter()
-                        .getElement(row, column)
-                        .getStyle()
-                        .setProperty(
-                                "padding",
-                                "8px");
+                table.getCellFormatter().setStyleName(
+                        row,
+                        column,
+                        "node-info-cell");
             }
-            table.getCellFormatter()
-                    .getElement(row, 0)
-                    .getStyle()
-                    .setProperty("width", "80px");
-            table.getCellFormatter()
-                    .getElement(row, 1)
-                    .getStyle()
-                    .setProperty("width", "100px");
+            table.getCellFormatter().addStyleName(
+                    row,
+                    0,
+                    "node-info-label-cell");
+
+            table.getCellFormatter().addStyleName(
+                    row,
+                    1,
+                    "node-info-value-cell");
         }
     }
 

@@ -45,6 +45,7 @@
 		<copy todir="${warDir}">
 			<fileset dir="${resourceDir}">
 				<include name="**/*.html" />
+				<include name="**/*.css" />
 			</fileset>
 		</copy>
 	</target>

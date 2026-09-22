@@ -25,7 +25,6 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
     public NodeActionsPresenter(NodeActionsView view) {
         this.view = view;
 
-        //view.setPresenter(this);
         view.setHandler(new NodeActionsViewHandler() {
             @Override
             public void onEdit() {
