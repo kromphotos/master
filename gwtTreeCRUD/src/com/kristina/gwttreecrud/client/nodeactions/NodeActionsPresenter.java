@@ -28,7 +28,6 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
     public NodeActionsPresenter(NodeActionsView view) {
         this.view = view;
 
-        //view.setPresenter(this);
         view.setHandler(new NodeActionsViewHandler() {
             //TODO(by Tutor)
             // что за новые строки после каждого вызова метода?

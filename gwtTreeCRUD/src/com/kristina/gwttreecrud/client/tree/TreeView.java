@@ -27,16 +27,8 @@ public class TreeView extends Composite implements TreeInterface {
     private VerticalPanel treePanel;
 
     public TreeView() {
-        treePanel = new VerticalPanel();
-        treePanel.getElement().getStyle().setProperty(
-                "border",
-                "1px solid #B8CFE0");
-        treePanel.getElement().getStyle().setProperty(
-                "backgroundColor",
-                "#EAF6FF");
-        treePanel.getElement().getStyle().setProperty(
-                "padding",
-                "10px");
+        treePanel = new VerticalPanel(); 
+        treePanel.setStyleName("tree-panel");
         initWidget(treePanel);
     }
 
@@ -94,7 +86,7 @@ public class TreeView extends Composite implements TreeInterface {
             final Set<Integer> expandedNodeIds, TreeViewData selectedNode, int level) {
 
         HorizontalPanel row = new HorizontalPanel();
-        row.getElement().getStyle().setProperty("marginBottom", "4px");
+        row.setStyleName("tree-node-row");
 
         Label indent = new Label();
         indent.setWidth((level * 20) + "px");
@@ -107,11 +99,7 @@ public class TreeView extends Composite implements TreeInterface {
             } else {
                 expandButton = new Button("+");
             }
-
-            expandButton.setWidth("15px");
-            expandButton.setHeight("15px");
-            expandButton.getElement().getStyle().setProperty(
-                    "padding", "0px");
+            expandButton.setStyleName("tree-expand-button");
 
             expandButton.addClickHandler(new ClickHandler() {
                 @Override
@@ -125,42 +113,20 @@ public class TreeView extends Composite implements TreeInterface {
             });
 
             row.add(expandButton);
-            Label space = new Label();
-            space.setWidth("3px");
-            row.add(space);
 
         } else {
             Button leafButton = new Button("-");
-            leafButton.setWidth("15px");
-            leafButton.setHeight("15px");
-            leafButton.getElement().getStyle().setProperty(
-                    "padding", "0px");
+            leafButton.setStyleName("tree-expand-button");
             leafButton.setEnabled(false);
 
             row.add(leafButton);
-            Label space = new Label();
-            space.setWidth("3px");
-            row.add(space);
         }
 
         Label nameLabel = new Label(node.getName());
-        nameLabel.getElement().getStyle().setProperty(
-                "cursor",
-                "pointer");
+        nameLabel.setStyleName("tree-node-name");
         if (selectedNode != null
                 && selectedNode.getId().equals(node.getId())) {
-
-            nameLabel.getElement().getStyle().setProperty(
-                    "backgroundColor",
-                    "#FCE4EC");
-
-            nameLabel.getElement().getStyle().setProperty(
-                    "padding",
-                    "3px 6px");
-
-            nameLabel.getElement().getStyle().setProperty(
-                    "borderRadius",
-                    "4px");
+            nameLabel.addStyleName("tree-node-name-selected");//добавить еще 1 класс не убирая существующий
         }
         nameLabel.addClickHandler(new ClickHandler() {
             @Override

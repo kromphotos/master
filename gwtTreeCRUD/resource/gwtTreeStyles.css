@@ -1,0 +1,48 @@
+.tree-panel {
+    border: 1px solid #B8CFE0;
+    background-color: #EAF6FF;
+    padding: 10px;
+}
+.tree-node-row {
+    margin-bottom: 4px;
+}
+.tree-expand-button {
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    margin-right: 3px;
+}
+.tree-node-name {
+    cursor: pointer;
+}
+.tree-node-name-selected {
+    background-color: #FCE4EC;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+.node-info-panel {
+    border: 1px solid #D8BFD8;
+    border-radius: 6px;
+    background-color: #FFF9FC;
+    padding: 15px;
+}
+.node-info-title {
+    font-weight: bold;
+}
+.node-info-error {
+    color: red;
+}
+.node-info-cell {
+    border: 1px solid #E0D0D8;
+    padding: 8px;
+}
+.node-info-label-cell {
+    width: 80px;
+}
+.node-info-value-cell {
+    width: 100px;
+}
+.node-add-error {
+    color: red;
+}
+
