@@ -83,6 +83,10 @@ public class TreeNode implements IsSerializable {
         this.hasChildren = hasChildren;
     }
 
+    
+    
+    //TODO(by Tutor)
+    // не полноценный. не все поля охватывает
     @Override
     public String toString() {
         return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";

@@ -37,6 +37,10 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
         return newNodes;
     }
 
+    
+    //TODO(by Tutor)
+    // Зачем тут два одинаковый куска кода? Различие только в названии. логика одинаковая, запрос тот же
+    
     public void loadNodes() {
         service.getAllNodes(new AsyncCallback<List<TreeNode>>() {
             @Override
@@ -65,6 +69,14 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
         });
     }
 
+    //TODO(by Tutor)
+    // Избыточно. Три строки ради кода, который уместится в одну.
+    // Порядок методов ВАЖЕН. Если я начинаю читать твой метод loadNodes,
+    // который вызывает refreshNodes, который вызывает convertToData,
+    // то они должны идти друг за другом. Как convertToData оказался в начале класса?
+    //
+    // При использовании одного loadNodes, остальные методы будут избыточноми. располагать код можно и в onSuccess()
+    
     public void refreshNodes(List<TreeNode> nodes) {
         view.showNodes(convertToData(nodes));
     }

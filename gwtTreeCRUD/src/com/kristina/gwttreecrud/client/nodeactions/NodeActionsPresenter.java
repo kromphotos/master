@@ -18,7 +18,10 @@ import com.kristina.gwttreecrud.client.nodeactions.NodeActionsInterface.NodeActi
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {
+    //TODO(by Tutor)
+    // singleton? зачем тебе для него переменная то личная вообще теперь
     private GwtServiceAsync service = GwtServiceCreator.get();
+    
     private NodeActionsView view;
     private TreeNode selectedNode;
 
@@ -26,6 +29,9 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
         this.view = view;
 
         view.setHandler(new NodeActionsViewHandler() {
+            //TODO(by Tutor)
+            // что за новые строки после каждого вызова метода?
+            // и все, что помещается в три строки и не переиспользуется в отдельный метод вынесить не нужно
             @Override
             public void onEdit() {
                 editNode();
@@ -53,6 +59,12 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
     }
 
     public void editNode() {
+      //TODO(by Tutor)
+      // в данном случае так короче и понятнее
+//        if (selectedNode != null) {
+//            AppEventBus.get().fireEvent(new EditNodeEvent());
+//        }
+        
         if (selectedNode == null) {
             return;
         }
@@ -70,6 +82,8 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
         AppEventBus.get().fireEvent(new AddRootNodeEvent());
     }
 
+    //TODO(by Tutor)
+    // зачем паблик? зачем отдельным методом?
     public void selectNode(TreeNode node) {
         selectedNode = node;
         view.setNodeSelected(node != null);
@@ -79,12 +93,17 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
         if (selectedNode == null) {
             return;
         }
-
+        
+        //TODO(by Tutor)
+        // решили же, что корень удалять можно
         if (selectedNode.getParentId() == null) {
             view.showMessage("Корневую ноду удалять запрещено!");
             return;
         }
 
+        
+        //TODO(by Tutor)
+        // зачем выносить в отдельную переменную?
         boolean confirmed = Window.confirm(
                 "Вы действительно хотите выполнить удаление?");
 
@@ -109,6 +128,8 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
         });
     }
 
+    //TODO(by Tutor)
+    // зачем паблик?
     public void clearSelection() {
         selectedNode = null;
         view.setNodeSelected(false);

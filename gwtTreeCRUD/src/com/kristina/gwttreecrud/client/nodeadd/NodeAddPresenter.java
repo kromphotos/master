@@ -16,12 +16,17 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
     private NodeAddView view;
     private boolean addingRoot;
+    //TODO(by Tutor)
+    // Опять singleton? ты везде так сделала? 
     private GwtServiceAsync service = GwtServiceCreator.get();
     
     public NodeAddPresenter(NodeAddView view) {
         this.view = view;
         
         view.setHandler(new NodeAddViewHandler() {
+            //TODO(by Tutor)
+            // а это мы уже обсуждали, что так делать нелзя. Нельзя ничего запрашивать напрямую у вьюхи
+            // Почему вьюха сразу не передала у тебя эти данные в методе onSaveNode(Int paremtId,...)?
             @Override
             public void onSaveNode() {
                 saveNode(NodeAddPresenter.this.view.getParentId(),
@@ -29,6 +34,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
                         NodeAddPresenter.this.view.getNodeIp(),
                         NodeAddPresenter.this.view.getNodePort());
             }
+            
             @Override
             public void onCancel() {
                 cancel();
@@ -38,7 +44,11 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         AppEventBus.get().addHandler(AddChildNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(AddRootNodeEvent.TYPE, this);
     }
-    
+    //TODO(by Tutor)
+    // startAddChild и startAddingRoot
+    // оба находятся слишком высоко относительно остального кода, код читать не удобно, приходится прыгать
+    // оба вызываются только один раз и это избыточное выделение кода в методы
+    // оба публичные, хотя используются только в этом презенторе
     public void startAddChild(Integer parentId) {
         addingRoot = false;
         view.showAddCard(parentId);
@@ -91,7 +101,10 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         });
 
     }
-    
+
+    //TODO(by Tutor)
+    // вновь новый метод ради одной строки кода, причем опять публичный, хотя используетс ятолько в этом презенторе
+    // причем аналогичный код используется при добавлении нового узла, но этот метод там не используется
     public void cancel() {
         view.hideAddCard();
     }

@@ -16,12 +16,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TreeView extends Composite implements TreeInterface {
     private NodeTreeViewHandler handler;
-  
+
+    //TODO(by Tutor)
+    // нельзя тут оставлять, это блок перменных, а не методов
     @Override
     public void setHandler(NodeTreeViewHandler handler) {
         this.handler = handler;
     }
-    
+
     private VerticalPanel treePanel;
 
     public TreeView() {
@@ -29,25 +31,27 @@ public class TreeView extends Composite implements TreeInterface {
         treePanel.setStyleName("tree-panel");
         initWidget(treePanel);
     }
-    
+
     @Override
-    public void showTree(List<TreeViewData> nodes,
-            Set<Integer> expandedNodeIds,
-            TreeViewData selectedNode) {
+    public void showTree(List<TreeViewData> nodes, Set<Integer> expandedNodeIds, TreeViewData selectedNode) {
         treePanel.clear();
+
         List<TreeViewData> roots = new ArrayList<TreeViewData>();
         for (TreeViewData node : nodes) {
             if (node.getParentId() == null) {
                 roots.add(node);
             }
         }
+
+        //TODO(by Tutor)
+        // отсортирован будет только рут?
         Collections.sort(roots, new Comparator<TreeViewData>() {
             @Override
             public int compare(TreeViewData first, TreeViewData second) {
                 return first.getName().compareToIgnoreCase(second.getName());
             }
         });
-        
+
         for (TreeViewData root : roots) {
             addNode(root, nodes, expandedNodeIds, selectedNode, 0);
         }

@@ -17,7 +17,10 @@ public class NodeInfoViewData {
         this.ip = ip;
         this.port = port;
     }
+
     
+    //TODO(by Tutor)
+      //  это тут зачем? почему просто не пересоздать вью дату через new
     public void setData(Integer id, Integer parentId, String name, String ip, Integer port) {
         this.id = id;
         this.parentId = parentId;
@@ -66,6 +69,9 @@ public class NodeInfoViewData {
         this.port = port;
     }
 
+    
+  //TODO(by Tutor)
+    //  это тут зачем? почему просто не удалить укзаатель на вью дату там, где это нужно
     public void clear() {
         id = null;
         parentId = null;
