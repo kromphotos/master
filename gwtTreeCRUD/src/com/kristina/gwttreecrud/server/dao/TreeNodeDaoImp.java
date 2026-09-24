@@ -33,7 +33,17 @@ public class TreeNodeDaoImp implements TreeNodeDao {
     }
 
     @Override
-    public void insertNode(TreeNode node) {
-        mapper.insertNode(node);
+    public TreeNode insertNode(TreeNode node) {
+        return mapper.insertNode(node);
+    }
+    
+    @Override
+    public List<TreeNode> getAllChildById(Integer parentId) {
+        return mapper.getAllChildById(parentId);
+    }
+    
+    @Override
+    public List<TreeNode> getAllRoots() {
+        return mapper.getAllRoots();
     }
 }

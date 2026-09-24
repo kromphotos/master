@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import com.kristina.gwttreecrud.server.dao.TreeNodeDaoImp;
 import com.kristina.gwttreecrud.server.mapper.NodeMapper;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
@@ -28,7 +29,8 @@ public class TreeNodeServiceImp implements TreeNodeService {
     public List<TreeNode> findAll() {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            return mapper.findAll();
+            TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
+            return dao.findAll();
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
             return null;
@@ -39,7 +41,8 @@ public class TreeNodeServiceImp implements TreeNodeService {
     public TreeNode findById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            return mapper.findById(id);
+            TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
+            return dao.findById(id);
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
             return null;
@@ -50,7 +53,8 @@ public class TreeNodeServiceImp implements TreeNodeService {
     public void deleteById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            mapper.deleteById(id);
+            TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
+            dao.deleteById(id);
             session.commit();
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
@@ -61,7 +65,8 @@ public class TreeNodeServiceImp implements TreeNodeService {
     public void updateNode(TreeNode node) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            mapper.updateNode(node);
+            TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
+            dao.updateNode(node);
             session.commit();
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
@@ -72,7 +77,8 @@ public class TreeNodeServiceImp implements TreeNodeService {
     public TreeNode insertNode(TreeNode node) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            mapper.insertNode(node);
+            TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
+            dao.insertNode(node);
             session.commit();
             return node;
         } catch (PersistenceException e) {
@@ -85,7 +91,8 @@ public class TreeNodeServiceImp implements TreeNodeService {
     public List<TreeNode> getAllChildById(Integer parentId) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            return mapper.getAllChildById(parentId);
+            TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
+            return dao.getAllChildById(parentId);
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
             return null;
@@ -96,7 +103,8 @@ public class TreeNodeServiceImp implements TreeNodeService {
     public List<TreeNode> getAllRoots() {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
-            return mapper.getAllRoots();
+            TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
+            return dao.getAllRoots();
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
             return null;
