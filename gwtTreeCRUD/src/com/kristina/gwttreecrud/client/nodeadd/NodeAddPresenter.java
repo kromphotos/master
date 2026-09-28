@@ -2,8 +2,7 @@ package com.kristina.gwttreecrud.client.nodeadd;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.kristina.gwttreecrud.client.GwtServiceAsync;
-import com.kristina.gwttreecrud.client.GwtServiceCreator;
+import com.kristina.gwttreecrud.client.AppGwtService;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEvent;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.AddRootNodeEvent;
@@ -18,7 +17,6 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
     private boolean addingRoot;
     //TODO(by Tutor)
     // Опять singleton? ты везде так сделала? 
-    private GwtServiceAsync service = GwtServiceCreator.get();
     
     public NodeAddPresenter(NodeAddView view) {
         this.view = view;
@@ -28,16 +26,13 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
             // а это мы уже обсуждали, что так делать нелзя. Нельзя ничего запрашивать напрямую у вьюхи
             // Почему вьюха сразу не передала у тебя эти данные в методе onSaveNode(Int paremtId,...)?
             @Override
-            public void onSaveNode() {
-                saveNode(NodeAddPresenter.this.view.getParentId(),
-                        NodeAddPresenter.this.view.getNodeName(),
-                        NodeAddPresenter.this.view.getNodeIp(),
-                        NodeAddPresenter.this.view.getNodePort());
+            public void onSaveNode(String parentId, String nodeName, String nodeIp, String port) {
+                saveNode(parentId, nodeName, nodeIp, port);
             }
             
             @Override
             public void onCancel() {
-                cancel();
+                NodeAddPresenter.this.view.hideAddCard();
             }
         });
         
@@ -49,6 +44,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
     // оба находятся слишком высоко относительно остального кода, код читать не удобно, приходится прыгать
     // оба вызываются только один раз и это избыточное выделение кода в методы
     // оба публичные, хотя используются только в этом презенторе
+    /*
     public void startAddChild(Integer parentId) {
         addingRoot = false;
         view.showAddCard(parentId);
@@ -58,8 +54,9 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         addingRoot = true;
         view.showAddRootCard();
     }
+    */
     
-    public void saveNode(String parentId, String name, String ip, String port) {
+    private void saveNode(String parentId, String name, String ip, String port) {
         if (name.trim().isEmpty()
                 || ip.trim().isEmpty()
                 || port.trim().isEmpty()) {
@@ -87,7 +84,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         }
         
         final TreeNode node = new TreeNode(null, parentIdInt, name, ip, portInt);
-        service.insertNode(node, new AsyncCallback<TreeNode>() {
+        AppGwtService.get().insertNode(node, new AsyncCallback<TreeNode>() {
             @Override
             public void onSuccess(TreeNode savedNode) {
                 GWT.log("Узел добавлен!");
@@ -105,20 +102,24 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
     //TODO(by Tutor)
     // вновь новый метод ради одной строки кода, причем опять публичный, хотя используетс ятолько в этом презенторе
     // причем аналогичный код используется при добавлении нового узла, но этот метод там не используется
+    /*
     public void cancel() {
         view.hideAddCard();
     }
+    */
     
     @Override
     public void addChildNode(AddChildNodeEvent event) {
         if (event.getParentId() == null) {
             return;
         }
-        startAddChild(event.getParentId());
+        addingRoot = false;
+        view.showAddCard(event.getParentId());
     }
     
     @Override
     public void addRootNode(AddRootNodeEvent event) {
-        startAddingRoot();
+        addingRoot = true;
+        view.showAddRootCard();
     }
 }

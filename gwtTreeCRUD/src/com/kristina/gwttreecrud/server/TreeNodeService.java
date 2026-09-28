@@ -8,7 +8,7 @@ public interface TreeNodeService {
     List<TreeNode> findAll();
     TreeNode findById(Integer id) throws Exception;
     void deleteById(Integer id);
-    void updateNode(TreeNode node);
+    TreeNode updateNode(TreeNode node);
     TreeNode insertNode(TreeNode node);
     List<TreeNode> getAllChildById(Integer parentId);
     List<TreeNode> getAllRoots();

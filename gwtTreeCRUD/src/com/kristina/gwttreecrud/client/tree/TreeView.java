@@ -2,7 +2,6 @@ package com.kristina.gwttreecrud.client.tree;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -19,17 +18,17 @@ public class TreeView extends Composite implements TreeInterface {
 
     //TODO(by Tutor)
     // нельзя тут оставлять, это блок перменных, а не методов
-    @Override
-    public void setHandler(NodeTreeViewHandler handler) {
-        this.handler = handler;
-    }
-
     private VerticalPanel treePanel;
 
     public TreeView() {
         treePanel = new VerticalPanel(); 
         treePanel.setStyleName("tree-panel");
         initWidget(treePanel);
+    }
+    
+    @Override
+    public void setHandler(NodeTreeViewHandler handler) {
+        this.handler = handler;
     }
 
     @Override
@@ -45,12 +44,8 @@ public class TreeView extends Composite implements TreeInterface {
 
         //TODO(by Tutor)
         // отсортирован будет только рут?
-        Collections.sort(roots, new Comparator<TreeViewData>() {
-            @Override
-            public int compare(TreeViewData first, TreeViewData second) {
-                return first.getName().compareToIgnoreCase(second.getName());
-            }
-        });
+        // всех надо сортировать
+        Collections.sort(roots);
 
         for (TreeViewData root : roots) {
             addNode(root, nodes, expandedNodeIds, selectedNode, 0);
@@ -64,6 +59,7 @@ public class TreeView extends Composite implements TreeInterface {
                 children.add(node);
             }
         }
+        Collections.sort(children);
         return children;
     }
 

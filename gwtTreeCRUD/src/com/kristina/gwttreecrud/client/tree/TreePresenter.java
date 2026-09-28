@@ -9,8 +9,8 @@ import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.kristina.gwttreecrud.client.AppGwtService;
 import com.kristina.gwttreecrud.client.GwtServiceAsync;
-import com.kristina.gwttreecrud.client.GwtServiceCreator;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -32,7 +32,7 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter
         implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
-    private GwtServiceAsync service = GwtServiceCreator.get();
+    private GwtServiceAsync service = AppGwtService.get();
     private TreeInterface view;
     private Map<Integer, TreeNode> loadedNodes;//ключ айди и значение нода
     private List<TreeViewData> viewNodes;
@@ -47,18 +47,54 @@ public class TreePresenter
 
         view.setHandler(new NodeTreeViewHandler() {
             @Override
-            public void onCollapseNode(Integer id) {
-                collapseNode(id);
+            public void onCollapseNode(final Integer id) {
+                expandedNodeIds.remove(id);
+                removeExpandedDescendants(id);
+                if (selectedNode != null && isDescendant(selectedNode.getId(), id)) {
+                    AppEventBus.get().fireEvent(new ClearSelectionEvent());
+                }
+                refreshTree();
             }
             @Override
-            public void onExpandNode(Integer id) {
-                expandNode(id);
+            public void onExpandNode(final Integer id) {
+                TreeNode node = loadedNodes.get(id);
+                if (node == null) {
+                    return;
+                }
+                if (node.getChildren() != null) {
+                    expandedNodeIds.add(id);
+                    rebuildViewNodes();
+                    return;
+                }
+                service.getAllChildById(id, new AsyncCallback<List<TreeNode>>() {
+                    @Override
+                    public void onSuccess(List<TreeNode> children) {
+                        TreeNode node = loadedNodes.get(id);
+                        node.setChildren(children);
+                        for (TreeNode child : children) {
+                            loadedNodes.put(child.getId(), child);
+                        }
+                        expandedNodeIds.add(id);
+                        rebuildViewNodes();
+                    }
+                    @Override
+                    public void onFailure(Throwable caught) {
+                        GWT.log("Ошибка загрузки дочерних нод", caught);
+                    }
+                });
             }
             @Override
             public void onSelectNode(Integer id) {
-                selectNode(id);
+                TreeNode node = findNodeById(id);
+                if (node == null) {
+                    return;
+                }
+                selectedNode = node;
+                AppEventBus.get().fireEvent(new NodeSelectedEvent(node));
+                refreshTree();
             }
         });
+        loadRoots();
 
         AppEventBus.get().addHandler(NodeUpdatedEvent.TYPE, this);
         AppEventBus.get().addHandler(NodeAddedEvent.TYPE, this);
@@ -67,7 +103,7 @@ public class TreePresenter
 
     }
 
-    public void loadRoots() {
+    private void loadRoots() {
         service.getAllRoots(new AsyncCallback<List<TreeNode>>() {
             @Override
             public void onSuccess(List<TreeNode> roots) {
@@ -96,7 +132,7 @@ public class TreePresenter
         }
         refreshTree();
     }
-    //при нажатии на + пользователем срабатывает
+   /*
     public void expandNode(final Integer nodeId) {
         TreeNode node = loadedNodes.get(nodeId);
         if (node == null) {
@@ -124,8 +160,8 @@ public class TreePresenter
             }
         });
     }
-
-    //сворачивание ноды(nodeId - кого свернули)
+    */
+    /*
     public void collapseNode(Integer nodeId) {
         expandedNodeIds.remove(nodeId);
         removeExpandedDescendants(nodeId);
@@ -134,6 +170,7 @@ public class TreePresenter
         }
         refreshTree();
     }
+    */
 
     private void removeExpandedDescendants(Integer nodeId) {
         TreeNode node = findNodeById(nodeId);
@@ -150,7 +187,6 @@ public class TreePresenter
         }
     }
     
-    //Является ли выбранная нода потомком той ноды, которую сейчас свернули?
     private boolean isDescendant(Integer selectedNodeId, Integer collapsedNodeId) {
         TreeNode node = findNodeById(selectedNodeId);
 
@@ -184,7 +220,7 @@ public class TreePresenter
         }
         view.showTree(viewNodes, expandedNodeIds, selectedViewNode);
     }
-
+    /*
     public void selectNode(Integer nodeId) {
         TreeNode node = findNodeById(nodeId);
         if (node == null) {
@@ -194,13 +230,14 @@ public class TreePresenter
         AppEventBus.get().fireEvent(new NodeSelectedEvent(node));
         refreshTree();
     }
+    */
 
     private TreeNode findNodeById(Integer nodeId) {
         return loadedNodes.get(nodeId);
     }
     
     //
-
+    /*
     public void updateNodeName(Integer nodeId, String name) {
         TreeNode node = findNodeById(nodeId);
         if (node == null) {
@@ -209,6 +246,7 @@ public class TreePresenter
         node.setName(name);
         rebuildViewNodes();
     }
+    */
     
     private Set<Integer> findDescendantIds(Integer nodeId) {
         TreeNode node = loadedNodes.get(nodeId);
@@ -226,27 +264,29 @@ public class TreePresenter
 
     @Override
     public void onNodeUpdated(NodeUpdatedEvent event) {
-        TreeNode node = event.getNode();
-        updateNodeName(node.getId(), node.getName());
+        TreeNode updatedNode = event.getNode();
+        TreeNode node = findNodeById(updatedNode.getId());
+        if (node == null) {
+            return;
+        }
+        node.setName(updatedNode.getName());
+        rebuildViewNodes();
     }
 
     @Override
     public void nodeAdded(NodeAddedEvent event) {
         TreeNode node = event.getNode();
         
-        //если новая нода - корень
         if (node.getParentId() == null) {
             loadedNodes.put(node.getId(), node);
             rebuildViewNodes();
             return;
         }
         TreeNode parent = findNodeById(node.getParentId());
-        //если родителя до этого не раскрывали
         if (parent == null) {
             return;
         }
         parent.setHasChildren(true);
-        //если родителя до этого уже раскрывали
         if (parent.getChildren() != null) {
             parent.getChildren().add(node);
             loadedNodes.put(node.getId(), node);
@@ -256,8 +296,8 @@ public class TreePresenter
 
     @Override
     public void deleteNode(DeleteNodeEvent event) {
-        Integer nodeId = event.getNodeId();//айди удаленной ноды
-        TreeNode node = findNodeById(nodeId);//сама удаляемая нода
+        Integer nodeId = event.getNodeId();
+        TreeNode node = findNodeById(nodeId);
         
         if (node == null){
             return;
@@ -269,7 +309,7 @@ public class TreePresenter
         for (Integer id : idsToRemove) {
             loadedNodes.remove(id);
         }
-        //удаление ноды из children его родителя
+
         Integer parentId = node.getParentId();
         if (parentId != null) {
             TreeNode parent = findNodeById(parentId);
@@ -289,7 +329,6 @@ public class TreePresenter
         
         expandedNodeIds.removeAll(idsToRemove);
         
-        //Была ли сейчас выбрана нода, которую мы только что удалили?
         if (selectedNode != null && idsToRemove.contains(selectedNode.getId())) {
             AppEventBus.get().fireEvent(new ClearSelectionEvent());
         }

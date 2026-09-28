@@ -1,6 +1,6 @@
 package com.kristina.gwttreecrud.client.tree;
 
-public class TreeViewData {
+public class TreeViewData implements Comparable<TreeViewData>{
     private Integer id;
     private Integer parentId;
     private String name;
@@ -32,5 +32,10 @@ public class TreeViewData {
     
     public boolean isHasChildren() {
         return hasChildren;
+    }
+    
+    @Override
+    public int compareTo(TreeViewData other) {
+        return this.name.compareToIgnoreCase(other.name);
     }
 }

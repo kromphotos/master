@@ -15,8 +15,6 @@ public class TreeNode implements IsSerializable {
     List<TreeNode> children;
     
     public TreeNode() {
-        super();
-        // TODO Auto-generated constructor stub
     }
 
     public TreeNode(Integer id, Integer parentId, String name, String ip, Integer port) {
@@ -89,6 +87,6 @@ public class TreeNode implements IsSerializable {
     // не полноценный. не все поля охватывает
     @Override
     public String toString() {
-        return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
+        return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + ", hasChildren=" + hasChildren + "]";
     }
 }

@@ -13,7 +13,6 @@ import com.kristina.gwttreecrud.client.nodeadd.NodeAddPresenter;
 import com.kristina.gwttreecrud.client.nodeadd.NodeAddView;
 import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoPresenter;
 import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoView;
-import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoViewData;
 import com.kristina.gwttreecrud.client.tree.TreePresenter;
 import com.kristina.gwttreecrud.client.tree.TreeView;
 /**
@@ -27,13 +26,7 @@ public class GwtTreeCRUD implements EntryPoint {
     private static final String SERVER_ERROR = "An error occurred while "
             + "attempting to contact the server. Please check your network "
             + "connection and try again.";
-
-    /**
-     * Create a remote service proxy to talk to the server-side Greeting service.
-     */
-    //    private final GwtServiceAsync greetingService = GWT.create(GwtService.class);
-
-  
+    
     @Override
     public void onModuleLoad() {
         // ---------- Tree ----------
@@ -42,16 +35,14 @@ public class GwtTreeCRUD implements EntryPoint {
         
       //TODO(by Tutor)
      // зачем? это можно вызывать в конструкторе презентора
-        treePresenter.loadRoots();
-        
+        //treePresenter.loadRoots();
         
         // ---------- Node Info ----------
         NodeInfoView nodeInfoView = new NodeInfoView();
         //TODO(by Tutor)
         // а вью дата то тут чего делает и как вдруг она тут оказалась?
-        NodeInfoViewData nodeInfoViewData = new NodeInfoViewData();
-        NodeInfoPresenter nodeInfoPresenter =
-                new NodeInfoPresenter(nodeInfoView, nodeInfoViewData);
+        //NodeInfoViewData nodeInfoViewData = new NodeInfoViewData();
+        NodeInfoPresenter nodeInfoPresenter = new NodeInfoPresenter(nodeInfoView);
         //nodeInfoView.setPresenter(nodeInfoPresenter);
 
         // ---------- Node Add ----------
@@ -69,7 +60,7 @@ public class GwtTreeCRUD implements EntryPoint {
         AllNodesPresenter allNodesPresenter = new AllNodesPresenter(allNodesView);
         //TODO(by Tutor)
         // зачем? это можно вызывать в конструкторе презентора
-        allNodesPresenter.loadNodes();
+        //allNodesPresenter.loadNodes();
 
         HorizontalPanel mainPanel = new HorizontalPanel();
         

@@ -6,7 +6,7 @@ public interface NodeAddInterface {
     void showError(String message);
     void hideAddCard();
     interface NodeAddViewHandler {
-        void onSaveNode();
+        void onSaveNode(String parentiD, String nodeName, String nodeIp, String port);
         void onCancel();
     };
     void setHandler(NodeAddViewHandler handler);

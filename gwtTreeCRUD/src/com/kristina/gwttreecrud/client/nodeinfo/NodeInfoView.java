@@ -15,11 +15,6 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
 
     //TODO(by Tutor)
     // нельзя тут оставлять, это блок перменных, а не методов
-    @Override
-    public void setHandler(NodeInfoViewHandler handler) {
-        this.handler = handler;
-    }
-    
     private VerticalPanel panel;
     private FlexTable table;
     private Label title;
@@ -41,6 +36,11 @@ public class NodeInfoView extends Composite implements NodeInfoInterface{
         createEditElements();
         initWidget(panel);
         clear();
+    }
+    
+    @Override
+    public void setHandler(NodeInfoViewHandler handler) {
+        this.handler = handler;
     }
 
     private void createEditElements() {

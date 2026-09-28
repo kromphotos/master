@@ -6,7 +6,7 @@ import com.google.gwt.core.client.GWT;
 //TODO(by Tutor)
 // Плохое имя. Креатор это тот, кто что то создает на постоянке.
 // Почему тогда глоабльный ивент бас ты не назвала креатором?
-public class GwtServiceCreator {
+public class AppGwtService {
     private static final GwtServiceAsync INSTANCE = GWT.create(GwtService.class);
     
     public static GwtServiceAsync get() {
@@ -16,7 +16,7 @@ public class GwtServiceCreator {
 
   //TODO(by Tutor)
   // зачем?
-    private GwtServiceCreator() {
+    private AppGwtService() {
         
     }
 }

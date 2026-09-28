@@ -11,14 +11,12 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeAddView extends DialogBox implements NodeAddInterface {
+    private static final String NODE_ADD_ERROR = "node-add-error";
+
     private NodeAddViewHandler handler;
     
     //TODO(by Tutor)
     // нельзя тут оставлять, это блок перменных, а не методов
-    @Override
-    public void setHandler(NodeAddViewHandler handler) {
-        this.handler = handler;
-    }
     
     private TextBox parentId;
     private TextBox nodeName;
@@ -47,16 +45,15 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         saveButton = new Button("Save");
         cancelButton = new Button("Cancel");
         
-        errorLabel.setStyleName("node-add-error");
+        errorLabel.setStyleName(NODE_ADD_ERROR);
         
         saveButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 //TODO(by Tutor)
                 // опять скобки с новой строки
-                if (handler!=null)
-                {
-                    handler.onSaveNode();
+                if (handler!=null) {
+                    handler.onSaveNode(parentId.getText(), nodeName.getText(), nodeIp.getText(), nodePort.getText());
                 }
             }
         });
@@ -82,6 +79,11 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     }
     
     @Override
+    public void setHandler(NodeAddViewHandler handler) {
+        this.handler = handler;
+    }
+    
+    @Override
     public void showError(String message) {
         errorLabel.setText(message);
     }
@@ -98,31 +100,25 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
 
         //TODO(by Tutor)
         // не надо так делать. пиши конкретный номер строки в самом методе setWidget
-        int row = 0;
-
         parentId.setText(String.valueOf(parentIdValue));
         parentId.setReadOnly(true);
 
-        formTable.setWidget(row, 0, new Label("Parent's id:"));
-        formTable.setWidget(row, 1, parentId);
+        formTable.setWidget(0, 0, new Label("Parent's id:"));
+        formTable.setWidget(0, 1, parentId);
 
-        row++;
+        formTable.setWidget(1, 0, new Label("Node name:"));
+        formTable.setWidget(1, 1, nodeName);
 
-        formTable.setWidget(row, 0, new Label("Node name:"));
-        formTable.setWidget(row, 1, nodeName);
-        row++;
+        formTable.setWidget(2, 0, new Label("Node's Ip:"));
+        formTable.setWidget(2, 1, nodeIp);
 
-        formTable.setWidget(row, 0, new Label("Node's Ip:"));
-        formTable.setWidget(row, 1, nodeIp);
-        row++;
-
-        formTable.setWidget(row, 0, new Label("Node's port:"));
-        formTable.setWidget(row, 1, nodePort);
+        formTable.setWidget(3, 0, new Label("Node's port:"));
+        formTable.setWidget(3, 1, nodePort);
 
         nodeIp.setMaxLength(15);
         //TODO(by Tutor)
         // порт может быть 5-ти значным
-        nodePort.setMaxLength(4);
+        nodePort.setMaxLength(5);
 
         center();
         show();
@@ -147,7 +143,7 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         formTable.setWidget(2, 1, nodePort);
 
         nodeIp.setMaxLength(15);
-        nodePort.setMaxLength(4);
+        nodePort.setMaxLength(5);
 
         center();
         show();
@@ -156,21 +152,6 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
 
     //TODO(by Tutor)
     // ликвидировать! всех четверых под трибунал!
-    public String getParentId() {
-        return parentId.getText();
-    }
-
-    public String getNodeName() {
-        return nodeName.getText();
-    }
-
-    public String getNodeIp() {
-        return nodeIp.getText();
-    }
-
-    public String getNodePort() {
-        return nodePort.getText();
-    }
 
     @Override
     public void hideAddCard() {

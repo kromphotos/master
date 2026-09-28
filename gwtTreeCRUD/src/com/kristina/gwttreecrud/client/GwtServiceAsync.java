@@ -13,7 +13,7 @@ public interface GwtServiceAsync {
             throws IllegalArgumentException;
     void findById(Integer id, AsyncCallback<TreeNode> callback)
             throws IllegalArgumentException;
-    void updateNode(TreeNode node, AsyncCallback<Void> callback)
+    void updateNode(TreeNode node, AsyncCallback<TreeNode> callback)
             throws IllegalArgumentException;
     void insertNode(TreeNode node, AsyncCallback<TreeNode> callback)
             throws IllegalArgumentException;

@@ -2,7 +2,6 @@ package com.kristina.gwttreecrud.client.nodeactions;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -12,10 +11,6 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
     
     //TODO(by Tutor)
     // нельзя тут оставлять, это блок перменных, а не методов
-    @Override
-    public void setHandler(NodeActionsViewHandler handler) {
-        this.handler = handler;
-    }
     
     private HorizontalPanel panel;
     private Button addRootButton;
@@ -40,8 +35,7 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
             public void onClick(ClickEvent event) {
                 //TODO(by Tutor)
                 // что за новые строки для открывающейся скобки ифа?
-                if (handler!=null)
-                {
+                if (handler!=null) {
                     handler.onEdit();
                 }
             }
@@ -86,19 +80,14 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
 
         initWidget(panel);       
     }
-    /*
-    public void setPresenter(NodeActionsPresenter presenter) {
-        this.presenter = presenter;
+    @Override
+    public void setHandler(NodeActionsViewHandler handler) {
+        this.handler = handler;
     }
-    */
     
     //TODO(by Tutor)
     // А это зачем тут? прямой нужды в отображении сообщения конкретной въюхой нет. 
     // Доступ к Window.alert есть и у презентора
-    @Override
-    public void showMessage(String message) {
-        Window.alert(message);
-    }
     
     @Override
     public void setNodeSelected(boolean selected) {

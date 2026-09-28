@@ -42,8 +42,8 @@ public class GwtServiceImpl extends RemoteServiceServlet implements GwtService {
     }
 
     @Override
-    public void updateNode(TreeNode node) throws IllegalArgumentException {
-        service.updateNode(node);
+    public TreeNode updateNode(TreeNode node) throws IllegalArgumentException {
+        return service.updateNode(node);
     }
 
     @Override

@@ -62,14 +62,16 @@ public class TreeNodeServiceImp implements TreeNodeService {
     }
 
     @Override
-    public void updateNode(TreeNode node) {
+    public TreeNode updateNode(TreeNode node) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
             TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
             dao.updateNode(node);
             session.commit();
+            return node;
         } catch (PersistenceException e) {
             System.err.println("Ошибка: " + e.getMessage());
+            return null;
         }
     }
 

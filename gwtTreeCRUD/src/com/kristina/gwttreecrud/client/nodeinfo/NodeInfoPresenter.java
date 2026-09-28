@@ -2,8 +2,7 @@ package com.kristina.gwttreecrud.client.nodeinfo;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.kristina.gwttreecrud.client.GwtServiceAsync;
-import com.kristina.gwttreecrud.client.GwtServiceCreator;
+import com.kristina.gwttreecrud.client.AppGwtService;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -18,24 +17,32 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
     //TODO(by Tutor)
     //все там же все теже люди
-    private GwtServiceAsync service = GwtServiceCreator.get();
-    
+    //private GwtServiceAsync service = GwtServiceCreator.get();
+
     private NodeInfoInterface view;
-    private NodeInfoViewData viewData;
+    //private NodeInfoViewData viewData;
     private TreeNode selectedNode;
 
-    public NodeInfoPresenter(NodeInfoInterface view, NodeInfoViewData data) {
+    public NodeInfoPresenter(NodeInfoInterface view) {
         this.view = view;
-        this.viewData = data;
-        
+        //this.viewData = data;
+
         view.setHandler(new NodeInfoViewHandler() {
             @Override
             public void onSaveNode(String name, String ip, String port) {
-                saveNode(name,ip,port);
+                saveNode(name, ip, port);
             }
+
             @Override
             public void onCancel() {
-                cancelEdit();
+                if (selectedNode == null) {
+                    return;
+                }
+                NodeInfoPresenter.this.view.showNode(new NodeInfoViewData(selectedNode.getId(),
+                        selectedNode.getParentId(),
+                        selectedNode.getName(),
+                        selectedNode.getIp(),
+                        selectedNode.getPort()));
             }
         });
 
@@ -43,72 +50,82 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         AppEventBus.get().addHandler(EditNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
     }
-    
+
     //TODO(by Tutor)
     // опять публичный
-
-    public void selectNode(TreeNode node) {
+    /*
+    private void selectNode(TreeNode node) {
         selectedNode = node;
-
+    
         if (node == null) {
             clear();
             return;
         }
+        viewData = new NodeInfoViewData(node.getId(),
+                node.getParentId(),
+                node.getName(),
+                node.getIp(),
+                node.getPort());
+        
         viewData.setData(
                 node.getId(),
                 node.getParentId(),
                 node.getName(),
                 node.getIp(),
                 node.getPort());
-
+    
         view.showNode(viewData);
     }
+    */
 
     private void updateNodeInfo(TreeNode node) {
         selectedNode = node;
 
-        viewData.setData(
-                node.getId(),
+        if (selectedNode == null) {
+            clear();
+            return;
+        }
+
+        view.showNode(new NodeInfoViewData(node.getId(),
                 node.getParentId(),
                 node.getName(),
                 node.getIp(),
-                node.getPort());
-
-        view.showNode(viewData);
+                node.getPort()));
     }
-    
+
     //TODO(by Tutor)
     // что ж они вообще все публичные то
 
-    public void clear() {
+    private void clear() {
         selectedNode = null;
-        viewData.clear();
         view.clear();
     }
-
+    /*
     public void startEdit() {
         if (selectedNode == null) {
             return;
         }
-
+    
         view.showEditMode(viewData);
     }
-    
+    */
+
     //TODO(by Tutor)
     // использутеся один раз зачем ему свой метод
+    /*
     public void cancelEdit() {
         if (selectedNode == null) {
             return;
         }
-
+    
         view.showNode(viewData);
     }
-
-    public void saveNode(String name, String ip, String port) {        
+    */
+    private void saveNode(String name, String ip, String port) {
         //TODO(by Tutor)
         // что т происходит? зачем мы сохраняем указатель?
-        final TreeNode node = selectedNode;
-        if (node == null) {
+        //final TreeNode node = selectedNode;
+        if (selectedNode == null) {
             return;
         }
 
@@ -126,21 +143,22 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
             return;
         }
 
-        node.setName(name);
-        node.setIp(ip);
-        node.setPort(portInt);
+        selectedNode.setName(name);
+        selectedNode.setIp(ip);
+        selectedNode.setPort(portInt);
 
-        service.updateNode(node, new AsyncCallback<Void>() {
+        AppGwtService.get().updateNode(selectedNode, new AsyncCallback<TreeNode>() {
             @Override
-            public void onSuccess(Void result) {
+            public void onSuccess(TreeNode updatedNode) {
                 GWT.log("Узел успешно обновлён");
                 //TODO(by Tutor)
                 // зачем мы второй раз обновляем данные одного и того же объекта?
                 // зачем нам вообще нужен этот метод?
-                updateNodeInfo(node);
-                AppEventBus.get().fireEvent(new NodeUpdatedEvent(node));//рассылка обновления
+                if (selectedNode.getId().equals(updatedNode.getId())) {
+                    updateNodeInfo(updatedNode);//обновляет не данные объекта а данные вью!
+                }
+                AppEventBus.get().fireEvent(new NodeUpdatedEvent(updatedNode));//рассылка обновления
             }
-
             @Override
             public void onFailure(Throwable caught) {
                 GWT.log("Ошибка обновления узла", caught);
@@ -151,16 +169,26 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
     @Override
     public void onNodeSelected(NodeSelectedEvent event) {
         TreeNode node = event.getNode();
-        selectNode(node);
+        updateNodeInfo(node);
     }
-    
+
+    /**
+     *
+     */
     @Override
     public void editNode(EditNodeEvent event) {
-      //TODO(by Tutor)
-      // этот метод вновь используетс я один раз и только тут, зачем он отдельно вынесен?
-        startEdit();
+        //TODO(by Tutor)
+        // этот метод вновь используетс я один раз и только тут, зачем он отдельно вынесен?
+        if (selectedNode == null) {
+            return;
+        }
+        view.showEditMode(new NodeInfoViewData(selectedNode.getId(),
+                selectedNode.getParentId(),
+                selectedNode.getName(),
+                selectedNode.getIp(),
+                selectedNode.getPort()));
     }
-    
+
     @Override
     public void clearSelection(ClearSelectionEvent event) {
         clear();
