@@ -24,14 +24,14 @@ import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
 import com.kristina.gwttreecrud.client.tree.TreeInterface.NodeTreeViewHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-
-
 //TODO(by Tutor)
 // проверить все методы на публичность!
 
 
 public class TreePresenter
         implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
+    private static final String LOG_ERROR_LOADING_ROOT_NODES = "Ошибка загрузки корневых нод";
+    private static final String LOG_ERROR_LOADING_CHILD_NODES = "Ошибка загрузки дочерних нод";
     private GwtServiceAsync service = AppGwtService.get();
     private TreeInterface view;
     private Map<Integer, TreeNode> loadedNodes;//ключ айди и значение нода
@@ -79,7 +79,7 @@ public class TreePresenter
                     }
                     @Override
                     public void onFailure(Throwable caught) {
-                        GWT.log("Ошибка загрузки дочерних нод", caught);
+                        GWT.log(LOG_ERROR_LOADING_CHILD_NODES, caught);
                     }
                 });
             }
@@ -115,7 +115,7 @@ public class TreePresenter
 
             @Override
             public void onFailure(Throwable caught) {
-                GWT.log("Ошибка загрузки корневых нод", caught);
+                GWT.log(LOG_ERROR_LOADING_ROOT_NODES, caught);
             }
         });
     }

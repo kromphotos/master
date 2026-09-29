@@ -7,6 +7,11 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
 
 public class AllNodesView extends Composite implements AllNodesInterface {
+    private static final String COLUMN_PORT = "Порт";
+    private static final String COUMN_IP = "IP";
+    private static final String COLUMN_NAME = "Name";
+    private static final String COLUMN_PARENT_ID = "Parent ID";
+    private static final String COLUMN_ID = "ID";
     private CellTable<AllNodesViewData> table;
 
     public AllNodesView() {
@@ -26,7 +31,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
                 return String.valueOf(node.getId());
             }
         };
-        table.addColumn(idColumn, "ID");
+        table.addColumn(idColumn, COLUMN_ID);
 
         TextColumn<AllNodesViewData> parentIdColumn = new TextColumn<AllNodesViewData>() {
             @Override
@@ -34,7 +39,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
                 return String.valueOf(node.getParentId());
             }
         };
-        table.addColumn(parentIdColumn, "Parent ID");
+        table.addColumn(parentIdColumn, COLUMN_PARENT_ID);
 
         TextColumn<AllNodesViewData> nameColumn = new TextColumn<AllNodesViewData>() {
             @Override
@@ -42,7 +47,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
                 return node.getName();
             }
         };
-        table.addColumn(nameColumn, "Name");
+        table.addColumn(nameColumn, COLUMN_NAME);
 
         TextColumn<AllNodesViewData> ipColumn = new TextColumn<AllNodesViewData>() {
             @Override
@@ -50,7 +55,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
                 return node.getIp();
             }
         };
-        table.addColumn(ipColumn, "IP");
+        table.addColumn(ipColumn, COUMN_IP);
 
         TextColumn<AllNodesViewData> portColumn = new TextColumn<AllNodesViewData>() {
             @Override
@@ -58,7 +63,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
                 return String.valueOf(node.getPort());
             }
         };
-        table.addColumn(portColumn, "Порт");
+        table.addColumn(portColumn, COLUMN_PORT);
     }
     
     @Override

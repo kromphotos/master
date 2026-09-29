@@ -14,6 +14,17 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TreeView extends Composite implements TreeInterface {
+    private static final int INDENT_SIZE = 20;
+    private static final int MAGIC_NUMBER_INCREASE_BY_1 = 1;
+    private static final String STYLE_NAME_TREE_NODE_NAME_SELECTED = "tree-node-name-selected";
+    private static final String STYLE_NAME_TREE_NODE_NAME = "tree-node-name";
+    private static final String STYLE_NAME_TREE_EXPAND_BUTTON = "tree-expand-button";
+    private static final String PLUS_BUTTON = "+";
+    private static final String MINUS_BUTTON = "-";
+    private static final String PIXEL = "px";
+    private static final String STYLE_NAME_TREE_NODE_ROW = "tree-node-row";
+    private static final int NULL_LEVEL = 0;
+    private static final String STYLE_NAME_TREE_PANEL = "tree-panel";
     private NodeTreeViewHandler handler;
 
     //TODO(by Tutor)
@@ -22,7 +33,7 @@ public class TreeView extends Composite implements TreeInterface {
 
     public TreeView() {
         treePanel = new VerticalPanel(); 
-        treePanel.setStyleName("tree-panel");
+        treePanel.setStyleName(STYLE_NAME_TREE_PANEL);
         initWidget(treePanel);
     }
     
@@ -48,7 +59,7 @@ public class TreeView extends Composite implements TreeInterface {
         Collections.sort(roots);
 
         for (TreeViewData root : roots) {
-            addNode(root, nodes, expandedNodeIds, selectedNode, 0);
+            addNode(root, nodes, expandedNodeIds, selectedNode, NULL_LEVEL);
         }
     }
 
@@ -73,7 +84,7 @@ public class TreeView extends Composite implements TreeInterface {
         treePanel.add(row);
         if (expandedNodeIds.contains(node.getId())) {
             for (TreeViewData child : children) {
-                addNode(child, nodes, expandedNodeIds, selectedNode, level + 1);
+                addNode(child, nodes, expandedNodeIds, selectedNode, level + MAGIC_NUMBER_INCREASE_BY_1);
             }
         }
     }
@@ -82,20 +93,20 @@ public class TreeView extends Composite implements TreeInterface {
             final Set<Integer> expandedNodeIds, TreeViewData selectedNode, int level) {
 
         HorizontalPanel row = new HorizontalPanel();
-        row.setStyleName("tree-node-row");
+        row.setStyleName(STYLE_NAME_TREE_NODE_ROW);
 
         Label indent = new Label();
-        indent.setWidth((level * 20) + "px");
+        indent.setWidth((level * INDENT_SIZE) + PIXEL);
         row.add(indent);
 
         if (node.isHasChildren()) {
             final Button expandButton;
             if (expandedNodeIds.contains(node.getId())) {
-                expandButton = new Button("-");
+                expandButton = new Button(MINUS_BUTTON);
             } else {
-                expandButton = new Button("+");
+                expandButton = new Button(PLUS_BUTTON);
             }
-            expandButton.setStyleName("tree-expand-button");
+            expandButton.setStyleName(STYLE_NAME_TREE_EXPAND_BUTTON);
 
             expandButton.addClickHandler(new ClickHandler() {
                 @Override
@@ -111,18 +122,18 @@ public class TreeView extends Composite implements TreeInterface {
             row.add(expandButton);
 
         } else {
-            Button leafButton = new Button("-");
-            leafButton.setStyleName("tree-expand-button");
+            Button leafButton = new Button(MINUS_BUTTON);
+            leafButton.setStyleName(STYLE_NAME_TREE_EXPAND_BUTTON);
             leafButton.setEnabled(false);
 
             row.add(leafButton);
         }
 
         Label nameLabel = new Label(node.getName());
-        nameLabel.setStyleName("tree-node-name");
+        nameLabel.setStyleName(STYLE_NAME_TREE_NODE_NAME);
         if (selectedNode != null
                 && selectedNode.getId().equals(node.getId())) {
-            nameLabel.addStyleName("tree-node-name-selected");//добавить еще 1 класс не убирая существующий
+            nameLabel.addStyleName(STYLE_NAME_TREE_NODE_NAME_SELECTED);
         }
         nameLabel.addClickHandler(new ClickHandler() {
             @Override

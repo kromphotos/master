@@ -17,6 +17,7 @@ import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler {
+    private static final String lOG_ERROR_OF_LOADING_DATA = "Ошибка загрузки данных";
     private AllNodesInterface view;
     private GwtServiceAsync service = AppGwtService.get();
 
@@ -39,7 +40,7 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
 
             @Override
             public void onFailure(Throwable caught) {
-                GWT.log("Ошибка загрузки данных", caught);
+                GWT.log(lOG_ERROR_OF_LOADING_DATA, caught);
             }
         });
     }

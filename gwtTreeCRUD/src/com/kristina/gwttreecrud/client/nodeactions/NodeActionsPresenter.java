@@ -17,6 +17,8 @@ import com.kristina.gwttreecrud.client.nodeactions.NodeActionsInterface.NodeActi
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {
+    private static final String LOG_ERROR_OF_DELETE_NODE = "Ошибка удаления узла";
+    private static final String WINDOW_MESSAGE = "Вы действительно хотите выполнить удаление?";
     //TODO(by Tutor)
     // singleton? зачем тебе для него переменная то личная вообще теперь
     //private GwtServiceAsync service = GwtServiceCreator.get();
@@ -48,7 +50,7 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
 
                 //TODO(by Tutor)
                 // зачем выносить в отдельную переменную?
-                if (!Window.confirm("Вы действительно хотите выполнить удаление?")) {
+                if (!Window.confirm(WINDOW_MESSAGE)) {
                     return;
                 }
 
@@ -64,7 +66,7 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
 
                     @Override
                     public void onFailure(Throwable caught) {
-                        GWT.log("Ошибка удаления узла", caught);
+                        GWT.log(LOG_ERROR_OF_DELETE_NODE, caught);
                     }
                 });
             }

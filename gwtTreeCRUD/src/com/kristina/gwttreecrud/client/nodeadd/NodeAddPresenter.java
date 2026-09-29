@@ -13,6 +13,11 @@ import com.kristina.gwttreecrud.client.nodeadd.NodeAddInterface.NodeAddViewHandl
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
+    private static final String LOG_ERROR_OF_ADD_NODE = "Ошибка добавления узла";
+    private static final String LOG_NODE_IS_ADDED = "Узел добавлен!";
+    private static final String ERROR_OF_NOT_NUMBER_PORT = "Порт должен быть числом!";
+    private static final String ERROR_OF_NOT_NUMBER_ID = "ID родителя должен быть числом!";
+    private static final String ERROR_OF_EMPTY_FIELD = "Одно из полей было пустое!";
     private NodeAddView view;
     private boolean addingRoot;
     //TODO(by Tutor)
@@ -60,7 +65,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         if (name.trim().isEmpty()
                 || ip.trim().isEmpty()
                 || port.trim().isEmpty()) {
-            view.showError("Одно из полей было пустое!");
+            view.showError(ERROR_OF_EMPTY_FIELD);
             return;
         }
         
@@ -71,7 +76,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
             try {
                 parentIdInt = Integer.valueOf(parentId);
             } catch (NumberFormatException e) {
-                view.showError("ID родителя должен быть числом!");
+                view.showError(ERROR_OF_NOT_NUMBER_ID);
                 return;
             }
         }
@@ -79,7 +84,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         try {
             portInt = Integer.valueOf(port);
         } catch (NumberFormatException e) {
-            view.showError("Порт должен быть числом!");
+            view.showError(ERROR_OF_NOT_NUMBER_PORT);
             return;
         }
         
@@ -87,13 +92,13 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         AppGwtService.get().insertNode(node, new AsyncCallback<TreeNode>() {
             @Override
             public void onSuccess(TreeNode savedNode) {
-                GWT.log("Узел добавлен!");
+                GWT.log(LOG_NODE_IS_ADDED);
                 view.hideAddCard();
                 AppEventBus.get().fireEvent(new NodeAddedEvent(savedNode));
             }
             @Override
             public void onFailure(Throwable caught) {
-                GWT.log("Ошибка добавления узла",caught);
+                GWT.log(LOG_ERROR_OF_ADD_NODE,caught);
             }
         });
 

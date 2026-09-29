@@ -7,6 +7,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class NodeActionsView extends Composite implements NodeActionsInterface {   
+    private static final String BUTTON_DELETE = "Delete";
+    private static final String BUTTON_EDIT = "Edit";
+    private static final String BUTTON_ADD_CHILD = "Add child";
+    private static final String BUTTON_ADD_ROOT_NODE = "Add root node";
+
     private NodeActionsViewHandler handler;
     
     //TODO(by Tutor)
@@ -21,10 +26,10 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
     public NodeActionsView() {
         panel = new HorizontalPanel();
         panel.setSpacing(10);
-        addRootButton = new Button("Add root node");
-        addChildButton = new Button("Add child");
-        editButton = new Button("Edit");
-        deleteButton = new Button("Delete");
+        addRootButton = new Button(BUTTON_ADD_ROOT_NODE);
+        addChildButton = new Button(BUTTON_ADD_CHILD);
+        editButton = new Button(BUTTON_EDIT);
+        deleteButton = new Button(BUTTON_DELETE);
 
         addChildButton.setEnabled(false);
         editButton.setEnabled(false);

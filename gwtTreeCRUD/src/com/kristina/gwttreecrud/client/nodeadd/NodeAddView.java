@@ -11,7 +11,23 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeAddView extends DialogBox implements NodeAddInterface {
-    private static final String NODE_ADD_ERROR = "node-add-error";
+    private static final int INDEX_OF_SECOND_COLUMN = 1;
+    private static final int INDEX_OF_FIRST_COLUMN = 0;
+    private static final int INDEX_OF_FOURTH_ROW = 3;
+    private static final int INDEX_OF_THIRD_ROW = 2;
+    private static final int INDEX_OF_SECOND_ROW = 1;
+    private static final int INDEX_OF_FIRST_ROW = 0;
+    private static final int MAX_LENGTH_OF_NODE_PORT = 5;
+    private static final int MAX_LENGTH_OF_NODE_IP = 15;
+    private static final String NODE_PORT_FIELD_NAME = "Node's port:";
+    private static final String NODE_IP_FIELD_NAME = "Node's Ip:";
+    private static final String NODE_NAME_FIELD_NAME = "Node name:";
+    private static final String PARENT_ID_FIELD_NAME = "Parent's id:";
+    private static final String EMPTY_FIELD = "";
+    private static final String CANCEL_BUTTON = "Cancel";
+    private static final String SAVE_BUTTON = "Save";
+    private static final String ADD_WINDOW_NAME = "Add node:";
+    private static final String STYLE_NAME_NODE_ADD_ERROR = "node-add-error";
 
     private NodeAddViewHandler handler;
     
@@ -29,7 +45,7 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     private FlexTable formTable;
     
     public NodeAddView() {
-        setText("Add node:");
+        setText(ADD_WINDOW_NAME);
         
         setAnimationEnabled(true);
         setGlassEnabled(true);
@@ -42,10 +58,10 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         nodeIp = new TextBox();
         nodePort = new TextBox();
         errorLabel = new Label();
-        saveButton = new Button("Save");
-        cancelButton = new Button("Cancel");
+        saveButton = new Button(SAVE_BUTTON);
+        cancelButton = new Button(CANCEL_BUTTON);
         
-        errorLabel.setStyleName(NODE_ADD_ERROR);
+        errorLabel.setStyleName(STYLE_NAME_NODE_ADD_ERROR);
         
         saveButton.addClickHandler(new ClickHandler() {
             @Override
@@ -61,8 +77,7 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         cancelButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (handler!=null)
-                {
+                if (handler!=null) {
                     handler.onCancel();
                 }
             }
@@ -91,10 +106,10 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     @Override
     public void showAddCard(Integer parentIdValue) {
         parentId.setText(String.valueOf(parentIdValue));
-        nodeName.setText("");
-        nodeIp.setText("");
-        nodePort.setText("");
-        errorLabel.setText("");
+        nodeName.setText(EMPTY_FIELD);
+        nodeIp.setText(EMPTY_FIELD);
+        nodePort.setText(EMPTY_FIELD);
+        errorLabel.setText(EMPTY_FIELD);
 
         formTable.clear();
 
@@ -103,22 +118,22 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
         parentId.setText(String.valueOf(parentIdValue));
         parentId.setReadOnly(true);
 
-        formTable.setWidget(0, 0, new Label("Parent's id:"));
-        formTable.setWidget(0, 1, parentId);
+        formTable.setWidget(INDEX_OF_FIRST_ROW, INDEX_OF_FIRST_COLUMN, new Label(PARENT_ID_FIELD_NAME));
+        formTable.setWidget(INDEX_OF_FIRST_ROW, INDEX_OF_SECOND_COLUMN, parentId);
 
-        formTable.setWidget(1, 0, new Label("Node name:"));
-        formTable.setWidget(1, 1, nodeName);
+        formTable.setWidget(INDEX_OF_SECOND_ROW, INDEX_OF_FIRST_ROW, new Label(NODE_NAME_FIELD_NAME));
+        formTable.setWidget(INDEX_OF_SECOND_ROW, INDEX_OF_SECOND_COLUMN, nodeName);
 
-        formTable.setWidget(2, 0, new Label("Node's Ip:"));
-        formTable.setWidget(2, 1, nodeIp);
+        formTable.setWidget(INDEX_OF_THIRD_ROW, INDEX_OF_FIRST_COLUMN, new Label(NODE_IP_FIELD_NAME));
+        formTable.setWidget(INDEX_OF_THIRD_ROW, INDEX_OF_SECOND_COLUMN, nodeIp);
 
-        formTable.setWidget(3, 0, new Label("Node's port:"));
-        formTable.setWidget(3, 1, nodePort);
+        formTable.setWidget(INDEX_OF_FOURTH_ROW, INDEX_OF_FIRST_COLUMN, new Label(NODE_PORT_FIELD_NAME));
+        formTable.setWidget(INDEX_OF_FOURTH_ROW, INDEX_OF_SECOND_COLUMN, nodePort);
 
-        nodeIp.setMaxLength(15);
+        nodeIp.setMaxLength(MAX_LENGTH_OF_NODE_IP);
         //TODO(by Tutor)
         // порт может быть 5-ти значным
-        nodePort.setMaxLength(5);
+        nodePort.setMaxLength(MAX_LENGTH_OF_NODE_PORT);
 
         center();
         show();
@@ -126,24 +141,24 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     
     @Override
     public void showAddRootCard() {
-        nodeName.setText("");
-        nodeIp.setText("");
-        nodePort.setText("");
+        nodeName.setText(EMPTY_FIELD);
+        nodeIp.setText(EMPTY_FIELD);
+        nodePort.setText(EMPTY_FIELD);
 
-        errorLabel.setText("");
+        errorLabel.setText(EMPTY_FIELD);
         formTable.clear();
 
-        formTable.setWidget(0, 0, new Label("Node name:"));
-        formTable.setWidget(0, 1, nodeName);
+        formTable.setWidget(INDEX_OF_FIRST_ROW, INDEX_OF_FIRST_COLUMN, new Label(NODE_NAME_FIELD_NAME));
+        formTable.setWidget(INDEX_OF_FIRST_ROW, INDEX_OF_SECOND_COLUMN, nodeName);
 
-        formTable.setWidget(1, 0, new Label("Node's Ip:"));
-        formTable.setWidget(1, 1, nodeIp);
+        formTable.setWidget(INDEX_OF_SECOND_ROW, INDEX_OF_FIRST_ROW, new Label(NODE_IP_FIELD_NAME));
+        formTable.setWidget(INDEX_OF_SECOND_ROW, INDEX_OF_SECOND_COLUMN, nodeIp);
 
-        formTable.setWidget(2, 0, new Label("Node's port:"));
-        formTable.setWidget(2, 1, nodePort);
+        formTable.setWidget(INDEX_OF_THIRD_ROW, INDEX_OF_FIRST_COLUMN, new Label(NODE_PORT_FIELD_NAME));
+        formTable.setWidget(INDEX_OF_THIRD_ROW, INDEX_OF_SECOND_COLUMN, nodePort);
 
-        nodeIp.setMaxLength(15);
-        nodePort.setMaxLength(5);
+        nodeIp.setMaxLength(MAX_LENGTH_OF_NODE_IP);
+        nodePort.setMaxLength(MAX_LENGTH_OF_NODE_PORT);
 
         center();
         show();

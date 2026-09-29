@@ -19,6 +19,10 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
     //все там же все теже люди
     //private GwtServiceAsync service = GwtServiceCreator.get();
 
+    private static final String LOG_ERROR_NODE_IS_NOT_UPDATE = "Ошибка обновления узла";
+    private static final String LOG_NODE_IS_UPDATED = "Узел успешно обновлён";
+    private static final String ERROR_OF_NOT_NUMBER_PORT = "Порт должен быть числом!";
+    private static final String ERROR_OF_EMPTY_FIELD = "Одно из полей было пустое!";
     private NodeInfoInterface view;
     //private NodeInfoViewData viewData;
     private TreeNode selectedNode;
@@ -130,7 +134,7 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         }
 
         if (name.trim().isEmpty() || ip.trim().isEmpty() || port.trim().isEmpty()) {
-            view.showError("Одно из полей было пустое!");
+            view.showError(ERROR_OF_EMPTY_FIELD);
             return;
         }
 
@@ -139,7 +143,7 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         try {
             portInt = Integer.valueOf(port);
         } catch (NumberFormatException e) {
-            view.showError("Порт должен быть числом!");
+            view.showError(ERROR_OF_NOT_NUMBER_PORT);
             return;
         }
 
@@ -150,7 +154,7 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         AppGwtService.get().updateNode(selectedNode, new AsyncCallback<TreeNode>() {
             @Override
             public void onSuccess(TreeNode updatedNode) {
-                GWT.log("Узел успешно обновлён");
+                GWT.log(LOG_NODE_IS_UPDATED);
                 //TODO(by Tutor)
                 // зачем мы второй раз обновляем данные одного и того же объекта?
                 // зачем нам вообще нужен этот метод?
@@ -161,7 +165,7 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
             }
             @Override
             public void onFailure(Throwable caught) {
-                GWT.log("Ошибка обновления узла", caught);
+                GWT.log(LOG_ERROR_NODE_IS_NOT_UPDATE, caught);
             }
         });
     }
