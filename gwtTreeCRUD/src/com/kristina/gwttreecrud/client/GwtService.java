@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 /**
@@ -11,17 +12,17 @@ import com.kristina.gwttreecrud.shared.TreeNode;
  */
 @RemoteServiceRelativePath("greet")
 public interface GwtService extends RemoteService {
-    List<TreeNode> getAllNodes() throws IllegalArgumentException;
+    List<TreeNode> getAllNodes() throws TreeCrudProgramException;
 
-    TreeNode findById(Integer id) throws IllegalArgumentException;
+    TreeNode findById(Integer id) throws TreeCrudProgramException;
 
-    TreeNode updateNode(TreeNode node) throws IllegalArgumentException;
+    TreeNode updateNode(TreeNode node) throws TreeCrudProgramException;
 
-    TreeNode insertNode(TreeNode node) throws IllegalArgumentException;
+    TreeNode insertNode(TreeNode node) throws TreeCrudProgramException;
 
-    void deleteById(Integer id) throws IllegalArgumentException;
+    void deleteById(Integer id) throws TreeCrudProgramException;
 
-    List<TreeNode> getAllChildById(Integer parentId) throws IllegalArgumentException;
+    List<TreeNode> getAllChildById(Integer parentId) throws TreeCrudProgramException;
 
-    List<TreeNode> getAllRoots() throws IllegalArgumentException;
+    List<TreeNode> getAllRoots() throws TreeCrudProgramException;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.kristina.gwttreecrud.client.GwtService;
+import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 /**
@@ -28,41 +29,41 @@ public class GwtServiceImpl extends RemoteServiceServlet implements GwtService {
     }
 
     @Override
-    public List<TreeNode> getAllNodes() throws IllegalArgumentException {
+    public List<TreeNode> getAllNodes() throws TreeCrudProgramException {
         return service.findAll();
     }
 
     @Override
-    public TreeNode findById(Integer id) throws IllegalArgumentException {
+    public TreeNode findById(Integer id) throws TreeCrudProgramException {
         try {
             return service.findById(id);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Ошибка поиска TreeNode", e);
+            throw new TreeCrudProgramException("Ошибка поиска TreeNode", e);
         }
     }
 
     @Override
-    public TreeNode updateNode(TreeNode node) throws IllegalArgumentException {
+    public TreeNode updateNode(TreeNode node) throws TreeCrudProgramException {
         return service.updateNode(node);
     }
 
     @Override
-    public TreeNode insertNode(TreeNode node) throws IllegalArgumentException {
+    public TreeNode insertNode(TreeNode node) throws TreeCrudProgramException {
         return service.insertNode(node);
     }
 
     @Override
-    public void deleteById(Integer id) throws IllegalArgumentException {
+    public void deleteById(Integer id) throws TreeCrudProgramException {
         service.deleteById(id);
     }
 
     @Override
-    public List<TreeNode> getAllChildById(Integer parentId) throws IllegalArgumentException {
+    public List<TreeNode> getAllChildById(Integer parentId) throws TreeCrudProgramException {
         return service.getAllChildById(parentId);
     }
     
     @Override
-    public List<TreeNode> getAllRoots() throws IllegalArgumentException {
+    public List<TreeNode> getAllRoots() throws TreeCrudProgramException {
         return service.getAllRoots();
     }
 
