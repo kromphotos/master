@@ -18,9 +18,8 @@ public class NodeInfoViewData {
         this.port = port;
     }
 
-    
     //TODO(by Tutor)
-      //  это тут зачем? почему просто не пересоздать вью дату через new
+    //  это тут зачем? почему просто не пересоздать вью дату через new
     /*
     public void setData(Integer id, Integer parentId, String name, String ip, Integer port) {
         this.id = id;
@@ -30,7 +29,7 @@ public class NodeInfoViewData {
         this.port = port;
     }
     */
-    
+
     public Integer getId() {
         return id;
     }
@@ -71,8 +70,7 @@ public class NodeInfoViewData {
         this.port = port;
     }
 
-    
-  //TODO(by Tutor)
+    //TODO(by Tutor)
     //  это тут зачем? почему просто не удалить укзаатель на вью дату там, где это нужно
     /*
     public void clear() {
@@ -83,7 +81,7 @@ public class NodeInfoViewData {
         port = null;
     }
     */
-    
+
     @Override
     public String toString() {
         return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";

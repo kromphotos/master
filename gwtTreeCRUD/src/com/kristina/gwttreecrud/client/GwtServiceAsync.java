@@ -11,16 +11,22 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 public interface GwtServiceAsync {
     void getAllNodes(AsyncCallback<List<TreeNode>> callback)
             throws IllegalArgumentException;
+
     void findById(Integer id, AsyncCallback<TreeNode> callback)
             throws IllegalArgumentException;
+
     void updateNode(TreeNode node, AsyncCallback<TreeNode> callback)
             throws IllegalArgumentException;
+
     void insertNode(TreeNode node, AsyncCallback<TreeNode> callback)
             throws IllegalArgumentException;
+
     void deleteById(Integer id, AsyncCallback<Void> callback)
-            throws IllegalArgumentException; 
+            throws IllegalArgumentException;
+
     void getAllChildById(Integer parentId, AsyncCallback<List<TreeNode>> callback)
             throws IllegalArgumentException;
+
     void getAllRoots(AsyncCallback<List<TreeNode>> callback)
             throws IllegalArgumentException;
 }

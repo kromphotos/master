@@ -17,7 +17,6 @@ import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler {
-    private static final String lOG_ERROR_OF_LOADING_DATA = "Ошибка загрузки данных";
     private AllNodesInterface view;
     private GwtServiceAsync service = AppGwtService.get();
 
@@ -30,7 +29,7 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
     }
     //
     // Зачем тут два одинаковый куска кода? Различие только в названии. логика одинаковая, запрос тот же
-    
+
     private void loadNodes() {
         service.getAllNodes(new AsyncCallback<List<TreeNode>>() {
             @Override
@@ -40,11 +39,11 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
 
             @Override
             public void onFailure(Throwable caught) {
-                GWT.log(lOG_ERROR_OF_LOADING_DATA, caught);
+                GWT.log("Ошибка загрузки данных", caught);
             }
         });
     }
-    
+
     private List<AllNodesViewData> convertToData(List<TreeNode> nodes) {
         List<AllNodesViewData> newNodes = new ArrayList<>();
         if (nodes != null) {

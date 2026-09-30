@@ -1,12 +1,12 @@
 package com.kristina.gwttreecrud.client.tree;
 
-public class TreeViewData implements Comparable<TreeViewData>{
+public class TreeViewData implements Comparable<TreeViewData> {
     private Integer id;
     private Integer parentId;
     private String name;
-    
+
     private boolean hasChildren;
-    
+
     public TreeViewData(Integer id, Integer parentId, String name, boolean hasChildren) {
         this.id = id;
         this.parentId = parentId;
@@ -25,15 +25,15 @@ public class TreeViewData implements Comparable<TreeViewData>{
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public boolean isHasChildren() {
         return hasChildren;
     }
-    
+
     @Override
     public int compareTo(TreeViewData other) {
         return this.name.compareToIgnoreCase(other.name);

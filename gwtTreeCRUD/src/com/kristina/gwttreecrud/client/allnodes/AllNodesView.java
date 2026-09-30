@@ -12,6 +12,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
     private static final String COLUMN_NAME = "Name";
     private static final String COLUMN_PARENT_ID = "Parent ID";
     private static final String COLUMN_ID = "ID";
+
     private CellTable<AllNodesViewData> table;
 
     public AllNodesView() {
@@ -65,7 +66,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
         };
         table.addColumn(portColumn, COLUMN_PORT);
     }
-    
+
     @Override
     public void showNodes(List<AllNodesViewData> nodes) {
         table.setRowData(nodes);

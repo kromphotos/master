@@ -15,16 +15,20 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TreeView extends Composite implements TreeInterface {
     private static final int INDENT_SIZE = 20;
-    private static final int MAGIC_NUMBER_INCREASE_BY_1 = 1;
-    private static final String STYLE_NAME_TREE_NODE_NAME_SELECTED = "tree-node-name-selected";
-    private static final String STYLE_NAME_TREE_NODE_NAME = "tree-node-name";
-    private static final String STYLE_NAME_TREE_EXPAND_BUTTON = "tree-expand-button";
+    private static final int LEVEL_INCREMENT = 1;
+    private static final int ROOT_LEVEL = 0;
+
+    private static final String STYLE_TREE_NODE_NAME_SELECTED = "tree-node-name-selected";
+    private static final String STYLE_TREE_NODE_NAME = "tree-node-name";
+    private static final String STYLE_TREE_EXPAND_BUTTON = "tree-expand-button";
+    private static final String STYLE_TREE_NODE_ROW = "tree-node-row";
+    private static final String STYLE_TREE_PANEL = "tree-panel";
+
     private static final String PLUS_BUTTON = "+";
     private static final String MINUS_BUTTON = "-";
+
     private static final String PIXEL = "px";
-    private static final String STYLE_NAME_TREE_NODE_ROW = "tree-node-row";
-    private static final int NULL_LEVEL = 0;
-    private static final String STYLE_NAME_TREE_PANEL = "tree-panel";
+
     private NodeTreeViewHandler handler;
 
     //TODO(by Tutor)
@@ -32,11 +36,11 @@ public class TreeView extends Composite implements TreeInterface {
     private VerticalPanel treePanel;
 
     public TreeView() {
-        treePanel = new VerticalPanel(); 
-        treePanel.setStyleName(STYLE_NAME_TREE_PANEL);
+        treePanel = new VerticalPanel();
+        treePanel.setStyleName(STYLE_TREE_PANEL);
         initWidget(treePanel);
     }
-    
+
     @Override
     public void setHandler(NodeTreeViewHandler handler) {
         this.handler = handler;
@@ -52,19 +56,19 @@ public class TreeView extends Composite implements TreeInterface {
                 roots.add(node);
             }
         }
-
         //TODO(by Tutor)
         // отсортирован будет только рут?
         // всех надо сортировать
         Collections.sort(roots);
 
         for (TreeViewData root : roots) {
-            addNode(root, nodes, expandedNodeIds, selectedNode, NULL_LEVEL);
+            addNode(root, nodes, expandedNodeIds, selectedNode, ROOT_LEVEL);
         }
     }
 
     private List<TreeViewData> findChildren(TreeViewData parent, List<TreeViewData> nodes) {
         List<TreeViewData> children = new ArrayList<TreeViewData>();
+
         for (TreeViewData node : nodes) {
             if (parent.getId().equals(node.getParentId())) {
                 children.add(node);
@@ -80,20 +84,20 @@ public class TreeView extends Composite implements TreeInterface {
             TreeViewData selectedNode,
             int level) {
         List<TreeViewData> children = findChildren(node, nodes);
-        HorizontalPanel row = createNodeRow(node, children, expandedNodeIds, selectedNode, level);
+        HorizontalPanel row = createNodeRow(node, expandedNodeIds, selectedNode, level);
+
         treePanel.add(row);
         if (expandedNodeIds.contains(node.getId())) {
             for (TreeViewData child : children) {
-                addNode(child, nodes, expandedNodeIds, selectedNode, level + MAGIC_NUMBER_INCREASE_BY_1);
+                addNode(child, nodes, expandedNodeIds, selectedNode, level + LEVEL_INCREMENT);
             }
         }
     }
 
-    private HorizontalPanel createNodeRow(final TreeViewData node, List<TreeViewData> children,
+    private HorizontalPanel createNodeRow(final TreeViewData node,
             final Set<Integer> expandedNodeIds, TreeViewData selectedNode, int level) {
-
         HorizontalPanel row = new HorizontalPanel();
-        row.setStyleName(STYLE_NAME_TREE_NODE_ROW);
+        row.setStyleName(STYLE_TREE_NODE_ROW);
 
         Label indent = new Label();
         indent.setWidth((level * INDENT_SIZE) + PIXEL);
@@ -106,15 +110,17 @@ public class TreeView extends Composite implements TreeInterface {
             } else {
                 expandButton = new Button(PLUS_BUTTON);
             }
-            expandButton.setStyleName(STYLE_NAME_TREE_EXPAND_BUTTON);
+            expandButton.setStyleName(STYLE_TREE_EXPAND_BUTTON);
 
             expandButton.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
-                    if (expandedNodeIds.contains(node.getId())) {
-                        handler.onCollapseNode(node.getId());
-                    } else {
-                        handler.onExpandNode(node.getId());
+                    if (handler != null) {
+                        if (expandedNodeIds.contains(node.getId())) {
+                            handler.onCollapseNode(node.getId());
+                        } else {
+                            handler.onExpandNode(node.getId());
+                        }
                     }
                 }
             });
@@ -123,24 +129,25 @@ public class TreeView extends Composite implements TreeInterface {
 
         } else {
             Button leafButton = new Button(MINUS_BUTTON);
-            leafButton.setStyleName(STYLE_NAME_TREE_EXPAND_BUTTON);
+            leafButton.setStyleName(STYLE_TREE_EXPAND_BUTTON);
             leafButton.setEnabled(false);
 
             row.add(leafButton);
         }
 
         Label nameLabel = new Label(node.getName());
-        nameLabel.setStyleName(STYLE_NAME_TREE_NODE_NAME);
+        nameLabel.setStyleName(STYLE_TREE_NODE_NAME);
         if (selectedNode != null
                 && selectedNode.getId().equals(node.getId())) {
-            nameLabel.addStyleName(STYLE_NAME_TREE_NODE_NAME_SELECTED);
+            nameLabel.addStyleName(STYLE_TREE_NODE_NAME_SELECTED);
         }
         nameLabel.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                handler.onSelectNode(node.getId());
+                if (handler != null) {
+                    handler.onSelectNode(node.getId());
+                }
             }
-
         });
         row.add(nameLabel);
 

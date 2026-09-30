@@ -63,3 +63,17 @@
 }
 /*END nodeadd*/
 
+/*START main page*/
+.panel-title {
+    font-weight: bold;
+}
+
+.horizontal-space {
+    width: 40px;
+}
+
+.vertical-space {
+    height: 30px;
+}
+/*END main page*/
+
