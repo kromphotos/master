@@ -34,12 +34,8 @@ public class GwtServiceImpl extends RemoteServiceServlet implements GwtService {
     }
 
     @Override
-    public TreeNode findById(Integer id) throws TreeCrudProgramException {
-        try {
-            return service.findById(id);
-        } catch (Exception e) {
-            throw new TreeCrudProgramException("Ошибка поиска TreeNode", e);
-        }
+    public TreeNode findById(Long id) throws TreeCrudProgramException { 
+        return service.findById(id);
     }
 
     @Override
@@ -53,12 +49,12 @@ public class GwtServiceImpl extends RemoteServiceServlet implements GwtService {
     }
 
     @Override
-    public void deleteById(Integer id) throws TreeCrudProgramException {
+    public void deleteById(Long id) throws TreeCrudProgramException {
         service.deleteById(id);
     }
 
     @Override
-    public List<TreeNode> getAllChildById(Integer parentId) throws TreeCrudProgramException {
+    public List<TreeNode> getAllChildById(Long parentId) throws TreeCrudProgramException {
         return service.getAllChildById(parentId);
     }
     

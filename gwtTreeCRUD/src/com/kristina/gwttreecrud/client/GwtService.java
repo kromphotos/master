@@ -14,15 +14,15 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 public interface GwtService extends RemoteService {
     List<TreeNode> getAllNodes() throws TreeCrudProgramException;
 
-    TreeNode findById(Integer id) throws TreeCrudProgramException;
+    TreeNode findById(Long id) throws TreeCrudProgramException;
 
     TreeNode updateNode(TreeNode node) throws TreeCrudProgramException;
 
     TreeNode insertNode(TreeNode node) throws TreeCrudProgramException;
 
-    void deleteById(Integer id) throws TreeCrudProgramException;
+    void deleteById(Long id) throws TreeCrudProgramException;
 
-    List<TreeNode> getAllChildById(Integer parentId) throws TreeCrudProgramException;
+    List<TreeNode> getAllChildById(Long parentId) throws TreeCrudProgramException;
 
     List<TreeNode> getAllRoots() throws TreeCrudProgramException;
 }

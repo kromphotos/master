@@ -1,7 +1,7 @@
 package com.kristina.gwttreecrud.client.nodeadd;
 
 public interface NodeAddInterface {
-    void showAddCard(Integer parentIdValue);
+    void showAddCard(Long parentIdValue);
 
     void showAddRootCard();
 
@@ -10,7 +10,7 @@ public interface NodeAddInterface {
     void hideAddCard();
 
     interface NodeAddViewHandler {
-        void onSaveNode(String parentiD, String nodeName, String nodeIp, String port);
+        void onSaveNode(String parentId, String nodeName, String nodeIp, String port);
 
         void onCancel();
     };

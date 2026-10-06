@@ -1,13 +1,13 @@
 package com.kristina.gwttreecrud.client.allnodes;
 
 public class AllNodesViewData {
-    private Integer id;
-    private Integer parentId;
+    private Long id;
+    private Long parentId;
     private String name;
     private String ip;
     private Integer port;
 
-    public AllNodesViewData(Integer id, Integer parentId, String name, String ip, Integer port) {
+    public AllNodesViewData(Long id, Long parentId, String name, String ip, Integer port) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
@@ -15,19 +15,19 @@ public class AllNodesViewData {
         this.port = port;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -57,6 +57,8 @@ public class AllNodesViewData {
 
     @Override
     public String toString() {
-        return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
+        return "AllNodesViewData [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
     }
+
+    
 }

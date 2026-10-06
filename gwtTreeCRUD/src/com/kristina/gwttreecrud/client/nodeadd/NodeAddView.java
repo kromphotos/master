@@ -116,7 +116,7 @@ public class NodeAddView extends DialogBox implements NodeAddInterface {
     }
 
     @Override
-    public void showAddCard(Integer parentIdValue) {
+    public void showAddCard(Long parentIdValue) {
         parentId.setText(String.valueOf(parentIdValue));
         nodeName.setText(EMPTY_FIELD);
         nodeIp.setText(EMPTY_FIELD);

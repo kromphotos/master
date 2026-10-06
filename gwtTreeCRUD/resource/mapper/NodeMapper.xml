@@ -24,7 +24,7 @@
 	    ORDER BY name
 	</select> 
 	
-	<select id="findById" resultMap="UserResultMap" parameterType="Integer">
+	<select id="findById" resultMap="UserResultMap" parameterType="java.lang.Long">
 	    SELECT id,
 	           parent_id,
 	           name,
@@ -34,7 +34,7 @@
 	    WHERE id=#{id}
 	</select>
 	
-	<delete id="deleteById" parameterType="Integer">
+	<delete id="deleteById" parameterType="java.lang.Long">
 	DELETE FROM tree_node
 	WHERE id = #{id}
 	</delete>
@@ -48,14 +48,14 @@
 	</update>
 	
 	<insert id="insertNode" parameterType="com.kristina.gwttreecrud.shared.TreeNode">
-	 <selectKey    keyProperty="id"    resultType="Integer"    order="BEFORE">
+	 <selectKey    keyProperty="id"    resultType="java.lang.Long"    order="BEFORE">
 	    SELECT NEXTVAL('tree_node_SEQ')
 	</selectKey>
 	INSERT INTO tree_node(id,parent_id,name,ip,port)
 	VALUES (#{id}, #{parentId}, #{name}, #{ip}, #{port})
 	</insert>
 	
-	<select id="getAllChildById" resultMap="UserResultMap" parameterType="Integer">
+	<select id="getAllChildById" resultMap="UserResultMap" parameterType="java.lang.Long">
     SELECT n.id, n.parent_id, n.name, n.ip, n.port,
     EXISTS (
                SELECT 1

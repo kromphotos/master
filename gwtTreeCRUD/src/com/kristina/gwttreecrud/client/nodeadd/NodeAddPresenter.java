@@ -1,6 +1,7 @@
 package com.kristina.gwttreecrud.client.nodeadd;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.AppGwtService;
 import com.kristina.gwttreecrud.client.events.AddChildNodeEvent;
@@ -10,9 +11,11 @@ import com.kristina.gwttreecrud.client.events.AddRootNodeEventHandler;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.NodeAddedEvent;
 import com.kristina.gwttreecrud.client.nodeadd.NodeAddInterface.NodeAddViewHandler;
+import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
+    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
     private static final String ERROR_OF_NOT_NUMBER_PORT = "Порт должен быть числом!";
     private static final String ERROR_OF_NOT_NUMBER_ID = "ID родителя должен быть числом!";
     private static final String ERROR_OF_EMPTY_FIELD = "Одно из полей было пустое!";
@@ -22,8 +25,8 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
     //TODO(by Tutor)
     // Опять singleton? ты везде так сделала? 
 
-    public NodeAddPresenter(NodeAddView view) {
-        this.view = view;
+    public NodeAddPresenter(NodeAddView viewParameter) {
+        this.view = viewParameter;
 
         view.setHandler(new NodeAddViewHandler() {
             //TODO(by Tutor)
@@ -36,7 +39,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
 
             @Override
             public void onCancel() {
-                NodeAddPresenter.this.view.hideAddCard();
+                view.hideAddCard();
             }
         });
 
@@ -68,12 +71,12 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
             return;
         }
 
-        Integer parentIdInt = null;
+        Long parentIdLong = null;
         Integer portInt;
 
         if (!addingRoot && !parentId.trim().isEmpty()) {
             try {
-                parentIdInt = Integer.valueOf(parentId);
+                parentIdLong = Long.valueOf(parentId);
             } catch (NumberFormatException e) {
                 view.showError(ERROR_OF_NOT_NUMBER_ID);
                 return;
@@ -87,7 +90,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
             return;
         }
 
-        final TreeNode node = new TreeNode(null, parentIdInt, name, ip, portInt);
+        final TreeNode node = new TreeNode(null, parentIdLong, name, ip, portInt);
         AppGwtService.get().insertNode(node, new AsyncCallback<TreeNode>() {
             @Override
             public void onSuccess(TreeNode savedNode) {
@@ -97,8 +100,12 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
             }
 
             @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка добавления узла", caught);
+            public void onFailure(Throwable e) {
+                if (e instanceof TreeCrudProgramException) {
+                    Window.alert(e.getMessage());
+                } else {
+                    Window.alert(ERROR_UNKNOWN);
+                }
             }
         });
 

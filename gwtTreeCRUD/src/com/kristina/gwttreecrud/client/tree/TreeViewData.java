@@ -1,24 +1,24 @@
 package com.kristina.gwttreecrud.client.tree;
 
 public class TreeViewData implements Comparable<TreeViewData> {
-    private Integer id;
-    private Integer parentId;
+    private Long id;
+    private Long parentId;
     private String name;
 
     private boolean hasChildren;
 
-    public TreeViewData(Integer id, Integer parentId, String name, boolean hasChildren) {
+    public TreeViewData(Long id, Long parentId, String name, boolean hasChildren) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
         this.hasChildren = hasChildren;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 

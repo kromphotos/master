@@ -1,6 +1,7 @@
 package com.kristina.gwttreecrud.client.nodeinfo;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.AppGwtService;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
@@ -12,9 +13,11 @@ import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoInterface.NodeInfoViewHandler;
+import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
+    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
     //TODO(by Tutor)
     //все там же все теже люди
     private static final String ERROR_PORT_NOT_NUMBER = "Порт должен быть числом!";
@@ -23,8 +26,8 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
     private NodeInfoInterface view;
     private TreeNode selectedNode;
 
-    public NodeInfoPresenter(NodeInfoInterface view) {
-        this.view = view;
+    public NodeInfoPresenter(NodeInfoInterface viewParameter) {
+        this.view = viewParameter;
 
         view.setHandler(new NodeInfoViewHandler() {
             @Override
@@ -35,7 +38,7 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
             @Override
             public void onCancel() {
                 if (selectedNode != null) {
-                    NodeInfoPresenter.this.view.showNode(new NodeInfoViewData(selectedNode.getId(),
+                    view.showNode(new NodeInfoViewData(selectedNode.getId(),
                             selectedNode.getParentId(),
                             selectedNode.getName(),
                             selectedNode.getIp(),
@@ -159,8 +162,12 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
             }
 
             @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка обновления узла", caught);
+            public void onFailure(Throwable e) {
+                if (e instanceof TreeCrudProgramException) {
+                    Window.alert(e.getMessage());
+                } else {
+                    Window.alert(ERROR_UNKNOWN);
+                }
             }
         });
     }

@@ -7,12 +7,12 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
 
 public class AllNodesView extends Composite implements AllNodesInterface {
-    private static final String COLUMN_PORT = "Порт";
-    private static final String COUMN_IP = "IP";
-    private static final String COLUMN_NAME = "Name";
-    private static final String COLUMN_PARENT_ID = "Parent ID";
     private static final String COLUMN_ID = "ID";
-
+    private static final String COLUMN_PARENT_ID = "Parent ID";
+    private static final String COLUMN_NAME = "Name";
+    private static final String COLUMN_IP = "IP";
+    private static final String COLUMN_PORT = "Порт";
+    
     private CellTable<AllNodesViewData> table;
 
     public AllNodesView() {
@@ -56,7 +56,7 @@ public class AllNodesView extends Composite implements AllNodesInterface {
                 return node.getIp();
             }
         };
-        table.addColumn(ipColumn, COUMN_IP);
+        table.addColumn(ipColumn, COLUMN_IP);
 
         TextColumn<AllNodesViewData> portColumn = new TextColumn<AllNodesViewData>() {
             @Override

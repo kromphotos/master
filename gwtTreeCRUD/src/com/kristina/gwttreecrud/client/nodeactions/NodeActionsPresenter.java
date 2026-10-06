@@ -1,6 +1,5 @@
 package com.kristina.gwttreecrud.client.nodeactions;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.AppGwtService;
@@ -14,9 +13,11 @@ import com.kristina.gwttreecrud.client.events.EditNodeEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
 import com.kristina.gwttreecrud.client.nodeactions.NodeActionsInterface.NodeActionsViewHandler;
+import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {
+    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
     private static final String WINDOW_MESSAGE = "Вы действительно хотите выполнить удаление?";
     //TODO(by Tutor)
     // singleton? зачем тебе для него переменная то личная вообще теперь
@@ -50,19 +51,22 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
                     return;
                 }
 
-                final Integer nodeId = selectedNode.getId();
+                final Long nodeId = selectedNode.getId();
 
                 AppGwtService.get().deleteById(nodeId, new AsyncCallback<Void>() {
                     @Override
                     public void onSuccess(Void result) {
                         AppEventBus.get().fireEvent(new DeleteNodeEvent(nodeId));
-                        AppEventBus.get().fireEvent(new ClearSelectionEvent());
-                        clearSelection();
+                        //AppEventBus.get().fireEvent(new ClearSelectionEvent());
                     }
 
                     @Override
-                    public void onFailure(Throwable caught) {
-                        GWT.log("Ошибка удаления узла", caught);
+                    public void onFailure(Throwable e) {
+                        if (e instanceof TreeCrudProgramException) {
+                            Window.alert(e.getMessage());
+                        } else {
+                            Window.alert(ERROR_UNKNOWN);
+                        }
                     }
                 });
             }
@@ -158,13 +162,6 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
     }
     */
 
-    //TODO(by Tutor)
-    // зачем паблик?
-    private void clearSelection() {
-        selectedNode = null;
-        view.setNodeSelected(false);
-    }
-
     @Override
     public void onNodeSelected(NodeSelectedEvent event) {
         TreeNode node = event.getNode();
@@ -174,6 +171,7 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
 
     @Override
     public void clearSelection(ClearSelectionEvent event) {
-        clearSelection();
+        selectedNode = null;
+        view.setNodeSelected(false);
     }
 }

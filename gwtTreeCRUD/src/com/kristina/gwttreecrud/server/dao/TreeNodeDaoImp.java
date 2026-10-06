@@ -18,12 +18,12 @@ public class TreeNodeDaoImp implements TreeNodeDao {
     }
 
     @Override
-    public TreeNode findById(Integer id) {
+    public TreeNode findById(Long id) {
         return mapper.findById(id);
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         mapper.deleteById(id);
     }
 
@@ -38,7 +38,7 @@ public class TreeNodeDaoImp implements TreeNodeDao {
     }
     
     @Override
-    public List<TreeNode> getAllChildById(Integer parentId) {
+    public List<TreeNode> getAllChildById(Long parentId) {
         return mapper.getAllChildById(parentId);
     }
     

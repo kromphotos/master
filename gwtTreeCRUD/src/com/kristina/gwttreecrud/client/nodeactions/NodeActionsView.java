@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class NodeActionsView extends Composite implements NodeActionsInterface {
-    private static final int SPACE_BETWEEN_BUTTONS = 10;
+    private static final String STYLE_NODE_ACTIONS_PANEL = "node-actions-panel";
 
     private static final String BUTTON_DELETE = "Delete";
     private static final String BUTTON_EDIT = "Edit";
@@ -26,13 +26,12 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
 
     public NodeActionsView() {
         panel = new HorizontalPanel();
+        panel.setStyleName(STYLE_NODE_ACTIONS_PANEL);
 
         addRootButton = new Button(BUTTON_ADD_ROOT_NODE);
         addChildButton = new Button(BUTTON_ADD_CHILD);
         editButton = new Button(BUTTON_EDIT);
         deleteButton = new Button(BUTTON_DELETE);
-
-        panel.setSpacing(SPACE_BETWEEN_BUTTONS);
 
         addChildButton.setEnabled(false);
         editButton.setEnabled(false);

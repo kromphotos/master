@@ -4,13 +4,13 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class DeleteNodeEvent extends GwtEvent<DeleteNodeEventHandler> {
     public static final Type<DeleteNodeEventHandler> TYPE = new Type<DeleteNodeEventHandler>();
-    private final Integer nodeId;
+    private final Long nodeId;
     
-    public DeleteNodeEvent(Integer nodeId) {
+    public DeleteNodeEvent(Long nodeId) {
         this.nodeId = nodeId;
     }
     
-    public Integer getNodeId() {
+    public Long getNodeId() {
         return nodeId;
     }
     

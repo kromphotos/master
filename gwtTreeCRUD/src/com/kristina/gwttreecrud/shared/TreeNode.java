@@ -5,8 +5,8 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TreeNode implements IsSerializable {
-    private Integer id;
-    private Integer parentId;
+    private Long id;
+    private Long parentId;
     private String name;
     private String ip;
     private Integer port;
@@ -17,7 +17,7 @@ public class TreeNode implements IsSerializable {
     public TreeNode() {
     }
 
-    public TreeNode(Integer id, Integer parentId, String name, String ip, Integer port) {
+    public TreeNode(Long id, Long parentId, String name, String ip, Integer port) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
@@ -25,19 +25,19 @@ public class TreeNode implements IsSerializable {
         this.port = port;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -81,12 +81,9 @@ public class TreeNode implements IsSerializable {
         this.hasChildren = hasChildren;
     }
 
-    
-    
-    //TODO(by Tutor)
-    // не полноценный. не все поля охватывает
     @Override
     public String toString() {
-        return "Node info: [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + ", hasChildren=" + hasChildren + "]" + "\ninfo of it's children: " + children;
+        return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + ", hasChildren=" + hasChildren
+                + ", children=" + children + "]";
     }
 }

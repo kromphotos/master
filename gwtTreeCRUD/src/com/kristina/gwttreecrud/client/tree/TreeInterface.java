@@ -5,16 +5,16 @@ import java.util.Set;
 
 public interface TreeInterface {
     interface NodeTreeViewHandler {
-        void onCollapseNode(Integer id);
+        void onCollapseNode(Long id);
 
-        void onExpandNode(Integer id);
+        void onExpandNode(Long id);
 
-        void onSelectNode(Integer id);
+        void onSelectNode(Long id);
     };
 
     void setHandler(NodeTreeViewHandler handler);
 
     void showTree(List<TreeViewData> nodes,
-            Set<Integer> expandedNodeIds,
+            Set<Long> expandedNodeIds,
             TreeViewData selectedNode);
 }

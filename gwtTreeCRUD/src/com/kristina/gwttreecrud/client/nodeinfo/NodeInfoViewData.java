@@ -1,8 +1,8 @@
 package com.kristina.gwttreecrud.client.nodeinfo;
 
 public class NodeInfoViewData {
-    private Integer id;
-    private Integer parentId;
+    private Long id;
+    private Long parentId;
     private String name;
     private String ip;
     private Integer port;
@@ -10,7 +10,7 @@ public class NodeInfoViewData {
     public NodeInfoViewData() {
     }
 
-    public NodeInfoViewData(Integer id, Integer parentId, String name, String ip, Integer port) {
+    public NodeInfoViewData(Long id, Long parentId, String name, String ip, Integer port) {
         this.id = id;
         this.parentId = parentId;
         this.name = name;
@@ -30,19 +30,19 @@ public class NodeInfoViewData {
     }
     */
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -70,6 +70,11 @@ public class NodeInfoViewData {
         this.port = port;
     }
 
+    @Override
+    public String toString() {
+        return "NodeInfoViewData [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
+    }
+
     //TODO(by Tutor)
     //  это тут зачем? почему просто не удалить укзаатель на вью дату там, где это нужно
     /*
@@ -81,9 +86,4 @@ public class NodeInfoViewData {
         port = null;
     }
     */
-
-    @Override
-    public String toString() {
-        return "TreeNode [id=" + id + ", parentId=" + parentId + ", name=" + name + ", ip=" + ip + ", port=" + port + "]";
-    }
 }

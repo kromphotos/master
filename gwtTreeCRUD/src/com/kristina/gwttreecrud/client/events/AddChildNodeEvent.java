@@ -4,13 +4,13 @@ import com.google.gwt.event.shared.GwtEvent;
 
 public class AddChildNodeEvent extends GwtEvent<AddChildNodeEventHandler> {
     public static final Type<AddChildNodeEventHandler> TYPE = new Type<AddChildNodeEventHandler>();
-    private final Integer parentId;
+    private final Long parentId;
     
-    public AddChildNodeEvent(Integer parentId) {
+    public AddChildNodeEvent(Long parentId) {
         this.parentId = parentId;
     }
     
-    public Integer getParentId() {
+    public Long getParentId() {
         return parentId;
     }
     

@@ -11,9 +11,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class NodeInfoView extends Composite implements NodeInfoInterface {
-    private static final int AMOUNT_OF_COLUMNS = 2;
-    private static final int AMOUNT_OF_ROWS = 5;
-
     private static final int COLUMN_OF_LABEL = 0;
     private static final int COLUMN_OF_VALUE = 1;
 
@@ -46,6 +43,7 @@ public class NodeInfoView extends Composite implements NodeInfoInterface {
 
     private static final String NAME_OF_NODE_INFORMATION_WINDOW = "Selected:";
     private static final String NAME_OF_NODE_EDIT_WINDOW = "Edit:";
+    
     private NodeInfoViewHandler handler;
 
     //TODO(by Tutor)
@@ -164,8 +162,8 @@ public class NodeInfoView extends Composite implements NodeInfoInterface {
     }
 
     private void styleTable() {
-        for (int row = 0; row < AMOUNT_OF_ROWS; row++) {
-            for (int column = 0; column < AMOUNT_OF_COLUMNS; column++) {
+        for (int row = 0; row < table.getRowCount(); row++) {
+            for (int column = 0; column < table.getCellCount(row); column++) {
                 table.getCellFormatter().setStyleName(
                         row,
                         column,

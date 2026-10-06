@@ -57,6 +57,12 @@
 }
 /*END nodeinfo*/
 
+/*START nodeactions*/
+.node-actions-panel button {
+    margin-right: 20px;
+}
+/*END nodeactions*/
+
 /*START nodeadd*/
 .node-add-error {
     color: red;
@@ -76,4 +82,3 @@
     height: 30px;
 }
 /*END main page*/
-

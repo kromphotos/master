@@ -33,30 +33,30 @@ public class TreeNodeServiceImp implements TreeNodeService {
             TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
             return dao.findAll();
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при загрузке всех узлов: " + e.getMessage(), e);
+            throw new TreeCrudProgramException("Ошибка при загрузке всех узлов");
         }
     }
 
     @Override
-    public TreeNode findById(Integer id) throws TreeCrudProgramException {
+    public TreeNode findById(Long id) throws TreeCrudProgramException {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
             TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
             return dao.findById(id);
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при поиске узла по id=" + id + ": " + e.getMessage(), e);
+            throw new TreeCrudProgramException("Ошибка при поиске узла по id = " + id);
         }
     }
 
     @Override
-    public void deleteById(Integer id) throws TreeCrudProgramException {
+    public void deleteById(Long id) throws TreeCrudProgramException {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
             TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
             dao.deleteById(id);
             session.commit();
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при удалении узла id=" + id + ": " + e.getMessage(), e);
+            throw new TreeCrudProgramException("Ошибка при удалении узла id = " + id);
         }
     }
 
@@ -69,7 +69,7 @@ public class TreeNodeServiceImp implements TreeNodeService {
             session.commit();
             return node;
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при обновлении узла: " + e.getMessage(), e);
+            throw new TreeCrudProgramException("Ошибка при обновлении узла");
         }
     }
 
@@ -82,18 +82,18 @@ public class TreeNodeServiceImp implements TreeNodeService {
             session.commit();
             return node;
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при добавлении узла: " + e.getMessage(), e);
+            throw new TreeCrudProgramException("Ошибка при добавлении узла");
         }
     }
 
     @Override
-    public List<TreeNode> getAllChildById(Integer parentId) throws TreeCrudProgramException {
+    public List<TreeNode> getAllChildById(Long parentId) throws TreeCrudProgramException {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             NodeMapper mapper = session.getMapper(NodeMapper.class);
             TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
             return dao.getAllChildById(parentId);
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при загрузке детей узла id=" + parentId + ": " + e.getMessage(), e);
+            throw new TreeCrudProgramException("Ошибка при загрузке детей узла id = " + parentId);
         }
     }
     
@@ -104,7 +104,7 @@ public class TreeNodeServiceImp implements TreeNodeService {
             TreeNodeDaoImp dao = new TreeNodeDaoImp(mapper);
             return dao.getAllRoots();
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при загрузке корневых узлов: " + e.getMessage(), e);
+            throw new TreeCrudProgramException("Ошибка при загрузке корневых узлов");
         }
     }
 

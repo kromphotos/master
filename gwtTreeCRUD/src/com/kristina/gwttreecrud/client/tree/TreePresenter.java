@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.AppGwtService;
-import com.kristina.gwttreecrud.client.GwtServiceAsync;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEvent;
 import com.kristina.gwttreecrud.client.events.ClearSelectionEventHandler;
@@ -22,6 +21,7 @@ import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
 import com.kristina.gwttreecrud.client.tree.TreeInterface.NodeTreeViewHandler;
+import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 //TODO(by Tutor)
@@ -29,24 +29,25 @@ import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class TreePresenter
         implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
-    private GwtServiceAsync service = AppGwtService.get();
+    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
+    //private GwtServiceAsync service = AppGwtService.get();
     private TreeInterface view;
 
-    private Map<Integer, TreeNode> loadedNodes;
+    private Map<Long, TreeNode> loadedNodes;
     private List<TreeViewData> viewNodes;
-    private Set<Integer> expandedNodeIds;
+    private Set<Long> expandedNodeIds;
 
     private TreeNode selectedNode;
 
     public TreePresenter(TreeInterface view) {
         this.view = view;
         this.viewNodes = new ArrayList<TreeViewData>();
-        this.expandedNodeIds = new HashSet<Integer>();
-        this.loadedNodes = new HashMap<Integer, TreeNode>();
+        this.expandedNodeIds = new HashSet<Long>();
+        this.loadedNodes = new HashMap<Long, TreeNode>();
 
         view.setHandler(new NodeTreeViewHandler() {
             @Override
-            public void onCollapseNode(final Integer id) {
+            public void onCollapseNode(final Long id) {
                 expandedNodeIds.remove(id);
                 removeExpandedDescendants(id);
                 if (selectedNode != null && isDescendant(selectedNode.getId(), id)) {
@@ -56,7 +57,7 @@ public class TreePresenter
             }
 
             @Override
-            public void onExpandNode(final Integer id) {
+            public void onExpandNode(final Long id) {
                 TreeNode node = loadedNodes.get(id);
 
                 if (node == null) {
@@ -67,7 +68,7 @@ public class TreePresenter
                     rebuildViewNodes();
                     return;
                 }
-                service.getAllChildById(id, new AsyncCallback<List<TreeNode>>() {
+                AppGwtService.get().getAllChildById(id, new AsyncCallback<List<TreeNode>>() {
                     @Override
                     public void onSuccess(List<TreeNode> children) {
                         TreeNode node = loadedNodes.get(id);
@@ -80,14 +81,18 @@ public class TreePresenter
                     }
 
                     @Override
-                    public void onFailure(Throwable caught) {
-                        GWT.log("Ошибка загрузки дочерних нод", caught);
+                    public void onFailure(Throwable e) {
+                        if (e instanceof TreeCrudProgramException) {
+                            Window.alert(e.getMessage());
+                        } else {
+                            Window.alert(ERROR_UNKNOWN);
+                        }
                     }
                 });
             }
 
             @Override
-            public void onSelectNode(Integer id) {
+            public void onSelectNode(Long id) {
                 TreeNode node = findNodeById(id);
 
                 if (node == null) {
@@ -108,7 +113,7 @@ public class TreePresenter
     }
 
     private void loadRoots() {
-        service.getAllRoots(new AsyncCallback<List<TreeNode>>() {
+        AppGwtService.get().getAllRoots(new AsyncCallback<List<TreeNode>>() {
             @Override
             public void onSuccess(List<TreeNode> roots) {
                 for (TreeNode node : roots) {
@@ -118,8 +123,12 @@ public class TreePresenter
             }
 
             @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка загрузки корневых нод", caught);
+            public void onFailure(Throwable e) {
+                if (e instanceof TreeCrudProgramException) {
+                    Window.alert(e.getMessage());
+                } else {
+                    Window.alert(ERROR_UNKNOWN);
+                }
             }
         });
     }
@@ -176,7 +185,7 @@ public class TreePresenter
     }
     */
 
-    private void removeExpandedDescendants(Integer nodeId) {
+    private void removeExpandedDescendants(Long nodeId) {
         TreeNode node = findNodeById(nodeId);
 
         if (node == null || node.getChildren() == null) {
@@ -191,14 +200,14 @@ public class TreePresenter
         }
     }
 
-    private boolean isDescendant(Integer selectedNodeId, Integer collapsedNodeId) {
+    private boolean isDescendant(Long selectedNodeId, Long collapsedNodeId) {
         TreeNode node = findNodeById(selectedNodeId);
 
         if (node == null) {
             return false;
         }
 
-        Integer parentId = node.getParentId();
+        Long parentId = node.getParentId();
         while (parentId != null) {
             if (parentId.equals(collapsedNodeId)) {
                 return true;
@@ -237,7 +246,7 @@ public class TreePresenter
     }
     */
 
-    private TreeNode findNodeById(Integer nodeId) {
+    private TreeNode findNodeById(Long nodeId) {
         return loadedNodes.get(nodeId);
     }
 
@@ -253,9 +262,9 @@ public class TreePresenter
     }
     */
 
-    private Set<Integer> findDescendantIds(Integer nodeId) {
+    private Set<Long> findDescendantIds(Long nodeId) {
         TreeNode node = loadedNodes.get(nodeId);
-        Set<Integer> descendantIds = new HashSet<Integer>();
+        Set<Long> descendantIds = new HashSet<Long>();
 
         if (node == null || node.getChildren() == null) {
             return descendantIds;
@@ -302,21 +311,21 @@ public class TreePresenter
 
     @Override
     public void deleteNode(DeleteNodeEvent event) {
-        Integer nodeId = event.getNodeId();
+        Long nodeId = event.getNodeId();
         TreeNode node = findNodeById(nodeId);
 
         if (node == null) {
             return;
         }
 
-        Set<Integer> idsToRemove = findDescendantIds(nodeId);
+        Set<Long> idsToRemove = findDescendantIds(nodeId);
         idsToRemove.add(nodeId);
 
-        for (Integer id : idsToRemove) {
+        for (Long id : idsToRemove) {
             loadedNodes.remove(id);
         }
 
-        Integer parentId = node.getParentId();
+        Long parentId = node.getParentId();
         if (parentId != null) {
             TreeNode parent = findNodeById(parentId);
             if (parent != null && parent.getChildren() != null) {

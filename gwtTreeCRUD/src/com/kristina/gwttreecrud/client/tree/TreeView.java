@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -27,8 +28,6 @@ public class TreeView extends Composite implements TreeInterface {
     private static final String PLUS_BUTTON = "+";
     private static final String MINUS_BUTTON = "-";
 
-    private static final String PIXEL = "px";
-
     private NodeTreeViewHandler handler;
 
     //TODO(by Tutor)
@@ -47,7 +46,7 @@ public class TreeView extends Composite implements TreeInterface {
     }
 
     @Override
-    public void showTree(List<TreeViewData> nodes, Set<Integer> expandedNodeIds, TreeViewData selectedNode) {
+    public void showTree(List<TreeViewData> nodes, Set<Long> expandedNodeIds, TreeViewData selectedNode) {
         treePanel.clear();
 
         List<TreeViewData> roots = new ArrayList<TreeViewData>();
@@ -80,7 +79,7 @@ public class TreeView extends Composite implements TreeInterface {
 
     private void addNode(TreeViewData node,
             List<TreeViewData> nodes,
-            Set<Integer> expandedNodeIds,
+            Set<Long> expandedNodeIds,
             TreeViewData selectedNode,
             int level) {
         List<TreeViewData> children = findChildren(node, nodes);
@@ -95,13 +94,11 @@ public class TreeView extends Composite implements TreeInterface {
     }
 
     private HorizontalPanel createNodeRow(final TreeViewData node,
-            final Set<Integer> expandedNodeIds, TreeViewData selectedNode, int level) {
+            final Set<Long> expandedNodeIds, TreeViewData selectedNode, int level) {
         HorizontalPanel row = new HorizontalPanel();
         row.setStyleName(STYLE_TREE_NODE_ROW);
 
-        Label indent = new Label();
-        indent.setWidth((level * INDENT_SIZE) + PIXEL);
-        row.add(indent);
+        row.getElement().getStyle().setPaddingLeft(level * INDENT_SIZE, Unit.PX);
 
         if (node.isHasChildren()) {
             final Button expandButton;

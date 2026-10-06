@@ -3,10 +3,9 @@ package com.kristina.gwttreecrud.client.allnodes;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.kristina.gwttreecrud.client.AppGwtService;
-import com.kristina.gwttreecrud.client.GwtServiceAsync;
 import com.kristina.gwttreecrud.client.events.AppEventBus;
 import com.kristina.gwttreecrud.client.events.DeleteNodeEvent;
 import com.kristina.gwttreecrud.client.events.DeleteNodeEventHandler;
@@ -14,11 +13,13 @@ import com.kristina.gwttreecrud.client.events.NodeAddedEvent;
 import com.kristina.gwttreecrud.client.events.NodeAddedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEventHandler;
+import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler {
+    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
     private AllNodesInterface view;
-    private GwtServiceAsync service = AppGwtService.get();
+    //private GwtServiceAsync service = AppGwtService.get();
 
     public AllNodesPresenter(AllNodesInterface view) {
         this.view = view;
@@ -31,15 +32,19 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
     // Зачем тут два одинаковый куска кода? Различие только в названии. логика одинаковая, запрос тот же
 
     private void loadNodes() {
-        service.getAllNodes(new AsyncCallback<List<TreeNode>>() {
+        AppGwtService.get().getAllNodes(new AsyncCallback<List<TreeNode>>() {
             @Override
             public void onSuccess(List<TreeNode> nodes) {
                 view.showNodes(convertToData(nodes));
             }
 
             @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка загрузки данных", caught);
+            public void onFailure(Throwable e) {
+                if (e instanceof TreeCrudProgramException) {
+                    Window.alert(e.getMessage());
+                } else {
+                    Window.alert(ERROR_UNKNOWN);
+                }
             }
         });
     }

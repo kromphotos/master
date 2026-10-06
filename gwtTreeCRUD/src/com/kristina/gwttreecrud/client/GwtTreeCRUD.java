@@ -24,15 +24,11 @@ public class GwtTreeCRUD implements EntryPoint {
     private static final String NAME_OF_ALL_NODES_PANEL = "All nodes:";
     private static final String NAME_OF_TREE_PANEL = "Tree:";
 
-    private static final String SERVER_ERROR = "An error occurred while "
-            + "attempting to contact the server. Please check your network "
-            + "connection and try again.";
-
     @Override
     public void onModuleLoad() {
         // ---------- Tree ----------
         TreeView treeView = new TreeView();
-        TreePresenter treePresenter = new TreePresenter(treeView);
+        new TreePresenter(treeView);
 
         //TODO(by Tutor)
         // зачем? это можно вызывать в конструкторе презентора
@@ -40,19 +36,19 @@ public class GwtTreeCRUD implements EntryPoint {
         NodeInfoView nodeInfoView = new NodeInfoView();
         //TODO(by Tutor)
         // а вью дата то тут чего делает и как вдруг она тут оказалась?
-        NodeInfoPresenter nodeInfoPresenter = new NodeInfoPresenter(nodeInfoView);
+        new NodeInfoPresenter(nodeInfoView);
 
         // ---------- Node Add ----------
         NodeAddView nodeAddView = new NodeAddView();
-        NodeAddPresenter nodeAddPresenter = new NodeAddPresenter(nodeAddView);
+        new NodeAddPresenter(nodeAddView);
 
         // ---------- Node Actions ----------
         NodeActionsView nodeActionsView = new NodeActionsView();
-        NodeActionsPresenter nodeActionsPresenter = new NodeActionsPresenter(nodeActionsView);
+        new NodeActionsPresenter(nodeActionsView);
 
         // ---------- All Nodes ----------
         AllNodesView allNodesView = new AllNodesView();
-        AllNodesPresenter allNodesPresenter = new AllNodesPresenter(allNodesView);
+        new AllNodesPresenter(allNodesView);
         //TODO(by Tutor)
         // зачем? это можно вызывать в конструкторе презентора
 
