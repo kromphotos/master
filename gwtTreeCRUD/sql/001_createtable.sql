@@ -3,7 +3,7 @@ CREATE SEQUENCE tree_node_SEQ START 1 INCREMENT BY 1;
 CREATE TABLE tree_node(
     id BIGINT DEFAULT NEXTVAL('tree_node_SEQ'),
     parent_id BIGINT, 
-    name VARCHAR(30) NOT NULL,
+    name TEXT NOT NULL,
     ip VARCHAR(15) NOT NULL,
     port INTEGER NOT NULL
 );

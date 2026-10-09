@@ -5,7 +5,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -40,14 +40,14 @@ public class NodeInfoView extends Composite implements NodeInfoInterface {
     private static final String STYLE_NODE_INFO_ERROR = "node-info-error";
     private static final String STYLE_NODE_INFO_PANEL = "node-info-panel";
     private static final String STYLE_NODE_INFO_TITLE = "node-info-title";
+    private static final String STYLE_NODE_INFO_BUTTONS = "node-info-buttons";
+    private static final String STYLE_NODE_INFO_VALUE = "node-info-value";
 
     private static final String NAME_OF_NODE_INFORMATION_WINDOW = "Selected:";
     private static final String NAME_OF_NODE_EDIT_WINDOW = "Edit:";
     
     private NodeInfoViewHandler handler;
 
-    //TODO(by Tutor)
-    // нельзя тут оставлять, это блок перменных, а не методов
     private VerticalPanel panel;
     private FlexTable table;
 
@@ -83,7 +83,8 @@ public class NodeInfoView extends Composite implements NodeInfoInterface {
     }
 
     private void createEditElements() {
-        HorizontalPanel buttonsPanel = new HorizontalPanel();
+        FlowPanel buttonsPanel = new FlowPanel();
+        buttonsPanel.addStyleName(STYLE_NODE_INFO_BUTTONS);
 
         nodeName = new TextBox();
         nodeIp = new TextBox();
@@ -148,9 +149,14 @@ public class NodeInfoView extends Composite implements NodeInfoInterface {
 
         table.setText(ROW_OF_PARENT_ID, COLUMN_OF_LABEL, PARENT_ID_FIELD_NAME);
         table.setText(ROW_OF_PARENT_ID, COLUMN_OF_VALUE, String.valueOf(data.getParentId()));
-
+        
         table.setText(ROW_OF_NAME, COLUMN_OF_LABEL, NAME_FIELD_NAME);
-        table.setText(ROW_OF_NAME, COLUMN_OF_VALUE, data.getName());
+        
+        Label nameLabel = new Label(data.getName());
+        nameLabel.setStyleName(STYLE_NODE_INFO_VALUE);
+        nameLabel.setTitle(data.getName());
+        
+        table.setWidget(ROW_OF_NAME, COLUMN_OF_VALUE, nameLabel);
 
         table.setText(ROW_OF_IP, COLUMN_OF_LABEL, IP_FIELD_NAME);
         table.setText(ROW_OF_IP, COLUMN_OF_VALUE, data.getIp());

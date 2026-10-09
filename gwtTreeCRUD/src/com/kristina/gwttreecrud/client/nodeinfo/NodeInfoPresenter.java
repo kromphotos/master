@@ -17,11 +17,9 @@ import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
-    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
-    //TODO(by Tutor)
-    //все там же все теже люди
-    private static final String ERROR_PORT_NOT_NUMBER = "Порт должен быть числом!";
-    private static final String ERROR_OF_EMPTY_FIELD = "Одно из полей было пустое!";
+    private static final String ERROR_UNKNOWN = "An unknown error occurred";
+    private static final String ERROR_PORT_NOT_NUMBER = "The port must be a number!";
+    private static final String ERROR_OF_EMPTY_FIELD = "One of the fields was empty!";
 
     private NodeInfoInterface view;
     private TreeNode selectedNode;
@@ -52,33 +50,6 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
     }
 
-    //TODO(by Tutor)
-    // опять публичный
-    /*
-    private void selectNode(TreeNode node) {
-        selectedNode = node;
-    
-        if (node == null) {
-            clear();
-            return;
-        }
-        viewData = new NodeInfoViewData(node.getId(),
-                node.getParentId(),
-                node.getName(),
-                node.getIp(),
-                node.getPort());
-        
-        viewData.setData(
-                node.getId(),
-                node.getParentId(),
-                node.getName(),
-                node.getIp(),
-                node.getPort());
-    
-        view.showNode(viewData);
-    }
-    */
-
     private void updateNodeInfo(TreeNode node) {
         selectedNode = node;
 
@@ -94,38 +65,12 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
                 node.getPort()));
     }
 
-    //TODO(by Tutor)
-    // что ж они вообще все публичные то
-
     private void clear() {
         selectedNode = null;
         view.clear();
     }
-    /*
-    public void startEdit() {
-        if (selectedNode == null) {
-            return;
-        }
-    
-        view.showEditMode(viewData);
-    }
-    */
-
-    //TODO(by Tutor)
-    // использутеся один раз зачем ему свой метод
-    /*
-    public void cancelEdit() {
-        if (selectedNode == null) {
-            return;
-        }
-    
-        view.showNode(viewData);
-    }
-    */
+   
     private void saveNode(String name, String ip, String port) {
-        //TODO(by Tutor)
-        // что т происходит? зачем мы сохраняем указатель?
-        //final TreeNode node = selectedNode;
         if (selectedNode == null) {
             return;
         }
@@ -152,13 +97,10 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
             @Override
             public void onSuccess(TreeNode updatedNode) {
                 GWT.log("Узел успешно обновлён");
-                //TODO(by Tutor)
-                // зачем мы второй раз обновляем данные одного и того же объекта?
-                // зачем нам вообще нужен этот метод?
                 if (selectedNode.getId().equals(updatedNode.getId())) {
-                    updateNodeInfo(updatedNode);//обновляет не данные объекта а данные вью!
+                    updateNodeInfo(updatedNode);
                 }
-                AppEventBus.get().fireEvent(new NodeUpdatedEvent(updatedNode));//рассылка обновления
+                AppEventBus.get().fireEvent(new NodeUpdatedEvent(updatedNode));
             }
 
             @Override
@@ -180,8 +122,6 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
 
     @Override
     public void editNode(EditNodeEvent event) {
-        //TODO(by Tutor)
-        // этот метод вновь используетс я один раз и только тут, зачем он отдельно вынесен?
         if (selectedNode == null) {
             return;
         }

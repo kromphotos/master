@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class AllNodesView extends Composite implements AllNodesInterface {
     private static final String COLUMN_ID = "ID";
@@ -12,6 +13,8 @@ public class AllNodesView extends Composite implements AllNodesInterface {
     private static final String COLUMN_NAME = "Name";
     private static final String COLUMN_IP = "IP";
     private static final String COLUMN_PORT = "Порт";
+    
+    private static final String STYLE_SCROLL_PANEL = "all-nodes-scroll-panel";
     
     private CellTable<AllNodesViewData> table;
 
@@ -22,7 +25,12 @@ public class AllNodesView extends Composite implements AllNodesInterface {
     private void init() {
         table = new CellTable<AllNodesViewData>();
         createColumns();
-        initWidget(table);
+
+        ScrollPanel scrollPanel = new ScrollPanel();
+        scrollPanel.setStyleName(STYLE_SCROLL_PANEL);
+        scrollPanel.add(table);
+
+        initWidget(scrollPanel);
     }
 
     private void createColumns() {

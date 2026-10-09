@@ -15,23 +15,20 @@ import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEventHandler {
-    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
-    private static final String ERROR_OF_NOT_NUMBER_PORT = "Порт должен быть числом!";
-    private static final String ERROR_OF_NOT_NUMBER_ID = "ID родителя должен быть числом!";
-    private static final String ERROR_OF_EMPTY_FIELD = "Одно из полей было пустое!";
+    private static final String ERROR_EMPTY_PARENT_ID = "The parent ID field is empty!";
+    private static final String ERROR_UNKNOWN = "An unknown error occurred";
+    private static final String ERROR_NOT_NUMBER_PORT = "The port must be a number!";
+    private static final String ERROR_NOT_NUMBER_ID = "The parent ID must be a number!";
+    private static final String ERROR_EMPTY_FIELD = "One of the fields was empty!";
 
     private NodeAddView view;
+    
     private boolean addingRoot;
-    //TODO(by Tutor)
-    // Опять singleton? ты везде так сделала? 
 
     public NodeAddPresenter(NodeAddView viewParameter) {
         this.view = viewParameter;
 
         view.setHandler(new NodeAddViewHandler() {
-            //TODO(by Tutor)
-            // а это мы уже обсуждали, что так делать нелзя. Нельзя ничего запрашивать напрямую у вьюхи
-            // Почему вьюха сразу не передала у тебя эти данные в методе onSaveNode(Int paremtId,...)?
             @Override
             public void onSaveNode(String parentId, String nodeName, String nodeIp, String port) {
                 saveNode(parentId, nodeName, nodeIp, port);
@@ -46,39 +43,27 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         AppEventBus.get().addHandler(AddChildNodeEvent.TYPE, this);
         AppEventBus.get().addHandler(AddRootNodeEvent.TYPE, this);
     }
-    //TODO(by Tutor)
-    // startAddChild и startAddingRoot
-    // оба находятся слишком высоко относительно остального кода, код читать не удобно, приходится прыгать
-    // оба вызываются только один раз и это избыточное выделение кода в методы
-    // оба публичные, хотя используются только в этом презенторе
-    /*
-    public void startAddChild(Integer parentId) {
-        addingRoot = false;
-        view.showAddCard(parentId);
-    }
-    
-    public void startAddingRoot() {
-        addingRoot = true;
-        view.showAddRootCard();
-    }
-    */
 
     private void saveNode(String parentId, String name, String ip, String port) {
         if (name.trim().isEmpty()
                 || ip.trim().isEmpty()
                 || port.trim().isEmpty()) {
-            view.showError(ERROR_OF_EMPTY_FIELD);
+            view.showError(ERROR_EMPTY_FIELD);
             return;
         }
 
         Long parentIdLong = null;
         Integer portInt;
 
-        if (!addingRoot && !parentId.trim().isEmpty()) {
+        if (!addingRoot) {
+            if (parentId.trim().isEmpty()) {
+                view.showError(ERROR_EMPTY_PARENT_ID);
+                return;
+            }
             try {
                 parentIdLong = Long.valueOf(parentId);
             } catch (NumberFormatException e) {
-                view.showError(ERROR_OF_NOT_NUMBER_ID);
+                view.showError(ERROR_NOT_NUMBER_ID);
                 return;
             }
         }
@@ -86,7 +71,7 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         try {
             portInt = Integer.valueOf(port);
         } catch (NumberFormatException e) {
-            view.showError(ERROR_OF_NOT_NUMBER_PORT);
+            view.showError(ERROR_NOT_NUMBER_PORT);
             return;
         }
 
@@ -110,15 +95,6 @@ public class NodeAddPresenter implements AddChildNodeEventHandler, AddRootNodeEv
         });
 
     }
-
-    //TODO(by Tutor)
-    // вновь новый метод ради одной строки кода, причем опять публичный, хотя используетс ятолько в этом презенторе
-    // причем аналогичный код используется при добавлении нового узла, но этот метод там не используется
-    /*
-    public void cancel() {
-        view.hideAddCard();
-    }
-    */
 
     @Override
     public void addChildNode(AddChildNodeEvent event) {

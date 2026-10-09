@@ -17,10 +17,9 @@ import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSelectionEventHandler {
-    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
-    private static final String WINDOW_MESSAGE = "Вы действительно хотите выполнить удаление?";
-    //TODO(by Tutor)
-    // singleton? зачем тебе для него переменная то личная вообще теперь
+    private static final String ERROR_UNKNOWN = "An unknown error occurred";
+    private static final String WINDOW_MESSAGE = "Are you sure you want to delete?";
+
     private NodeActionsView view;
     private TreeNode selectedNode;
 
@@ -28,9 +27,6 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
         this.view = view;
 
         view.setHandler(new NodeActionsViewHandler() {
-            //TODO(by Tutor)
-            // что за новые строки после каждого вызова метода?
-            // и все, что помещается в три строки и не переиспользуется в отдельный метод вынесить не нужно
             @Override
             public void onEdit() {
                 if (selectedNode != null) {
@@ -43,10 +39,7 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
                 if (selectedNode == null) {
                     return;
                 }
-                //TODO(by Tutor)
-                // решили же, что корень удалять можно
-                //TODO(by Tutor)
-                // зачем выносить в отдельную переменную?
+
                 if (!Window.confirm(WINDOW_MESSAGE)) {
                     return;
                 }
@@ -57,7 +50,6 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
                     @Override
                     public void onSuccess(Void result) {
                         AppEventBus.get().fireEvent(new DeleteNodeEvent(nodeId));
-                        //AppEventBus.get().fireEvent(new ClearSelectionEvent());
                     }
 
                     @Override
@@ -88,79 +80,6 @@ public class NodeActionsPresenter implements NodeSelectedEventHandler, ClearSele
         AppEventBus.get().addHandler(NodeSelectedEvent.TYPE, this);
         AppEventBus.get().addHandler(ClearSelectionEvent.TYPE, this);
     }
-
-    /*
-    public void editNode() {
-      //TODO(by Tutor)
-      // в данном случае так короче и понятнее
-    //        if (selectedNode != null) {
-    //            AppEventBus.get().fireEvent(new EditNodeEvent());
-    //        }
-        
-        if (selectedNode == null) {
-            return;
-        }
-        AppEventBus.get().fireEvent(new EditNodeEvent());
-    }
-    */
-    /*
-    public void addChildNode() {
-        if (selectedNode == null) {
-            return;
-        }
-        AppEventBus.get().fireEvent(new AddChildNodeEvent(selectedNode.getId()));
-    }
-    */
-    /*
-    public void addRootNode() {
-        AppEventBus.get().fireEvent(new AddRootNodeEvent());
-    }
-    */
-
-    //TODO(by Tutor)
-    // зачем паблик? зачем отдельным методом?
-    /*
-    public void selectNode(TreeNode node) {
-        selectedNode = node;
-        view.setNodeSelected(node != null);
-    }
-    */
-    /*
-    public void deleteNode() {
-        if (selectedNode == null) {
-            return;
-        }
-        
-        //TODO(by Tutor)
-        // решили же, что корень удалять можно
-    
-        
-        //TODO(by Tutor)
-        // зачем выносить в отдельную переменную?
-        boolean confirmed = Window.confirm(
-                "Вы действительно хотите выполнить удаление?");
-    
-        if (!confirmed) {
-            return;
-        }
-    
-        final Integer nodeId = selectedNode.getId();
-    
-        GwtServiceCreator.get().deleteById(nodeId, new AsyncCallback<Void>() {
-            @Override
-            public void onSuccess(Void result) {
-                AppEventBus.get().fireEvent(new DeleteNodeEvent(nodeId));
-                AppEventBus.get().fireEvent(new ClearSelectionEvent());
-                clearSelection();
-            }
-    
-            @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка удаления узла", caught);
-            }
-        });
-    }
-    */
 
     @Override
     public void onNodeSelected(NodeSelectedEvent event) {

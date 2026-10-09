@@ -17,9 +17,9 @@ import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler {
-    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
+    private static final String ERROR_UNKNOWN = "An unknown error occurred";
+    
     private AllNodesInterface view;
-    //private GwtServiceAsync service = AppGwtService.get();
 
     public AllNodesPresenter(AllNodesInterface view) {
         this.view = view;
@@ -28,8 +28,6 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
         AppEventBus.get().addHandler(DeleteNodeEvent.TYPE, this);
         loadNodes();
     }
-    //
-    // Зачем тут два одинаковый куска кода? Различие только в названии. логика одинаковая, запрос тот же
 
     private void loadNodes() {
         AppGwtService.get().getAllNodes(new AsyncCallback<List<TreeNode>>() {
@@ -58,14 +56,6 @@ public class AllNodesPresenter implements NodeUpdatedEventHandler, NodeAddedEven
         }
         return newNodes;
     }
-
-    //TODO(by Tutor)
-    // Избыточно. Три строки ради кода, который уместится в одну.
-    // Порядок методов ВАЖЕН. Если я начинаю читать твой метод loadNodes,
-    // который вызывает refreshNodes, который вызывает convertToData,
-    // то они должны идти друг за другом. Как convertToData оказался в начале класса?
-    //
-    // При использовании одного loadNodes, остальные методы будут избыточноми. располагать код можно и в onSuccess()
 
     @Override
     public void onNodeUpdated(NodeUpdatedEvent event) {

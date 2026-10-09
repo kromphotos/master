@@ -7,9 +7,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-/**
- * The client-side stub for the RPC service.
- */
 @RemoteServiceRelativePath("greet")
 public interface GwtService extends RemoteService {
     List<TreeNode> getAllNodes() throws TreeCrudProgramException;

@@ -10,9 +10,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class TreeView extends Composite implements TreeInterface {
     private static final int INDENT_SIZE = 20;
@@ -30,12 +29,10 @@ public class TreeView extends Composite implements TreeInterface {
 
     private NodeTreeViewHandler handler;
 
-    //TODO(by Tutor)
-    // нельзя тут оставлять, это блок перменных, а не методов
-    private VerticalPanel treePanel;
+    private FlowPanel treePanel;
 
     public TreeView() {
-        treePanel = new VerticalPanel();
+        treePanel = new FlowPanel();
         treePanel.setStyleName(STYLE_TREE_PANEL);
         initWidget(treePanel);
     }
@@ -55,9 +52,7 @@ public class TreeView extends Composite implements TreeInterface {
                 roots.add(node);
             }
         }
-        //TODO(by Tutor)
-        // отсортирован будет только рут?
-        // всех надо сортировать
+
         Collections.sort(roots);
 
         for (TreeViewData root : roots) {
@@ -83,7 +78,7 @@ public class TreeView extends Composite implements TreeInterface {
             TreeViewData selectedNode,
             int level) {
         List<TreeViewData> children = findChildren(node, nodes);
-        HorizontalPanel row = createNodeRow(node, expandedNodeIds, selectedNode, level);
+        FlowPanel row = createNodeRow(node, expandedNodeIds, selectedNode, level);
 
         treePanel.add(row);
         if (expandedNodeIds.contains(node.getId())) {
@@ -93,9 +88,9 @@ public class TreeView extends Composite implements TreeInterface {
         }
     }
 
-    private HorizontalPanel createNodeRow(final TreeViewData node,
+    private FlowPanel createNodeRow(final TreeViewData node,
             final Set<Long> expandedNodeIds, TreeViewData selectedNode, int level) {
-        HorizontalPanel row = new HorizontalPanel();
+        FlowPanel row = new FlowPanel ();
         row.setStyleName(STYLE_TREE_NODE_ROW);
 
         row.getElement().getStyle().setPaddingLeft(level * INDENT_SIZE, Unit.PX);
@@ -134,6 +129,7 @@ public class TreeView extends Composite implements TreeInterface {
 
         Label nameLabel = new Label(node.getName());
         nameLabel.setStyleName(STYLE_TREE_NODE_NAME);
+        nameLabel.setTitle(node.getName());
         if (selectedNode != null
                 && selectedNode.getId().equals(node.getId())) {
             nameLabel.addStyleName(STYLE_TREE_NODE_NAME_SELECTED);

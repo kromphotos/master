@@ -4,7 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 
 public class NodeActionsView extends Composite implements NodeActionsInterface {
     private static final String STYLE_NODE_ACTIONS_PANEL = "node-actions-panel";
@@ -15,9 +15,8 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
     private static final String BUTTON_ADD_ROOT_NODE = "Add root node";
 
     private NodeActionsViewHandler handler;
-    //TODO(by Tutor)
-    // нельзя тут оставлять, это блок перменных, а не методов
-    private HorizontalPanel panel;
+
+    private FlowPanel panel;
     
     private Button addRootButton;
     private Button addChildButton;
@@ -25,7 +24,7 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
     private Button deleteButton;
 
     public NodeActionsView() {
-        panel = new HorizontalPanel();
+        panel = new FlowPanel();
         panel.setStyleName(STYLE_NODE_ACTIONS_PANEL);
 
         addRootButton = new Button(BUTTON_ADD_ROOT_NODE);
@@ -40,13 +39,12 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
         editButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                //TODO(by Tutor)
-                // что за новые строки для открывающейся скобки ифа?
                 if (handler != null) {
                     handler.onEdit();
                 }
             }
         });
+        
         addChildButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -55,6 +53,7 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
                 }
             }
         });
+        
         deleteButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -63,6 +62,7 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
                 }
             }
         });
+        
         addRootButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -84,9 +84,6 @@ public class NodeActionsView extends Composite implements NodeActionsInterface {
     public void setHandler(NodeActionsViewHandler handler) {
         this.handler = handler;
     }
-    //TODO(by Tutor)
-    // А это зачем тут? прямой нужды в отображении сообщения конкретной въюхой нет. 
-    // Доступ к Window.alert есть и у презентора
 
     @Override
     public void setNodeSelected(boolean selected) {

@@ -24,13 +24,10 @@ import com.kristina.gwttreecrud.client.tree.TreeInterface.NodeTreeViewHandler;
 import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
-//TODO(by Tutor)
-// проверить все методы на публичность!
-
 public class TreePresenter
         implements NodeUpdatedEventHandler, NodeAddedEventHandler, DeleteNodeEventHandler, ClearSelectionEventHandler {
-    private static final String ERROR_UNKNOWN = "Произошла неизвестная ошибка";
-    //private GwtServiceAsync service = AppGwtService.get();
+    private static final String ERROR_UNKNOWN = "An unknown error occurred";
+    
     private TreeInterface view;
 
     private Map<Long, TreeNode> loadedNodes;
@@ -145,45 +142,6 @@ public class TreePresenter
         }
         refreshTree();
     }
-    /*
-    public void expandNode(final Integer nodeId) {
-        TreeNode node = loadedNodes.get(nodeId);
-        if (node == null) {
-            return;
-        }
-        if (node.getChildren() != null) {
-            expandedNodeIds.add(nodeId);
-            rebuildViewNodes();
-            return;
-        }
-        service.getAllChildById(nodeId, new AsyncCallback<List<TreeNode>>() {
-            @Override
-            public void onSuccess(List<TreeNode> children) {
-                TreeNode node = loadedNodes.get(nodeId);
-                node.setChildren(children);
-                for (TreeNode child : children) {
-                    loadedNodes.put(child.getId(), child);
-                }
-                expandedNodeIds.add(nodeId);
-                rebuildViewNodes();
-            }
-            @Override
-            public void onFailure(Throwable caught) {
-                GWT.log("Ошибка загрузки дочерних нод", caught);
-            }
-        });
-    }
-    */
-    /*
-    public void collapseNode(Integer nodeId) {
-        expandedNodeIds.remove(nodeId);
-        removeExpandedDescendants(nodeId);
-        if (selectedNode != null && isDescendant(selectedNode.getId(), nodeId)) {
-            AppEventBus.get().fireEvent(new ClearSelectionEvent());
-        }
-        refreshTree();
-    }
-    */
 
     private void removeExpandedDescendants(Long nodeId) {
         TreeNode node = findNodeById(nodeId);
@@ -234,33 +192,10 @@ public class TreePresenter
         }
         view.showTree(viewNodes, expandedNodeIds, selectedViewNode);
     }
-    /*
-    public void selectNode(Integer nodeId) {
-        TreeNode node = findNodeById(nodeId);
-        if (node == null) {
-            return;
-        }
-        selectedNode = node;
-        AppEventBus.get().fireEvent(new NodeSelectedEvent(node));
-        refreshTree();
-    }
-    */
 
     private TreeNode findNodeById(Long nodeId) {
         return loadedNodes.get(nodeId);
     }
-
-    //
-    /*
-    public void updateNodeName(Integer nodeId, String name) {
-        TreeNode node = findNodeById(nodeId);
-        if (node == null) {
-            return;
-        }
-        node.setName(name);
-        rebuildViewNodes();
-    }
-    */
 
     private Set<Long> findDescendantIds(Long nodeId) {
         TreeNode node = loadedNodes.get(nodeId);

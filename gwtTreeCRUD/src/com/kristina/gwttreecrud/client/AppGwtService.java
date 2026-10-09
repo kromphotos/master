@@ -2,9 +2,6 @@ package com.kristina.gwttreecrud.client;
 
 import com.google.gwt.core.client.GWT;
 
-//TODO(by Tutor)
-// Плохое имя. Креатор это тот, кто что то создает на постоянке.
-// Почему тогда глоабльный ивент бас ты не назвала креатором?
 public class AppGwtService {
     private static final GwtServiceAsync INSTANCE = GWT.create(GwtService.class);
 
@@ -12,8 +9,6 @@ public class AppGwtService {
         return INSTANCE;
     }
 
-    //TODO(by Tutor)
-    // зачем?
     private AppGwtService() {
 
     }
