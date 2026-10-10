@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.kristina.gwttreecrud.server.dao.TreeNodeDaoImp;
 import com.kristina.gwttreecrud.server.mapper.NodeMapper;
+import com.kristina.gwttreecrud.shared.InputValidator;
 import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
@@ -38,7 +39,7 @@ public class TreeNodeServiceImp implements TreeNodeService {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             return getTreeNodeDao(session).findAll();
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при загрузке всех узлов");
+            throw new TreeCrudProgramException("Error loading all nodes");
         }
     }
 
@@ -47,7 +48,7 @@ public class TreeNodeServiceImp implements TreeNodeService {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             return getTreeNodeDao(session).findById(id);
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при поиске узла по id = " + id);
+            throw new TreeCrudProgramException("Error searching node by id = " + id);
         }
     }
 
@@ -57,29 +58,37 @@ public class TreeNodeServiceImp implements TreeNodeService {
             getTreeNodeDao(session).deleteById(id);
             session.commit();
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при удалении узла id = " + id);
+            throw new TreeCrudProgramException("Error deleting node id = " + id);
         }
     }
 
     @Override
     public TreeNode updateNode(TreeNode node) throws TreeCrudProgramException {
+        InputValidator.validateName(node.getName());
+        InputValidator.validateIp(node.getIp());
+        InputValidator.validatePort(String.valueOf(node.getPort()));
+        
         try (SqlSession session = sqlSessionFactory.openSession()) {
             getTreeNodeDao(session).updateNode(node);
             session.commit();
             return node;
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при обновлении узла");
+            throw new TreeCrudProgramException("Error updating node");
         }
     }
 
     @Override
     public TreeNode insertNode(TreeNode node) throws TreeCrudProgramException {
+        InputValidator.validateName(node.getName());
+        InputValidator.validateIp(node.getIp());
+        InputValidator.validatePort(String.valueOf(node.getPort()));
+        
         try (SqlSession session = sqlSessionFactory.openSession()) {
             getTreeNodeDao(session).insertNode(node);
             session.commit();
             return node;
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при добавлении узла");
+            throw new TreeCrudProgramException("Error adding node");
         }
     }
 
@@ -88,7 +97,7 @@ public class TreeNodeServiceImp implements TreeNodeService {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             return getTreeNodeDao(session).getAllChildById(parentId);
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при загрузке детей узла id = " + parentId);
+            throw new TreeCrudProgramException("Error loading node's children id = " + parentId);
         }
     }
     
@@ -97,7 +106,7 @@ public class TreeNodeServiceImp implements TreeNodeService {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             return getTreeNodeDao(session).getAllRoots();
         } catch (PersistenceException e) {
-            throw new TreeCrudProgramException("Ошибка при загрузке корневых узлов");
+            throw new TreeCrudProgramException("Error loading root nodes");
         }
     }
 }

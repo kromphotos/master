@@ -13,13 +13,12 @@ import com.kristina.gwttreecrud.client.events.NodeSelectedEvent;
 import com.kristina.gwttreecrud.client.events.NodeSelectedEventHandler;
 import com.kristina.gwttreecrud.client.events.NodeUpdatedEvent;
 import com.kristina.gwttreecrud.client.nodeinfo.NodeInfoInterface.NodeInfoViewHandler;
+import com.kristina.gwttreecrud.shared.InputValidator;
 import com.kristina.gwttreecrud.shared.TreeCrudProgramException;
 import com.kristina.gwttreecrud.shared.TreeNode;
 
 public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEventHandler, ClearSelectionEventHandler {
     private static final String ERROR_UNKNOWN = "An unknown error occurred";
-    private static final String ERROR_PORT_NOT_NUMBER = "The port must be a number!";
-    private static final String ERROR_OF_EMPTY_FIELD = "One of the fields was empty!";
 
     private NodeInfoInterface view;
     private TreeNode selectedNode;
@@ -69,49 +68,39 @@ public class NodeInfoPresenter implements NodeSelectedEventHandler, EditNodeEven
         selectedNode = null;
         view.clear();
     }
-   
+
     private void saveNode(String name, String ip, String port) {
         if (selectedNode == null) {
             return;
         }
 
-        if (name.trim().isEmpty() || ip.trim().isEmpty() || port.trim().isEmpty()) {
-            view.showError(ERROR_OF_EMPTY_FIELD);
-            return;
-        }
-
-        Integer portInt;
-
         try {
-            portInt = Integer.valueOf(port);
-        } catch (NumberFormatException e) {
-            view.showError(ERROR_PORT_NOT_NUMBER);
-            return;
+            selectedNode.setName(InputValidator.validateName(name));
+            selectedNode.setIp(InputValidator.validateIp(ip));
+            selectedNode.setPort(InputValidator.validatePort(port));
+
+            AppGwtService.get().updateNode(selectedNode, new AsyncCallback<TreeNode>() {
+                @Override
+                public void onSuccess(TreeNode updatedNode) {
+                    GWT.log("Узел успешно обновлён");
+                    if (selectedNode.getId().equals(updatedNode.getId())) {
+                        updateNodeInfo(updatedNode);
+                    }
+                    AppEventBus.get().fireEvent(new NodeUpdatedEvent(updatedNode));
+                }
+
+                @Override
+                public void onFailure(Throwable e) {
+                    if (e instanceof TreeCrudProgramException) {
+                        Window.alert(e.getMessage());
+                    } else {
+                        Window.alert(ERROR_UNKNOWN);
+                    }
+                }
+            });
+        } catch (TreeCrudProgramException e) {
+            view.showError(e.getMessage());
         }
-
-        selectedNode.setName(name);
-        selectedNode.setIp(ip);
-        selectedNode.setPort(portInt);
-
-        AppGwtService.get().updateNode(selectedNode, new AsyncCallback<TreeNode>() {
-            @Override
-            public void onSuccess(TreeNode updatedNode) {
-                GWT.log("Узел успешно обновлён");
-                if (selectedNode.getId().equals(updatedNode.getId())) {
-                    updateNodeInfo(updatedNode);
-                }
-                AppEventBus.get().fireEvent(new NodeUpdatedEvent(updatedNode));
-            }
-
-            @Override
-            public void onFailure(Throwable e) {
-                if (e instanceof TreeCrudProgramException) {
-                    Window.alert(e.getMessage());
-                } else {
-                    Window.alert(ERROR_UNKNOWN);
-                }
-            }
-        });
     }
 
     @Override
